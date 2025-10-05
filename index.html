@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navnetallkalkulator</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #f0f4ff 0%, #fefefe 100%);
+      color: #222;
+    }
+
+    main {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 18px;
+      box-shadow: 0 20px 40px rgba(31, 41, 55, 0.15);
+      padding: clamp(1.5rem, 3vw, 2.5rem);
+      width: min(640px, 90vw);
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      margin-top: 0;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    p.description {
+      margin-top: 0;
+      margin-bottom: 1.75rem;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      font-size: 1.1rem;
+      padding: 0.7rem 0.9rem;
+      border-radius: 12px;
+      border: 1px solid rgba(15, 23, 42, 0.15);
+      box-sizing: border-box;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    }
+
+    button {
+      margin-top: 1.2rem;
+      width: 100%;
+      padding: 0.85rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 12px;
+      background: #6366f1;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(99, 102, 241, 0.25);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    section.result {
+      margin-top: 2rem;
+      display: none;
+    }
+
+    section.result.active {
+      display: block;
+    }
+
+    .breakdown {
+      margin-top: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+    }
+
+    .breakdown table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .breakdown th,
+    .breakdown td {
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+    }
+
+    .breakdown thead {
+      background: rgba(99, 102, 241, 0.12);
+    }
+
+    .breakdown tbody tr:nth-child(even) {
+      background: rgba(15, 23, 42, 0.04);
+    }
+
+    .reduction-steps {
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    p.ignored {
+      margin-top: 0.75rem;
+      font-size: 0.95rem;
+      color: #475569;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: radial-gradient(circle at top, #1f2937, #0f172a 75%);
+        color: #f8fafc;
+      }
+
+      main {
+        background: rgba(15, 23, 42, 0.88);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      }
+
+      input[type="text"] {
+        background: rgba(15, 23, 42, 0.7);
+        border-color: rgba(148, 163, 184, 0.3);
+        color: inherit;
+      }
+
+      input[type="text"]:focus {
+        border-color: #a855f7;
+        box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.25);
+      }
+
+      button {
+        background: linear-gradient(135deg, #a855f7, #6366f1);
+      }
+
+      .breakdown {
+        border-color: rgba(148, 163, 184, 0.3);
+      }
+
+      .breakdown thead {
+        background: rgba(99, 102, 241, 0.35);
+      }
+
+      .breakdown tbody tr:nth-child(even) {
+        background: rgba(148, 163, 184, 0.12);
+      }
+
+      p.ignored {
+        color: #cbd5f5;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Regn ut navnetallet ditt</h1>
+    <p class="description">
+      Skriv inn navnet ditt slik du vanligvis bruker det. Kalkulatoren bruker den klassiske
+      tallverdien for hver bokstav (A=1, B=2 …), splitter Æ til AE, Ø til OE og Å til AA og
+      reduserer summen til ett siffer – med unntak for mester-tallene 11, 22 og 33.
+    </p>
+
+    <form id="calculator" autocomplete="off">
+      <label for="nameInput">Navn</label>
+      <input id="nameInput" name="name" type="text" placeholder="F.eks. Ola Nordmann" required>
+      <button type="submit">Beregn navnetall</button>
+    </form>
+
+    <section id="result" class="result" aria-live="polite"></section>
+  </main>
+
+  <template id="resultTemplate">
+    <div class="summary">
+      <h2>Navnetall: <span data-id="finalValue"></span></h2>
+      <p data-id="normalizedName"></p>
+    </div>
+
+    <div class="breakdown">
+      <table>
+        <thead>
+          <tr>
+            <th>Bokstav</th>
+            <th>Tallverdi</th>
+          </tr>
+        </thead>
+        <tbody data-id="tableBody"></tbody>
+        <tfoot>
+          <tr>
+            <th>Totalsum</th>
+            <th data-id="total"></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="reduction-steps" data-id="reductionSteps"></div>
+    <p class="ignored" data-id="ignored"></p>
+  </template>
+
+  <script>
+    const LETTER_VALUES = new Map([
+      ["A", 1], ["B", 2], ["C", 3], ["D", 4], ["E", 5], ["F", 6], ["G", 7], ["H", 8], ["I", 9],
+      ["J", 1], ["K", 2], ["L", 3], ["M", 4], ["N", 5], ["O", 6], ["P", 7], ["Q", 8], ["R", 9],
+      ["S", 1], ["T", 2], ["U", 3], ["V", 4], ["W", 5], ["X", 6], ["Y", 7], ["Z", 8]
+    ]);
+
+    const MASTER_NUMBERS = new Set([11, 22, 33]);
+
+    const normalizeName = (input) =>
+      input
+        .replace(/[-']/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+    const expandLetter = (letter) => {
+      if (LETTER_VALUES.has(letter)) {
+        return [{ label: letter, value: LETTER_VALUES.get(letter) }];
+      }
+
+      switch (letter) {
+        case "Æ":
+          return [
+            { label: "Æ (A)", value: LETTER_VALUES.get("A") },
+            { label: "Æ (E)", value: LETTER_VALUES.get("E") }
+          ];
+        case "Ø":
+          return [
+            { label: "Ø (O)", value: LETTER_VALUES.get("O") },
+            { label: "Ø (E)", value: LETTER_VALUES.get("E") }
+          ];
+        case "Å":
+          return [
+            { label: "Å (A)", value: LETTER_VALUES.get("A") },
+            { label: "Å (A)", value: LETTER_VALUES.get("A") }
+          ];
+        default: {
+          const normalized = letter
+            .normalize("NFD")
+            .replace(/\p{Diacritic}/gu, "")
+            .toUpperCase();
+
+          if (LETTER_VALUES.has(normalized)) {
+            return [{ label: `${letter} (${normalized})`, value: LETTER_VALUES.get(normalized) }];
+          }
+
+          return [];
+        }
+      }
+    };
+
+    const calculateLetterValues = (name) => {
+      const breakdown = [];
+      let total = 0;
+      const ignored = new Set();
+
+      for (const char of name) {
+        if (char === " ") continue;
+
+        const contributions = expandLetter(char);
+        if (!contributions.length) {
+          ignored.add(char);
+        }
+
+        for (const { label, value } of contributions) {
+          breakdown.push({ letter: label, value });
+          total += value;
+        }
+      }
+
+      return { breakdown, total, ignored: Array.from(ignored) };
+    };
+
+    const reduceToNavnetall = (value) => {
+      const steps = [value];
+
+      while (value > 9 && !MASTER_NUMBERS.has(value)) {
+        value = value
+          .toString()
+          .split("")
+          .map(Number)
+          .reduce((sum, digit) => sum + digit, 0);
+        steps.push(value);
+      }
+
+      return { navnetall: value, steps };
+    };
+
+    const renderResult = ({ breakdown, total, navnetall, steps, displayName, ignored }) => {
+      const resultSection = document.querySelector("#result");
+      const template = document.querySelector("#resultTemplate");
+      const clone = template.content.cloneNode(true);
+
+      clone.querySelector('[data-id="finalValue"]').textContent = navnetall;
+      clone.querySelector('[data-id="total"]').textContent = total;
+      clone.querySelector('[data-id="normalizedName"]').textContent = `Navnet er behandlet som: ${displayName}`;
+
+      const tbody = clone.querySelector('[data-id="tableBody"]');
+      for (const { letter, value } of breakdown) {
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${letter}</td><td>${value}</td>`;
+        tbody.appendChild(row);
+      }
+
+      const stepsElement = clone.querySelector('[data-id="reductionSteps"]');
+      if (steps.length > 1) {
+        stepsElement.textContent = `Reduksjonstrinn: ${steps.join(' → ')}`;
+      } else {
+        stepsElement.textContent = "Reduksjonstrinn: Ingen reduksjon nødvendig.";
+      }
+
+      const ignoredElement = clone.querySelector('[data-id="ignored"]');
+      if (ignored.length) {
+        ignoredElement.textContent = `Følgende tegn ble ignorert: ${ignored.join(", ")}`;
+      } else {
+        ignoredElement.remove();
+      }
+
+      resultSection.innerHTML = "";
+      resultSection.appendChild(clone);
+      resultSection.classList.add("active");
+    };
+
+    document.querySelector("#calculator").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const input = document.querySelector("#nameInput");
+      const rawName = input.value;
+      const normalized = normalizeName(rawName.toUpperCase());
+
+      if (!normalized) {
+        alert("Skriv inn et navn.");
+        return;
+      }
+
+      const { breakdown, total, ignored } = calculateLetterValues(normalized);
+      const { navnetall, steps } = reduceToNavnetall(total);
+
+      renderResult({ breakdown, total, navnetall, steps, displayName: normalized, ignored });
+    });
+  </script>
+</body>
+</html>
