@@ -220,119 +220,131 @@
             </ng-container>
 
             <section class="result-group" *ngIf="analysis.personalYears.length">
-              <h3>Personal years (9-year arc)</h3>
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th scope="col">Year</th>
-                    <th scope="col">Number</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let entry of analysis.personalYears">
-                    <td>{{ entry.year }}</td>
-                    <td>{{ entry.number }}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <h3 id="personalYearsHeading">Personal years (9-year arc)</h3>
+              <div class="table-scroll" role="region" aria-labelledby="personalYearsHeading" tabindex="0">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Year</th>
+                      <th scope="col">Number</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let entry of analysis.personalYears">
+                      <td>{{ entry.year }}</td>
+                      <td>{{ entry.number }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </section>
 
             <section class="result-group" *ngIf="analysis.personalMonths.length">
-              <h3>Personal months (81 combinations)</h3>
-              <table class="data-table scrollable">
-                <thead>
-                  <tr>
-                    <th scope="col">Year</th>
-                    <th scope="col" *ngFor="let column of personalMonthColumns">Month {{ column }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let row of analysis.personalMonths">
-                    <td>{{ row.year }}</td>
-                    <td *ngFor="let entry of row.months">{{ entry.number }}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <h3 id="personalMonthsHeading">Personal months (81 combinations)</h3>
+              <div class="table-scroll" role="region" aria-labelledby="personalMonthsHeading" tabindex="0">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Year</th>
+                      <th scope="col" *ngFor="let column of personalMonthColumns">Month {{ column }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of analysis.personalMonths">
+                      <td>{{ row.year }}</td>
+                      <td *ngFor="let entry of row.months">{{ entry.number }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </section>
 
             <section class="result-group" *ngIf="analysis.essence.length">
-              <h3>Essence numbers (13-year focus)</h3>
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th scope="col">Year</th>
-                    <th scope="col">Total</th>
-                    <th scope="col">Number</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let entry of analysis.essence">
-                    <td>{{ entry.year }}</td>
-                    <td>{{ entry.total }}</td>
-                    <td>{{ entry.number }}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <h3 id="essenceHeading">Essence numbers (13-year focus)</h3>
+              <div class="table-scroll" role="region" aria-labelledby="essenceHeading" tabindex="0">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Year</th>
+                      <th scope="col">Total</th>
+                      <th scope="col">Number</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let entry of analysis.essence">
+                      <td>{{ entry.year }}</td>
+                      <td>{{ entry.total }}</td>
+                      <td>{{ entry.number }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </section>
 
             <section class="result-group" *ngIf="analysis.pinnacles.length">
-              <h3>The four pinnacle cycles</h3>
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th scope="col">Phase</th>
-                    <th scope="col">Years</th>
-                    <th scope="col">Number</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let entry of analysis.pinnacles; let idx = index">
-                    <td>Pinnacle {{ idx + 1 }}</td>
-                    <td>{{ formatRange(entry) }}</td>
-                    <td>{{ entry.number }}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <h3 id="pinnaclesHeading">The four pinnacle cycles</h3>
+              <div class="table-scroll" role="region" aria-labelledby="pinnaclesHeading" tabindex="0">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Phase</th>
+                      <th scope="col">Years</th>
+                      <th scope="col">Number</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let entry of analysis.pinnacles; let idx = index">
+                      <td>Pinnacle {{ idx + 1 }}</td>
+                      <td>{{ formatRange(entry) }}</td>
+                      <td>{{ entry.number }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </section>
 
             <section class="result-group" *ngIf="analysis.lifeCycles.length">
-              <h3>Three life cycles</h3>
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th scope="col">Cycle</th>
-                    <th scope="col">Years</th>
-                    <th scope="col">Number</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let entry of analysis.lifeCycles; let idx = index">
-                    <td>Cycle {{ idx + 1 }}</td>
-                    <td>{{ formatRange(entry) }}</td>
-                    <td>{{ entry.number }}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <h3 id="lifeCyclesHeading">Three life cycles</h3>
+              <div class="table-scroll" role="region" aria-labelledby="lifeCyclesHeading" tabindex="0">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Cycle</th>
+                      <th scope="col">Years</th>
+                      <th scope="col">Number</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let entry of analysis.lifeCycles; let idx = index">
+                      <td>Cycle {{ idx + 1 }}</td>
+                      <td>{{ formatRange(entry) }}</td>
+                      <td>{{ entry.number }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </section>
 
             <section class="result-group" *ngIf="analysis.challenges.length">
-              <h3>Challenge numbers</h3>
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th scope="col">Period</th>
-                    <th scope="col">Number</th>
-                    <th scope="col">Details</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let entry of analysis.challenges; let idx = index">
-                    <td>Challenge {{ idx + 1 }}</td>
-                    <td>{{ entry.number }}</td>
-                    <td>{{ formatRange(entry) }}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <h3 id="challengesHeading">Challenge numbers</h3>
+              <div class="table-scroll" role="region" aria-labelledby="challengesHeading" tabindex="0">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Period</th>
+                      <th scope="col">Number</th>
+                      <th scope="col">Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let entry of analysis.challenges; let idx = index">
+                      <td>Challenge {{ idx + 1 }}</td>
+                      <td>{{ entry.number }}</td>
+                      <td>{{ formatRange(entry) }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </section>
           </ng-container>
 
