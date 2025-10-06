@@ -1,0 +1,374 @@
+<div class="home-screen">
+  <section class="hero container">
+    <div class="hero-grid row g-4 align-items-center">
+      <div class="col-lg-6">
+        <p class="hero-eyebrow">Åse Steinsland · Numerology Studio</p>
+        <h1 class="hero-title">Personal blueprint intake</h1>
+        <p class="hero-lead">
+          Begin by sharing your preferred name. We will guide you through each detail Åse needs to craft your personalised
+          numerology analysis.
+        </p>
+        <div class="progress-card">
+          <div class="progress-meta">
+            <span class="step-label">{{ stepLabel }}</span>
+            <span class="progress-label">{{ progressLabel }}</span>
+          </div>
+          <div
+            class="progress-track"
+            role="progressbar"
+            [attr.aria-valuenow]="progressValue"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            <div class="progress-fill" [style.width.%]="progressValue"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="hero-checklist card">
+          <h2>What we will cover</h2>
+          <ol class="checklist">
+            <li *ngFor="let step of steps; let idx = index" [class.active]="idx === currentStep">
+              <span class="index">{{ idx + 1 }}</span>
+              <div>
+                <p class="title">{{ step.summary }}</p>
+                <p class="muted">{{ step.description }}</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="intake container">
+    <div class="row g-4">
+      <div class="col-lg-5">
+        <form class="wizard card" [formGroup]="form" novalidate>
+          <header class="wizard-head">
+            <span class="pill">{{ stepLabel }}</span>
+            <div>
+              <h2>{{ currentStepTitle }}</h2>
+              <p class="muted">{{ steps[currentStep].description }}</p>
+            </div>
+          </header>
+
+          <div class="wizard-fields" [ngSwitch]="currentStep">
+            <ng-container *ngSwitchCase="0">
+              <label class="field">
+                <span>Preferred name</span>
+                <input
+                  type="text"
+                  formControlName="preferredName"
+                  placeholder="How should Åse greet you?"
+                  autocomplete="name"
+                />
+                <small class="error" *ngIf="form.get('preferredName')?.invalid && form.get('preferredName')?.touched">
+                  Enter your preferred name to continue.
+                </small>
+              </label>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="1">
+              <label class="field">
+                <span>Full birth name</span>
+                <input
+                  type="text"
+                  formControlName="birthName"
+                  placeholder="Write the complete birth certificate name"
+                  autocomplete="name"
+                />
+                <small class="error" *ngIf="form.get('birthName')?.invalid && form.get('birthName')?.touched">
+                  The full birth name is required.
+                </small>
+              </label>
+              <label class="field">
+                <span>Current full name</span>
+                <input
+                  type="text"
+                  formControlName="currentName"
+                  placeholder="If you use a different name today, add it here"
+                  autocomplete="name"
+                />
+              </label>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="2">
+              <div class="field-row">
+                <label class="field">
+                  <span>Sex</span>
+                  <select formControlName="sex">
+                    <option value="">Select</option>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                    <option value="other">Other / prefer to self-describe</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Date of birth</span>
+                  <input type="date" formControlName="birthDate" />
+                  <small class="error" *ngIf="form.get('birthDate')?.invalid && form.get('birthDate')?.touched">
+                    Add your date of birth.
+                  </small>
+                </label>
+              </div>
+              <label class="field">
+                <span>Original calendar</span>
+                <select formControlName="calendar">
+                  <option value="gregorian">Gregorian (Western)</option>
+                  <option value="solarHijri">Solar Hijri (Persian)</option>
+                  <option value="hijri">Hijri (Islamic)</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Target year for personal year</span>
+                <input type="number" formControlName="targetYear" min="1900" max="2400" />
+                <small class="error" *ngIf="form.get('targetYear')?.invalid && form.get('targetYear')?.touched">
+                  Use a year between 1900 and 2400.
+                </small>
+              </label>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="3">
+              <label class="field">
+                <span>Street address</span>
+                <input
+                  type="text"
+                  formControlName="address"
+                  placeholder="Where should Åse send printed material?"
+                  autocomplete="address-line1"
+                />
+              </label>
+              <div class="field-row">
+                <label class="field">
+                  <span>Phone number</span>
+                  <input
+                    type="tel"
+                    formControlName="phone"
+                    placeholder="Include country code if outside Norway"
+                    autocomplete="tel"
+                  />
+                </label>
+                <label class="field">
+                  <span>Email</span>
+                  <input type="email" formControlName="email" placeholder="Your best email for delivery" autocomplete="email" />
+                  <small class="error" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+                    Please enter a valid email address.
+                  </small>
+                </label>
+              </div>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="4">
+              <label class="field">
+                <span>Notes for Åse</span>
+                <textarea formControlName="notes" rows="5" placeholder="Share intentions, questions or context"></textarea>
+              </label>
+            </ng-container>
+          </div>
+
+          <div class="wizard-nav">
+            <button type="button" class="ghost" (click)="goBack()" *ngIf="currentStep > 0">Back</button>
+            <button
+              type="button"
+              class="primary"
+              (click)="currentStep === steps.length - 1 ? finish() : goNext()"
+            >
+              {{ currentStep === steps.length - 1 ? 'Generate overview' : 'Continue' }}
+            </button>
+          </div>
+        </form>
+
+        <p class="error center" *ngIf="errorMessage">{{ errorMessage }}</p>
+      </div>
+
+      <div class="col-lg-7">
+        <section class="snapshot card" #analysisPreview>
+          <div class="snapshot-head">
+            <div>
+              <h2>Your numerology snapshot</h2>
+              <p class="muted">
+                Generate the overview to reveal every calculation Åse reviews before preparing a complete analysis.
+              </p>
+            </div>
+            <span class="pill" *ngIf="analysisGenerated">Ready</span>
+          </div>
+
+          <ng-container *ngIf="analysis; else resultsPlaceholder">
+            <ng-container *ngFor="let section of cardSections">
+              <section class="result-group" *ngIf="cardsFor(section).length">
+                <h3>{{ sectionLabels[section] }}</h3>
+                <div class="result-grid">
+                  <article class="result-card" *ngFor="let card of cardsFor(section)">
+                    <div class="result-number">{{ card.number }}</div>
+                    <div class="result-body">
+                      <h4>{{ card.label }}</h4>
+                      <p class="muted" *ngIf="card.subtitle">{{ card.subtitle }}</p>
+                      <p *ngIf="card.story">{{ card.story }}</p>
+                      <div class="dna-track" *ngIf="card.breakdown?.length">
+                        <div class="dna-node" *ngFor="let entry of card.breakdown">
+                          <span class="value">{{ entry.value }}</span>
+                          <span class="label">{{ entry.label }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </section>
+            </ng-container>
+
+            <section class="result-group" *ngIf="analysis.personalYears.length">
+              <h3>Personal years (9-year arc)</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Year</th>
+                    <th scope="col">Number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let entry of analysis.personalYears">
+                    <td>{{ entry.year }}</td>
+                    <td>{{ entry.number }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="result-group" *ngIf="analysis.personalMonths.length">
+              <h3>Personal months (81 combinations)</h3>
+              <table class="data-table scrollable">
+                <thead>
+                  <tr>
+                    <th scope="col">Year</th>
+                    <th scope="col" *ngFor="let column of personalMonthColumns">Month {{ column }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of analysis.personalMonths">
+                    <td>{{ row.year }}</td>
+                    <td *ngFor="let entry of row.months">{{ entry.number }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="result-group" *ngIf="analysis.essence.length">
+              <h3>Essence numbers (13-year focus)</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Year</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let entry of analysis.essence">
+                    <td>{{ entry.year }}</td>
+                    <td>{{ entry.total }}</td>
+                    <td>{{ entry.number }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="result-group" *ngIf="analysis.pinnacles.length">
+              <h3>The four pinnacle cycles</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Phase</th>
+                    <th scope="col">Years</th>
+                    <th scope="col">Number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let entry of analysis.pinnacles; let idx = index">
+                    <td>Pinnacle {{ idx + 1 }}</td>
+                    <td>{{ formatRange(entry) }}</td>
+                    <td>{{ entry.number }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="result-group" *ngIf="analysis.lifeCycles.length">
+              <h3>Three life cycles</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Cycle</th>
+                    <th scope="col">Years</th>
+                    <th scope="col">Number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let entry of analysis.lifeCycles; let idx = index">
+                    <td>Cycle {{ idx + 1 }}</td>
+                    <td>{{ formatRange(entry) }}</td>
+                    <td>{{ entry.number }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="result-group" *ngIf="analysis.challenges.length">
+              <h3>Challenge numbers</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Period</th>
+                    <th scope="col">Number</th>
+                    <th scope="col">Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let entry of analysis.challenges; let idx = index">
+                    <td>Challenge {{ idx + 1 }}</td>
+                    <td>{{ entry.number }}</td>
+                    <td>{{ formatRange(entry) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          </ng-container>
+
+          <ng-template #resultsPlaceholder>
+            <p class="muted">
+              Complete the steps and choose “Generate overview” to calculate your personalised chart.
+            </p>
+          </ng-template>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="actions container">
+    <div class="card action-card">
+      <div class="actions-grid">
+        <button type="button" class="secondary" (click)="downloadPdf()" [disabled]="isDownloading">
+          Short free analyse
+        </button>
+        <button type="button" class="primary" (click)="openOrder()">Detailed full analyse</button>
+      </div>
+      <p class="muted">
+        The short analyse prepares a PDF you can save or print. The detailed option guides you to Åse’s official order page for
+        a complete session.
+      </p>
+    </div>
+  </section>
+
+  <section class="stories container">
+    <div class="card stories-card">
+      <h2>Core number stories</h2>
+      <p class="muted">Each number carries a signature vibration. Read the quick stories Åse shares with every client.</p>
+      <div class="story-grid">
+        <article class="story-card" *ngFor="let entry of stories">
+          <h3>Number {{ entry[0] }}</h3>
+          <p>{{ entry[1] }}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,79 @@
+
+.site-header {
+  padding: 1.25rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--brand-surface);
+  background: color-mix(in srgb, var(--brand-surface) 85%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+.header-inner {
+  width: 100%;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.brand-mark {
+  width: 3.25rem;
+  height: 3.25rem;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: linear-gradient(140deg, var(--brand-accent) 0%, var(--brand-accent-strong) 100%);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: 0 16px 30px rgba(242, 124, 54, 0.28);
+}
+
+.brand-copy {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--brand-ink);
+}
+
+.brand-tag {
+  font-size: 0.85rem;
+  color: var(--brand-ink-muted);
+}
+
+.mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--brand-border);
+  background: rgba(255, 255, 255, 0.4);
+  color: var(--brand-ink);
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.mode-toggle:hover,
+.mode-toggle:focus-visible {
+  transform: translateY(-1px);
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent-strong);
+}
+
+.mode-toggle .icon {
+  font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+  .brand-copy {
+    display: none;
+  }
+}
