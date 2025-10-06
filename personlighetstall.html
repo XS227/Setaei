@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personality Number (Personlighetstall) Guide</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --accent: #f26b21;
+      --accent-strong: #d95513;
+      --surface: rgba(255, 255, 255, 0.94);
+      --text: #2f2a28;
+      --subtle: #6b4f3f;
+      --border: rgba(79, 59, 48, 0.18);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: clamp(1.2rem, 2vw, 2.6rem);
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 230, 204, 0.55), transparent 55%),
+        radial-gradient(circle at 82% 4%, rgba(255, 174, 107, 0.28), transparent 50%),
+        linear-gradient(135deg, #fff9f4 0%, #ffe9d8 52%, #fff2e3 100%);
+      color: var(--text);
+    }
+
+    main {
+      position: relative;
+      background: var(--surface);
+      border-radius: 26px;
+      box-shadow: 0 28px 58px rgba(173, 85, 28, 0.16);
+      padding: clamp(1.9rem, 3vw, 3.1rem);
+      width: min(940px, 95vw);
+      display: flex;
+      flex-direction: column;
+      gap: 1.85rem;
+      overflow: hidden;
+    }
+
+    main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.9), transparent 50%),
+        radial-gradient(circle at -10% 120%, rgba(242, 107, 33, 0.18), transparent 65%);
+      mix-blend-mode: soft-light;
+      pointer-events: none;
+    }
+
+    header {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand-logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 20px;
+      background: linear-gradient(140deg, var(--accent) 0%, #ff7b32 60%, var(--accent-strong) 100%);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 12px 28px rgba(242, 107, 33, 0.28);
+    }
+
+    .brand-logo svg {
+      width: 44px;
+      height: 44px;
+    }
+
+    .brand-details h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 2.7rem);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-details p {
+      margin: 0.35rem 0 0;
+      color: var(--subtle);
+      line-height: 1.65;
+      font-size: 1.05rem;
+    }
+
+    section {
+      position: relative;
+      z-index: 1;
+      border: 1px solid rgba(242, 107, 33, 0.14);
+      border-radius: 22px;
+      padding: clamp(1.4rem, 2vw, 1.9rem);
+      background: rgba(255, 247, 237, 0.85);
+      backdrop-filter: blur(6px);
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    section h2 {
+      margin: 0;
+      font-size: 1.6rem;
+    }
+
+    section p {
+      margin: 0;
+      line-height: 1.75;
+      color: var(--subtle);
+    }
+
+    .step-list {
+      margin: 0;
+      padding-left: 1.1rem;
+      display: grid;
+      gap: 0.75rem;
+      color: var(--subtle);
+    }
+
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .insight-card {
+      border-radius: 18px;
+      border: 1px solid rgba(242, 107, 33, 0.16);
+      background: rgba(255, 255, 255, 0.92);
+      padding: 1.1rem;
+      display: grid;
+      gap: 0.45rem;
+      box-shadow: 0 18px 32px rgba(242, 107, 33, 0.12);
+    }
+
+    .insight-card h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: var(--accent-strong);
+    }
+
+    .actions {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .cta {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--accent) 0%, #ff7f32 55%, var(--accent-strong) 100%);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      text-decoration: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .cta.secondary {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 244, 235, 0.92));
+      color: var(--accent-strong);
+      border: 1px solid rgba(242, 107, 33, 0.32);
+    }
+
+    .cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 32px rgba(242, 107, 33, 0.26);
+    }
+
+    .calculator-nav {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .calculator-nav h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      color: var(--subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .calculator-links {
+      display: grid;
+      gap: 0.6rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .calculator-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1.05rem;
+      border-radius: 14px;
+      border: 1px solid rgba(242, 107, 33, 0.2);
+      background: rgba(255, 237, 213, 0.55);
+      color: inherit;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .calculator-links a span:last-child {
+      font-size: 1.35rem;
+    }
+
+    .calculator-links a:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 26px rgba(242, 107, 33, 0.16);
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      font-size: 0.92rem;
+      color: var(--subtle);
+    }
+
+    @media (max-width: 720px) {
+      main {
+        border-radius: 22px;
+        padding: 1.6rem;
+      }
+
+      .brand {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      section {
+        padding: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
+            <circle cx="32" cy="32" r="30" fill="rgba(255, 255, 255, 0.16)"></circle>
+            <path d="M18 44L30.5 20h3L46 44h-6.1l-2.3-5.2H26.4L24 44H18zm14.6-10.5h7L36.1 25z" fill="#fff"></path>
+          </svg>
+        </div>
+        <div class="brand-details">
+          <h1>Personality Number (Personlighetstall)</h1>
+          <p>Åse Steinsland’s consonant-focused formula reveals the first impression, style and protective
+            armour a name presents to the world.</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="overview">
+      <h2>Why the personality number matters</h2>
+      <p>The personality number shapes how others perceive you before they know your inner story. By
+        translating consonant rhythm into digits, we spotlight the traits, aesthetics and boundaries
+        that influence social encounters.</p>
+    </section>
+
+    <section class="method">
+      <h2>How we calculate Personlighetstall</h2>
+      <ol class="step-list">
+        <li>Normalise the name into Åse’s Western alphabet, honouring special Norwegian letters and
+          Abjad consonants from right-to-left scripts.</li>
+        <li>Collect consonants (including Y when it sounds like a consonant) and map them to the classic
+          1–9 scale.</li>
+        <li>Add the consonant values together, reducing the total until a single digit remains unless the
+          sum is a master number 11, 22 or 33.</li>
+        <li>Interpret the resulting frequency to understand how the world experiences the name at first
+          glance.</li>
+      </ol>
+    </section>
+
+    <section class="insights">
+      <h2>Quick narratives for each personality</h2>
+      <div class="insight-grid">
+        <div class="insight-card"><h3>1</h3><p>Confident pioneer, presenting as bold, decisive and self-directed.</p></div>
+        <div class="insight-card"><h3>2</h3><p>Graceful diplomat, appearing cooperative, considerate and gentle.</p></div>
+        <div class="insight-card"><h3>3</h3><p>Magnetic storyteller, radiating charm, wit and artistic flair.</p></div>
+        <div class="insight-card"><h3>4</h3><p>Grounded guardian, offering reliability, structure and steadiness.</p></div>
+        <div class="insight-card"><h3>5</h3><p>Adventurous change-maker, projecting freedom, spontaneity and curiosity.</p></div>
+        <div class="insight-card"><h3>6</h3><p>Warm harmoniser, giving nurturing, aesthetic and welcoming vibes.</p></div>
+        <div class="insight-card"><h3>7</h3><p>Mysterious sage, showing depth, intellect and contemplative poise.</p></div>
+        <div class="insight-card"><h3>8</h3><p>Commanding executive, signalling authority, ambition and influence.</p></div>
+        <div class="insight-card"><h3>9</h3><p>Humanitarian muse, emanating compassion, artistry and global awareness.</p></div>
+        <div class="insight-card"><h3>11</h3><p>Luminous guide, shining with visionary presence and intuitive magnetism.</p></div>
+        <div class="insight-card"><h3>22</h3><p>Master builder, presenting strategic calm and capable leadership.</p></div>
+        <div class="insight-card"><h3>33</h3><p>Radiant mentor, offering generous guidance and heartfelt inspiration.</p></div>
+      </div>
+    </section>
+
+    <section class="cta-block">
+      <h2>Ready to calculate?</h2>
+      <p>Launch the Personlighetstall calculator to turn consonant architecture into Åse’s Western
+        numerology insights.</p>
+      <div class="actions">
+        <a class="cta" href="https://www.numerologensverden.no/kalkulator-personlighetstall-a/" target="_blank" rel="noopener">Launch
+          calculator</a>
+        <a class="cta secondary" href="https://www.numerologensverden.no/" target="_blank" rel="noopener">Learn more?</a>
+      </div>
+    </section>
+
+    <nav class="calculator-nav" aria-label="Numerology calculators">
+      <h2>Explore calculators</h2>
+      <div class="calculator-links">
+        <a href="navnetall.html"><span>Name number</span><span>→</span></a>
+        <a href="skjebnetall.html"><span>Destiny number</span><span>→</span></a>
+        <a href="hjertetall.html"><span>Soul urge number</span><span>→</span></a>
+        <a href="modenhetstall.html"><span>Maturity number</span><span>→</span></a>
+        <a href="personlige-ar.html"><span>Personal year</span><span>→</span></a>
+      </div>
+    </nav>
+
+    <footer>© Åse Steinsland</footer>
+  </main>
+</body>
+</html>

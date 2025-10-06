@@ -7,7 +7,13 @@
   <style>
     :root {
       color-scheme: light dark;
-      font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --accent: #f26b21;
+      --accent-strong: #d95513;
+      --surface: rgba(255, 255, 255, 0.94);
+      --text: #2f2a28;
+      --subtle: #6b4f3f;
+      --border: rgba(79, 59, 48, 0.18);
     }
 
     body {
@@ -15,43 +21,95 @@
       min-height: 100vh;
       display: grid;
       place-items: center;
-      background: linear-gradient(135deg, #f1f5f9 0%, #e0f2fe 100%);
-      color: #0f172a;
+      padding: clamp(1.2rem, 2vw, 2.6rem);
+      background:
+        radial-gradient(circle at 15% 15%, rgba(255, 230, 204, 0.55), transparent 55%),
+        radial-gradient(circle at 80% 5%, rgba(255, 174, 107, 0.28), transparent 50%),
+        linear-gradient(140deg, #fff9f4 0%, #ffe8d6 48%, #fff2e3 100%);
+      color: var(--text);
     }
 
     main {
-      background: rgba(255, 255, 255, 0.94);
-      border-radius: 20px;
-      box-shadow: 0 30px 60px rgba(15, 23, 42, 0.18);
-      padding: clamp(1.5rem, 3vw, 2.75rem);
-      width: min(820px, 94vw);
+      position: relative;
+      background: var(--surface);
+      border-radius: 26px;
+      box-shadow: 0 28px 58px rgba(173, 85, 28, 0.16);
+      padding: clamp(1.9rem, 3vw, 3.1rem);
+      width: min(860px, 95vw);
       display: flex;
       flex-direction: column;
-      gap: 1.6rem;
+      gap: 1.9rem;
+      overflow: hidden;
     }
 
-    header h1 {
+    main::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.9), transparent 50%),
+        radial-gradient(circle at -10% 120%, rgba(242, 107, 33, 0.18), transparent 65%);
+      mix-blend-mode: soft-light;
+      pointer-events: none;
+    }
+
+    header {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand-logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 20px;
+      background: linear-gradient(140deg, var(--accent) 0%, #ff7b32 60%, var(--accent-strong) 100%);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 12px 28px rgba(242, 107, 33, 0.28);
+    }
+
+    .brand-logo svg {
+      width: 44px;
+      height: 44px;
+    }
+
+    .brand-details h1 {
       margin: 0;
-      font-size: clamp(2rem, 4vw, 2.7rem);
-      text-align: center;
+      font-size: clamp(2rem, 4vw, 2.65rem);
       letter-spacing: -0.02em;
     }
 
-    header p {
-      margin: 0.75rem 0 0;
-      text-align: center;
+    .brand-details p {
+      margin: 0.35rem 0 0;
+      color: var(--subtle);
       line-height: 1.65;
-      color: #475569;
+      font-size: 1.05rem;
+    }
+
+    header p.lede {
+      margin: 0;
+      color: var(--subtle);
+      line-height: 1.75;
     }
 
     form {
+      position: relative;
+      z-index: 1;
       display: grid;
-      gap: 1rem;
+      gap: 1.1rem;
     }
 
     .field-group {
       display: grid;
-      gap: 0.5rem;
+      gap: 0.55rem;
     }
 
     label {
@@ -63,60 +121,65 @@
     input[type="number"] {
       width: 100%;
       font-size: 1.05rem;
-      padding: 0.75rem 1rem;
-      border-radius: 14px;
-      border: 1px solid rgba(15, 23, 42, 0.18);
+      padding: 0.85rem 1.05rem;
+      border-radius: 16px;
+      border: 1px solid var(--border);
       box-sizing: border-box;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
       appearance: none;
-      background-color: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.92);
     }
 
     select:focus,
     input[type="number"]:focus {
       outline: none;
-      border-color: #0ea5e9;
-      box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.22);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(242, 107, 33, 0.24);
     }
 
     .calendar-note {
       margin: 0;
       font-size: 0.95rem;
-      color: #475569;
+      color: var(--subtle);
       line-height: 1.6;
     }
 
     .date-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 0.8rem;
+      gap: 0.9rem;
     }
 
     button[type="submit"],
     .cta {
       margin-top: 0.4rem;
       width: 100%;
-      padding: 0.95rem;
+      padding: 1rem;
       font-size: 1.1rem;
       border: none;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #0ea5e9, #6366f1);
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--accent) 0%, #ff7f32 55%, var(--accent-strong) 100%);
       color: #fff;
       font-weight: 600;
       cursor: pointer;
       transition: transform 0.18s ease, box-shadow 0.18s ease;
       text-decoration: none;
-      text-align: center;
       display: inline-flex;
       justify-content: center;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.45rem;
+    }
+
+    .cta.secondary {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 244, 235, 0.92));
+      color: var(--accent-strong);
+      border: 1px solid rgba(242, 107, 33, 0.32);
     }
 
     button[type="submit"]:hover,
     .cta:hover {
       transform: translateY(-1px);
-      box-shadow: 0 16px 28px rgba(14, 165, 233, 0.28);
+      box-shadow: 0 16px 32px rgba(242, 107, 33, 0.26);
     }
 
     button[type="submit"]:active,
@@ -126,26 +189,36 @@
     }
 
     section.result {
+      position: relative;
+      z-index: 1;
       display: none;
-      border-radius: 18px;
-      border: 1px solid rgba(15, 23, 42, 0.12);
-      padding: 1.6rem;
-      background: rgba(241, 245, 249, 0.82);
+      border-radius: 20px;
+      border: 1px solid rgba(242, 107, 33, 0.16);
+      padding: 1.75rem;
+      background: rgba(255, 247, 237, 0.85);
+      backdrop-filter: blur(6px);
     }
 
     section.result.active {
       display: grid;
-      gap: 1.6rem;
+      gap: 1.7rem;
     }
 
     .summary h2 {
       margin: 0;
-      font-size: 1.65rem;
+      font-size: 1.75rem;
     }
 
     .summary p {
-      margin: 0.5rem 0 0;
-      line-height: 1.6;
+      margin: 0.35rem 0 0;
+      line-height: 1.65;
+      color: var(--subtle);
+    }
+
+    .method-note {
+      margin: 0;
+      color: var(--subtle);
+      line-height: 1.65;
     }
 
     .dna-visual {
@@ -155,14 +228,38 @@
       padding-bottom: 0.2rem;
     }
 
+    .dna-visual::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .dna-visual::-webkit-scrollbar-thumb {
+      background: rgba(242, 107, 33, 0.35);
+      border-radius: 999px;
+    }
+
     .dna-node {
       position: relative;
       flex: 0 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.6rem;
-      min-width: 68px;
+      min-width: 80px;
+      padding: 0.95rem 0.85rem;
+      border-radius: 16px;
+      background: linear-gradient(160deg, rgba(242, 107, 33, 0.14), rgba(255, 186, 120, 0.18));
+      border: 1px solid rgba(242, 107, 33, 0.22);
+      box-shadow: 0 15px 32px rgba(242, 107, 33, 0.15);
+      display: grid;
+      place-items: center;
+      gap: 0.45rem;
+    }
+
+    .dna-value {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--accent-strong);
+    }
+
+    .dna-label {
+      font-size: 0.95rem;
+      color: var(--text);
     }
 
     .dna-node::before,
@@ -170,70 +267,47 @@
       content: "";
       position: absolute;
       left: 50%;
-      width: 3px;
-      height: 30%;
-      background: linear-gradient(180deg, rgba(14, 165, 233, 0.2), rgba(99, 102, 241, 0.5));
-      border-radius: 999px;
       transform: translateX(-50%);
+      width: 2px;
+      height: 12px;
+      background: linear-gradient(180deg, rgba(242, 107, 33, 0.16), rgba(255, 186, 120, 0.16));
     }
 
     .dna-node::before {
-      top: -20px;
+      top: -14px;
     }
 
     .dna-node::after {
-      bottom: -20px;
+      bottom: -14px;
     }
 
-    .dna-node:first-child::before,
-    .dna-node:last-child::after {
-      display: none;
-    }
-
-    .dna-value {
-      display: grid;
-      place-items: center;
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, rgba(14, 165, 233, 0.85), rgba(79, 70, 229, 0.75));
-      color: #fff;
-      font-weight: 600;
-      font-size: 1.2rem;
-      box-shadow: 0 8px 16px rgba(79, 70, 229, 0.35);
-    }
-
-    .dna-label {
-      font-size: 0.9rem;
-      color: #334155;
-      text-align: center;
-    }
-
-    .breakdown {
-      border-radius: 14px;
-      border: 1px solid rgba(15, 23, 42, 0.12);
-      overflow: hidden;
-    }
-
-    .breakdown table {
+    table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.98rem;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(242, 107, 33, 0.16);
+      background: rgba(255, 255, 255, 0.95);
     }
 
-    .breakdown th,
-    .breakdown td {
-      padding: 0.6rem 0.85rem;
-      text-align: start;
+    thead {
+      background: linear-gradient(135deg, rgba(242, 107, 33, 0.14), rgba(255, 186, 120, 0.2));
     }
 
-    .breakdown thead {
-      background: rgba(14, 165, 233, 0.14);
+    th,
+    td {
+      padding: 0.8rem 1rem;
+      text-align: left;
+      font-size: 1rem;
+    }
+
+    tbody tr + tr {
+      border-top: 1px solid rgba(242, 107, 33, 0.1);
+    }
+
+    tfoot {
+      background: rgba(255, 237, 213, 0.6);
       font-weight: 600;
-    }
-
-    .breakdown tbody tr:nth-child(even) {
-      background: rgba(148, 163, 184, 0.16);
     }
 
     .steps,
@@ -241,61 +315,86 @@
     .calendar-info,
     .warning {
       margin: 0;
-      line-height: 1.6;
+      line-height: 1.65;
+      color: var(--subtle);
+    }
+
+    .actions,
+    .links {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .calculator-nav {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .calculator-nav h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      color: var(--subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .calculator-links {
+      display: grid;
+      gap: 0.6rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .calculator-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1.05rem;
+      border-radius: 14px;
+      border: 1px solid rgba(242, 107, 33, 0.2);
+      background: rgba(255, 237, 213, 0.55);
+      color: inherit;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .calculator-links a span:last-child {
+      font-size: 1.35rem;
+    }
+
+    .calculator-links a:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 26px rgba(242, 107, 33, 0.16);
     }
 
     footer {
+      position: relative;
+      z-index: 1;
       text-align: center;
-      font-size: 0.85rem;
-      color: #64748b;
+      font-size: 0.92rem;
+      color: var(--subtle);
+      margin-top: 0.25rem;
     }
 
-    .links {
-      display: grid;
-      gap: 0.6rem;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      body {
-        background: radial-gradient(circle at top, #0f172a, #020617 75%);
-        color: #e2e8f0;
-      }
-
+    @media (max-width: 720px) {
       main {
-        background: rgba(15, 23, 42, 0.92);
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+        border-radius: 22px;
+        padding: 1.6rem;
       }
 
-      header p {
-        color: #cbd5f5;
+      .brand {
+        flex-direction: column;
+        text-align: center;
       }
 
-      select,
-      input[type="number"] {
-        background: rgba(15, 23, 42, 0.72);
-        border-color: rgba(148, 163, 184, 0.35);
-        color: inherit;
+      .date-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
       }
 
-      section.result {
-        background: rgba(15, 23, 42, 0.8);
-        border-color: rgba(148, 163, 184, 0.28);
-      }
-
-      .dna-label {
-        color: #e2e8f0;
-      }
-
-      .breakdown thead {
-        background: rgba(14, 165, 233, 0.25);
-      }
-
-      .breakdown tbody tr:nth-child(even) {
-        background: rgba(148, 163, 184, 0.18);
-      }
-
-      footer {
-        color: #94a3b8;
+      table {
+        font-size: 0.95rem;
       }
     }
   </style>
@@ -303,11 +402,21 @@
 <body>
   <main>
     <header>
-      <h1>Destiny Number (Skjebnetall) Calculator</h1>
-      <p>
-        Reduce your birth date to uncover your life path vibration. Choose your cultural calendar –
-        we will translate it to the Gregorian system and honour master numbers 11, 22 and 33.
-      </p>
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
+            <circle cx="32" cy="32" r="30" fill="rgba(255, 255, 255, 0.16)"></circle>
+            <path d="M18 44L30.5 20h3L46 44h-6.1l-2.3-5.2H26.4L24 44H18zm14.6-10.5h7L36.1 25z" fill="#fff"></path>
+          </svg>
+        </div>
+        <div class="brand-details">
+          <h1>Destiny Number Calculator</h1>
+          <p>Translate any birth date into the Western life-path vibration. We respect Solar Hijri and
+            Hijri dates by converting them to the Gregorian calendar before reducing the digits.</p>
+        </div>
+      </div>
+      <p class="lede">Enter the date numbers from your cultural calendar. We will automatically convert them
+        to the Western system and honour master numbers 11, 22 and 33 without further reduction.</p>
     </header>
 
     <form id="destinyForm" autocomplete="off">
@@ -318,8 +427,8 @@
           <option value="solarHijri">Solar Hijri (Persian)</option>
           <option value="hijri">Hijri (Islamic)</option>
         </select>
-        <p class="calendar-note">Enter the date numbers from your chosen calendar. We will convert them
-          before calculating.</p>
+        <p class="calendar-note">Provide the day, month and year as numbers from the selected calendar. We will handle
+          the conversion.</p>
       </div>
 
       <div class="date-grid">
@@ -342,10 +451,16 @@
 
     <section id="result" class="result" aria-live="polite"></section>
 
-    <div class="links">
-      <a class="cta" href="https://www.numerologensverden.no/kalkulator-skjebnetall-a/" target="_blank" rel="noopener">Vit mer?</a>
-      <a class="cta" href="navnetall.html">Back to name number (Navnetall) calculator</a>
-    </div>
+    <nav class="calculator-nav" aria-label="Numerology calculators">
+      <h2>Explore calculators</h2>
+      <div class="calculator-links">
+        <a href="navnetall.html"><span>Name number</span><span>→</span></a>
+        <a href="hjertetall.html"><span>Soul urge number</span><span>→</span></a>
+        <a href="personlighetstall.html"><span>Personality number</span><span>→</span></a>
+        <a href="modenhetstall.html"><span>Maturity number</span><span>→</span></a>
+        <a href="personlige-ar.html"><span>Personal year</span><span>→</span></a>
+      </div>
+    </nav>
 
     <footer>© Åse Steinsland</footer>
   </main>
@@ -356,6 +471,8 @@
       <p data-id="original"></p>
       <p data-id="converted"></p>
     </div>
+
+    <p class="method-note" data-id="method"></p>
 
     <div class="dna-visual" data-id="dna"></div>
 
@@ -382,132 +499,66 @@
     <p class="narrative" data-id="narrative"></p>
     <p class="calendar-info" data-id="calendar"></p>
     <p class="warning" data-id="warning"></p>
+
+    <div class="actions">
+      <a class="cta" href="https://www.numerologensverden.no/kalkulator-skjebnetall-a/" target="_blank" rel="noopener">Learn
+        more?</a>
+      <a class="cta secondary" href="navnetall.html">Go to name number calculator</a>
+    </div>
   </template>
 
   <script>
     const MASTER_NUMBERS = new Set([11, 22, 33]);
 
-    const LOCALE_STRINGS = {
-      en: {
-        title: (value) => `Destiny number: ${value}`,
-        original: (date) => `You entered: ${date}`,
-        converted: (date, calendar) => calendar === "gregorian" ? "" : `Converted to Gregorian: ${date}`,
-        componentHeading: "Component",
-        digitsHeading: "Digits",
-        sumHeading: "Sum",
-        totalLabel: "Initial total",
-        steps: (chain) => chain.length > 1
-          ? `Reduction path: ${chain.join(" → ")}`
-          : "Reduction path: master number — kept in full power.",
-        stepsSingle: "Reduction path: already a single digit.",
-        narrative: {
-          1: "Life path 1 pioneers with initiative, courage and independence.",
-          2: "Life path 2 harmonises partnerships with empathy and diplomacy.",
-          3: "Life path 3 radiates creativity, storytelling and optimism.",
-          4: "Life path 4 builds stability through discipline and structure.",
-          5: "Life path 5 thrives on change, adventure and freedom.",
-          6: "Life path 6 nurtures communities with care, artistry and service.",
-          7: "Life path 7 seeks wisdom, intuition and spiritual discovery.",
-          8: "Life path 8 manifests ambition, stewardship and material mastery.",
-          9: "Life path 9 elevates humanity through compassion and vision.",
-          11: "Master 11 channels luminous intuition and inspired teaching.",
-          22: "Master 22 builds lasting legacies with practical dreams.",
-          33: "Master 33 heals collectives with unconditional love."
-        },
-        calendar: (calendar, formatted) => calendar === "gregorian"
-          ? ""
-          : `Converted from the ${formatted} calendar to keep calculations consistent.`
-      },
-      ar: {
-        title: (value) => `رقم مسار الحياة: ${value}`,
-        original: (date) => `أدخلت التاريخ: ${date}`,
-        converted: (date, calendar) => calendar === "gregorian" ? "" : `حُوِّل إلى الميلادي: ${date}`,
-        componentHeading: "الجزء",
-        digitsHeading: "الأرقام",
-        sumHeading: "المجموع",
-        totalLabel: "المجموع الأولي",
-        steps: (chain) => chain.length > 1
-          ? `مسار الاختزال: ${chain.join(" ← ")}`
-          : "مسار الاختزال: رقم ماستر بكامل طاقته.",
-        stepsSingle: "مسار الاختزال: رقم أحادي بالفعل.",
-        narrative: {
-          1: "المسار ١ يقود بالشجاعة والاستقلال.",
-          2: "المسار ٢ يصنع الوئام والدبلوماسية.",
-          3: "المسار ٣ يسطع بالإبداع والتعبير.",
-          4: "المسار ٤ يبني الانضباط والهيكل.",
-          5: "المسار ٥ يعشق الحرية والتجربة.",
-          6: "المسار ٦ يرعى العائلة والخدمة.",
-          7: "المسار ٧ يبحث عن الحكمة والروحانية.",
-          8: "المسار ٨ يجسد الإدارة والوفرة.",
-          9: "المسار ٩ يخدم الإنسانية بالرؤية.",
-          11: "الماستر ١١ ينقل الإلهام والحدس اللامع.",
-          22: "الماستر ٢٢ يبني الأحلام بواقعية.",
-          33: "الماستر ٣٣ يشفي بالمحبة غير المشروطة."
-        },
-        calendar: (calendar, formatted) => calendar === "gregorian"
-          ? ""
-          : `تم التحويل من تقويم ${formatted} لضمان الدقة.`
-      },
-      fa: {
-        title: (value) => `عدد سرنوشت: ${value}`,
-        original: (date) => `تاریخ وارد شده: ${date}`,
-        converted: (date, calendar) => calendar === "gregorian" ? "" : `تبدیل به میلادی: ${date}`,
-        componentHeading: "بخش",
-        digitsHeading: "ارقام",
-        sumHeading: "جمع",
-        totalLabel: "جمع اولیه",
-        steps: (chain) => chain.length > 1
-          ? `مسیر کاهش: ${chain.join(" ← ")}`
-          : "مسیر کاهش: عدد استاد در تمام شکوه خود.",
-        stepsSingle: "مسیر کاهش: از قبل یک عدد تک رقمی است.",
-        narrative: {
-          1: "مسیر زندگی ۱ با جسارت و استقلال آغاز می‌کند.",
-          2: "مسیر زندگی ۲ با همدلی و دیپلماسی هماهنگی می‌آفریند.",
-          3: "مسیر زندگی ۳ با خلاقیت و بیان روشن می‌درخشد.",
-          4: "مسیر زندگی ۴ با انضباط و ساختار ثبات می‌سازد.",
-          5: "مسیر زندگی ۵ عاشق آزادی، سفر و تغییر است.",
-          6: "مسیر زندگی ۶ با مراقبت و خدمت جامعه را پرورش می‌دهد.",
-          7: "مسیر زندگی ۷ جست‌وجوی حکمت و شهود درونی است.",
-          8: "مسیر زندگی ۸ جاه‌طلبی و مدیریت مادی را متجلی می‌کند.",
-          9: "مسیر زندگی ۹ با شفقت و بینش به انسانیت خدمت می‌کند.",
-          11: "عدد استاد ۱۱ شهود درخشان و الهام را منتقل می‌کند.",
-          22: "عدد استاد ۲۲ رویاهای عملی و ماندگار می‌سازد.",
-          33: "عدد استاد ۳۳ با عشق بی‌قید و شرط شفا می‌بخشد."
-        },
-        calendar: (calendar, formatted) => calendar === "gregorian"
-          ? ""
-          : `از تقویم ${formatted} به میلادی تبدیل شد تا دقت حفظ شود.`
-      }
-    };
-
     const CALENDAR_LABELS = {
       gregorian: {
-        name: "Gregorian",
-        native: "Gregorian",
-        locale: "en"
+        name: "Gregorian (Western)",
+        method: "Already in Western format for reduction.",
+        source: "Source calendar: Gregorian (Western)."
       },
       solarHijri: {
-        name: "Solar Hijri",
-        native: "هجری شمسی",
-        locale: "fa"
+        name: "Solar Hijri (Persian)",
+        method: "Converted from Solar Hijri to Western (Gregorian) before reduction.",
+        source: "Source calendar: Solar Hijri (Persian)."
       },
       hijri: {
-        name: "Hijri",
-        native: "الهجري",
-        locale: "ar"
+        name: "Hijri (Islamic)",
+        method: "Converted from Hijri to Western (Gregorian) before reduction.",
+        source: "Source calendar: Hijri (Islamic)."
       }
     };
 
-    const COMPONENT_LABELS = {
-      en: { year: "Year", month: "Month", day: "Day" },
-      ar: { year: "السنة", month: "الشهر", day: "اليوم" },
-      fa: { year: "سال", month: "ماه", day: "روز" }
-    };
-
-    const DIGIT_LABELS = {
-      en: (index) => `Digit ${index}`,
-      ar: (index) => `الرقم ${index}`,
-      fa: (index) => `رقم ${index}`
+    const STRINGS = {
+      title: (value) => `Destiny number: ${value}`,
+      original: (date, calendarName) => `Entered date (${calendarName}): ${date}`,
+      converted: (date) => `Converted to Western (Gregorian): ${date}`,
+      componentHeading: "Component",
+      digitsHeading: "Digits",
+      sumHeading: "Sum",
+      totalLabel: "Initial total",
+      steps: (chain) => chain.length > 1
+        ? `Reduction path: ${chain.join(" → ")}`
+        : "Reduction path: master number — kept in full power.",
+      stepsSingle: "Reduction path: already a single digit.",
+      calendar: (calendarKey) => CALENDAR_LABELS[calendarKey].source,
+      narrative: {
+        1: "Life path 1 pioneers with initiative, courage and independence.",
+        2: "Life path 2 harmonises partnerships with empathy and diplomacy.",
+        3: "Life path 3 radiates creativity, storytelling and optimism.",
+        4: "Life path 4 builds stability through discipline and structure.",
+        5: "Life path 5 thrives on change, adventure and freedom.",
+        6: "Life path 6 nurtures communities with care, artistry and service.",
+        7: "Life path 7 seeks wisdom, intuition and spiritual discovery.",
+        8: "Life path 8 manifests ambition, stewardship and material mastery.",
+        9: "Life path 9 elevates humanity through compassion and vision.",
+        11: "Master 11 channels luminous intuition and inspired teaching.",
+        22: "Master 22 builds lasting legacies with practical dreams.",
+        33: "Master 33 heals collectives with unconditional love."
+      },
+      warning: (calendarKey) => calendarKey === "hijri"
+        ? "Note: Hijri months alternate between 29 and 30 days; ensure the entered date matches your observation."
+        : "",
+      method: (calendarKey) => `Method: ${CALENDAR_LABELS[calendarKey].method}`
     };
 
     const pad = (value, size = 2) => value.toString().padStart(size, "0");
@@ -532,89 +583,51 @@
         + (1948320 - 1);
     };
 
-    const hijriToJulianDay = (year, month, day) => {
-      return day
-        + Math.ceil(29.5 * (month - 1))
-        + (year - 1) * 354
-        + Math.floor((3 + 11 * year) / 30)
-        + 1948439 - 1;
-    };
+    const hijriToJulianDay = (year, month, day) =>
+      day
+      + Math.ceil(29.5 * (month - 1))
+      + (year - 1) * 354
+      + Math.floor((3 + 11 * year) / 30)
+      + 1948439 - 1;
 
     const julianDayToGregorian = (jd) => {
-      const w = Math.floor(jd + 0.5);
-      const a = Math.floor((w - 1867216.25) / 36524.25);
-      const b = w + 1 + a - Math.floor(a / 4);
-      const c = b + 1524;
-      const d = Math.floor((c - 122.1) / 365.25);
-      const e = Math.floor(365.25 * d);
-      const g = Math.floor((c - e) / 30.6001);
-      const day = c - e - Math.floor(30.6001 * g);
-      const month = g < 14 ? g - 1 : g - 13;
-      const year = month > 2 ? d - 4716 : d - 4715;
+      let j = jd + 32044;
+      const g = Math.floor(j / 146097);
+      const dg = j % 146097;
+      const c = Math.floor((dg / 36524 + 1) * 3 / 4);
+      const dc = dg - c * 36524;
+      const b = Math.floor(dc / 1461);
+      const db = dc % 1461;
+      const a = Math.floor((db / 365 + 1) * 3 / 4);
+      const da = db - a * 365;
+      const y = g * 400 + c * 100 + b * 4 + a;
+      const m = Math.floor((da * 5 + 308) / 153) - 2;
+      const d = da - Math.floor((m + 4) * 153 / 5) + 122;
+      const year = y - 4800 + Math.floor((m + 2) / 12);
+      const month = ((m + 2) % 12) + 1;
+      const day = d + 1;
       return { year, month, day };
     };
 
     const convertToGregorian = (calendar, year, month, day) => {
       if (calendar === "gregorian") {
         if (!validateGregorian(year, month, day)) {
-          throw new Error("Invalid Gregorian date");
+          throw new Error("The provided Gregorian date is not valid.");
         }
         return { year, month, day };
       }
 
       if (calendar === "solarHijri") {
-        if (month < 1 || month > 12) {
-          throw new Error("Invalid Solar Hijri month");
-        }
-        const maxDay = month <= 6 ? 31 : month < 12 ? 30 : 30;
-        if (day < 1 || day > maxDay) {
-          throw new Error("Invalid Solar Hijri day");
-        }
-        if (month === 12 && day === 30) {
-          const yearLength = persianToJulianDay(year + 1, 1, 1) - persianToJulianDay(year, 1, 1);
-          if (yearLength !== 366) {
-            throw new Error("Solar Hijri Esfand has 29 days in this year");
-          }
-        }
-        const jd = persianToJulianDay(year, month, day);
-        const greg = julianDayToGregorian(jd);
-        if (!validateGregorian(greg.year, greg.month, greg.day)) {
-          throw new Error("Converted Gregorian date is invalid");
-        }
-        return greg;
+        const julian = persianToJulianDay(year, month, day);
+        return julianDayToGregorian(julian);
       }
 
       if (calendar === "hijri") {
-        if (month < 1 || month > 12) {
-          throw new Error("Invalid Hijri month");
-        }
-        if (day < 1 || day > 30) {
-          throw new Error("Invalid Hijri day");
-        }
-        const jd = hijriToJulianDay(year, month, day);
-        const greg = julianDayToGregorian(jd);
-        if (!validateGregorian(greg.year, greg.month, greg.day)) {
-          throw new Error("Converted Gregorian date is invalid");
-        }
-        return greg;
+        const julian = hijriToJulianDay(year, month, day);
+        return julianDayToGregorian(julian);
       }
 
       throw new Error("Unsupported calendar");
-    };
-
-    const sumDigits = (value) => value
-      .toString()
-      .split("")
-      .map(Number)
-      .reduce((sum, digit) => sum + digit, 0);
-
-    const reduceWithSteps = (value) => {
-      const steps = [value];
-      while (value > 9 && !MASTER_NUMBERS.has(value)) {
-        value = sumDigits(value);
-        steps.push(value);
-      }
-      return steps;
     };
 
     const formatDate = ({ year, month, day }) => `${year}-${pad(month)}-${pad(day)}`;
@@ -622,16 +635,31 @@
     const buildComponentRow = (label, digits) => ({
       label,
       digits: digits.join(" + "),
-      sum: digits.reduce((sum, digit) => sum + digit, 0)
+      sum: digits.reduce((total, digit) => total + digit, 0)
     });
 
-    const createDNANodes = (container, digits, locale) => {
+    const reduceWithSteps = (value) => {
+      if (!value) {
+        return [0];
+      }
+
+      const steps = [value];
+      while (value > 9 && !MASTER_NUMBERS.has(value)) {
+        value = value
+          .toString()
+          .split("")
+          .map(Number)
+          .reduce((sum, digit) => sum + digit, 0);
+        steps.push(value);
+      }
+      return steps;
+    };
+
+    const createDNANodes = (container, digits) => {
       container.innerHTML = "";
       digits.forEach((digit, index) => {
         const node = document.createElement("div");
         node.className = "dna-node";
-        if (index === 0) node.classList.add("start");
-        if (index === digits.length - 1) node.classList.add("end");
 
         const valueEl = document.createElement("div");
         valueEl.className = "dna-value";
@@ -639,8 +667,7 @@
 
         const labelEl = document.createElement("div");
         labelEl.className = "dna-label";
-        const labelFactory = DIGIT_LABELS[locale] || DIGIT_LABELS.en;
-        labelEl.textContent = labelFactory(index + 1);
+        labelEl.textContent = `Digit ${index + 1}`;
 
         node.appendChild(valueEl);
         node.appendChild(labelEl);
@@ -649,29 +676,33 @@
     };
 
     const renderResult = (data) => {
-      const { calendar, inputDate, gregorianDate, components, total, reductionSteps, locale } = data;
+      const {
+        calendar,
+        calendarName,
+        inputDate,
+        gregorianDate,
+        components,
+        total,
+        reductionSteps,
+        digits
+      } = data;
+
       const resultSection = document.querySelector("#result");
       const template = document.querySelector("#resultTemplate");
       const clone = template.content.cloneNode(true);
-      const strings = LOCALE_STRINGS[locale];
 
-      clone.querySelector('[data-id="resultTitle"]').textContent = strings.title(reductionSteps[reductionSteps.length - 1]);
-      clone.querySelector('[data-id="original"]').textContent = strings.original(inputDate);
-      const convertedText = strings.converted(gregorianDate, calendar);
-      const convertedElement = clone.querySelector('[data-id="converted"]');
-      if (convertedText) {
-        convertedElement.textContent = convertedText;
-      } else {
-        convertedElement.remove();
-      }
+      const destinyNumber = reductionSteps[reductionSteps.length - 1];
+      clone.querySelector('[data-id="resultTitle"]').textContent = STRINGS.title(destinyNumber);
+      clone.querySelector('[data-id="original"]').textContent = STRINGS.original(inputDate, calendarName);
+      clone.querySelector('[data-id="converted"]').textContent = STRINGS.converted(gregorianDate);
+      clone.querySelector('[data-id="method"]').textContent = STRINGS.method(calendar);
 
-      const digits = `${gregorianDate}`.replace(/-/g, "").split("").map(Number);
-      createDNANodes(clone.querySelector('[data-id="dna"]'), digits, locale);
+      createDNANodes(clone.querySelector('[data-id="dna"]'), digits);
 
-      clone.querySelector('[data-id="componentHeading"]').textContent = strings.componentHeading;
-      clone.querySelector('[data-id="digitsHeading"]').textContent = strings.digitsHeading;
-      clone.querySelector('[data-id="sumHeading"]').textContent = strings.sumHeading;
-      clone.querySelector('[data-id="totalLabel"]').textContent = strings.totalLabel;
+      clone.querySelector('[data-id="componentHeading"]').textContent = STRINGS.componentHeading;
+      clone.querySelector('[data-id="digitsHeading"]').textContent = STRINGS.digitsHeading;
+      clone.querySelector('[data-id="sumHeading"]').textContent = STRINGS.sumHeading;
+      clone.querySelector('[data-id="totalLabel"]').textContent = STRINGS.totalLabel;
       clone.querySelector('[data-id="total"]').textContent = `${components.year.sum} + ${components.month.sum} + ${components.day.sum} = ${total}`;
 
       const tbody = clone.querySelector('[data-id="tableBody"]');
@@ -682,16 +713,14 @@
       });
 
       const stepsElement = clone.querySelector('[data-id="steps"]');
-      if (reductionSteps.length > 1) {
-        stepsElement.textContent = strings.steps(reductionSteps);
-      } else if (MASTER_NUMBERS.has(reductionSteps[0])) {
-        stepsElement.textContent = strings.steps(reductionSteps);
+      if (reductionSteps.length > 1 || MASTER_NUMBERS.has(destinyNumber)) {
+        stepsElement.textContent = STRINGS.steps(reductionSteps);
       } else {
-        stepsElement.textContent = strings.stepsSingle;
+        stepsElement.textContent = STRINGS.stepsSingle;
       }
 
-      const narrative = strings.narrative[reductionSteps[reductionSteps.length - 1]];
       const narrativeElement = clone.querySelector('[data-id="narrative"]');
+      const narrative = STRINGS.narrative[destinyNumber];
       if (narrative) {
         narrativeElement.textContent = narrative;
       } else {
@@ -699,7 +728,7 @@
       }
 
       const calendarElement = clone.querySelector('[data-id="calendar"]');
-      const calendarMessage = strings.calendar(calendar, CALENDAR_LABELS[calendar].native || CALENDAR_LABELS[calendar].name);
+      const calendarMessage = STRINGS.calendar(calendar);
       if (calendarMessage) {
         calendarElement.textContent = calendarMessage;
       } else {
@@ -707,8 +736,9 @@
       }
 
       const warningElement = clone.querySelector('[data-id="warning"]');
-      if (calendar === "hijri" && components.day.sum === 0) {
-        warningElement.textContent = "Note: Some Hijri months have 29 days; adjust if needed.";
+      const warning = STRINGS.warning(calendar);
+      if (warning) {
+        warningElement.textContent = warning;
       } else {
         warningElement.remove();
       }
@@ -716,8 +746,8 @@
       resultSection.innerHTML = "";
       resultSection.appendChild(clone);
       resultSection.classList.add("active");
-      resultSection.setAttribute("dir", locale === "en" ? "ltr" : "rtl");
-      resultSection.setAttribute("lang", locale);
+      resultSection.setAttribute("dir", "ltr");
+      resultSection.setAttribute("lang", "en");
     };
 
     document.querySelector("#destinyForm").addEventListener("submit", (event) => {
@@ -728,7 +758,7 @@
       const year = Number.parseInt(document.querySelector("#yearInput").value, 10);
 
       if (Number.isNaN(day) || Number.isNaN(month) || Number.isNaN(year)) {
-        alert("Please enter a full date before calculating.");
+        alert("Please enter the full date before calculating.");
         return;
       }
 
@@ -737,28 +767,29 @@
         const gregorianDate = formatDate(gregorian);
         const inputDate = `${year}-${pad(month)}-${pad(day)}`;
 
-        const yearDigits = year.toString().split("").map(Number);
+        const yearDigits = Math.abs(year).toString().split("").map(Number);
         const monthDigits = pad(month).split("").map(Number);
         const dayDigits = pad(day).split("").map(Number);
 
-        const componentLabels = COMPONENT_LABELS[CALENDAR_LABELS[calendar].locale];
         const components = {
-          year: buildComponentRow(componentLabels.year, yearDigits),
-          month: buildComponentRow(componentLabels.month, monthDigits),
-          day: buildComponentRow(componentLabels.day, dayDigits)
+          year: buildComponentRow("Year", yearDigits),
+          month: buildComponentRow("Month", monthDigits),
+          day: buildComponentRow("Day", dayDigits)
         };
 
         const total = components.year.sum + components.month.sum + components.day.sum;
         const reductionSteps = reduceWithSteps(total);
+        const digits = gregorianDate.replace(/-/g, "").split("").map(Number);
 
         renderResult({
           calendar,
+          calendarName: CALENDAR_LABELS[calendar].name,
           inputDate,
           gregorianDate,
           components,
           total,
           reductionSteps,
-          locale: CALENDAR_LABELS[calendar].locale
+          digits
         });
       } catch (error) {
         alert(error.message);
