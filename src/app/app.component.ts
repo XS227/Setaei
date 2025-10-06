@@ -3,6 +3,9 @@ import { Component, DestroyRef, OnInit } from '@angular/core';
 import { Observable, filter } from 'rxjs';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { RouterOutlet } from '@angular/router';
 
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -26,6 +29,7 @@ export class AppComponent implements OnInit {
     private readonly seo: SeoService,
     private readonly destroyRef: DestroyRef,
   ) {}
+  constructor(private readonly theme: ThemeService) {}
 
   ngOnInit(): void {
     this.theme$ = this.theme.theme$;

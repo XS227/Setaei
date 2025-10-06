@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order a complete numerology analysis – Åse Steinsland</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="branding">
+        <div class="brand-mark">ÅS</div>
+        <div class="brand-copy">
+          <h1 data-i18n-key="title">Select your numerology package</h1>
+          <p data-i18n-key="subtitle">Åse Steinsland prepares each analysis manually. Choose the package that fits your needs and we will link you to the official order page.</p>
+        </div>
+      </div>
+      <nav class="primary-nav">
+        <a href="index.html" data-i18n-key="navHome">Overview</a>
+        <a href="navnetall.html" data-i18n-key="navName">Name number</a>
+        <a href="hjertetall.html" data-i18n-key="navSoul">Soul urge</a>
+        <a href="personlighetstall.html" data-i18n-key="navPersonality">Personality</a>
+        <a href="skjebnetall.html" data-i18n-key="navDestiny">Destiny</a>
+        <a href="modenhetstall.html" data-i18n-key="navMaturity">Maturity</a>
+        <a href="personlige-ar.html" data-i18n-key="navPersonalYear">Personal year</a>
+      </nav>
+      <div class="language-switch" role="group" aria-label="Language selector">
+        <button type="button" data-lang="en" aria-pressed="true">English</button>
+        <button type="button" data-lang="no" aria-pressed="false">Norsk</button>
+        <button type="button" data-lang="fa" aria-pressed="false">فارسی</button>
+      </div>
+    </header>
+
+    <section class="page-section card">
+      <div class="result-summary">
+        <h2 data-i18n-key="instructionHeading">How to order</h2>
+        <p data-i18n-key="instructionCopy">Review the packages below. When you choose one, we open the official order page on numerologensverden.no with the package highlighted. Åse or her team will confirm payment and delivery.</p>
+      </div>
+      <div class="package-grid" id="packageGrid"></div>
+    </section>
+
+    <footer class="page-footer">
+      <span>© <span data-i18n-key="copyright">Åse Karin Steinsland. All rights reserved.</span></span>
+      <a href="https://www.numerologensverden.no/bestill-analyser/" target="_blank" rel="noopener" data-i18n-key="sourceLink">Visit the official order page</a>
+    </footer>
+  </div>
+
+  <script src="assets/i18n.js"></script>
+  <script>
+    (function () {
+      const packages = [
+        {
+          id: 'complete',
+          url: 'https://www.numerologensverden.no/bestill-analyser/?package=komplett',
+          copy: {
+            en: {
+              title: 'Complete numerology analysis',
+              body: 'All 12 core numbers, cycles, pinnacles and health profile. Ideal for your first full reading.',
+            },
+            no: {
+              title: 'Komplett analyse',
+              body: 'Alle 12 kjernetall, sykluser, topper og helseprofil. Perfekt for din første fulle tolkning.',
+            },
+            fa: {
+              title: 'تحلیل کامل عددشناسی',
+              body: '۱۲ عدد هسته‌ای، چرخه‌ها، پیناکل‌ها و پروفایل سلامت. مناسب برای نخستین گزارش کامل شما.',
+            },
+          },
+        },
+        {
+          id: 'partner',
+          url: 'https://www.numerologensverden.no/bestill-analyser/?package=partner',
+          copy: {
+            en: {
+              title: 'Relationship / partner report',
+              body: 'Compares two charts to highlight harmony, lessons and cycles you share.',
+            },
+            no: {
+              title: 'Paranalyse',
+              body: 'Sammenligner to profiler for å belyse harmoni, læringspunkter og felles sykluser.',
+            },
+            fa: {
+              title: 'گزارش روابط و همسویی',
+              body: 'دو نمودار را مقایسه می‌کند تا هماهنگی، درس‌ها و چرخه‌های مشترک را نشان دهد.',
+            },
+          },
+        },
+        {
+          id: 'business',
+          url: 'https://www.numerologensverden.no/bestill-analyser/?package=bedrift',
+          copy: {
+            en: {
+              title: 'Business / brand name reading',
+              body: 'Tests company, product or brand names against Åse’s vibration charts before launch.',
+            },
+            no: {
+              title: 'Bedrifts- og merkenavnsanalyse',
+              body: 'Tester firmanavn, produkt eller merke opp mot Åses vibrasjonstabeller før lansering.',
+            },
+            fa: {
+              title: 'تحلیل نام کسب‌وکار یا برند',
+              body: 'نام شرکت، محصول یا برند را پیش از رونمایی با جدول ارتعاشی آسه می‌سنجد.',
+            },
+          },
+        },
+        {
+          id: 'baby',
+          url: 'https://www.numerologensverden.no/bestill-analyser/?package=barn',
+          copy: {
+            en: {
+              title: 'Baby / child name guidance',
+              body: 'Evaluates suggested names to find supportive vibrations for newborns or children.',
+            },
+            no: {
+              title: 'Navneveiledning for barn',
+              body: 'Vurderer navneforslag for å finne støttende vibrasjoner til nyfødte eller barn.',
+            },
+            fa: {
+              title: 'راهنمای انتخاب نام کودک',
+              body: 'نام‌های پیشنهادی را ارزیابی می‌کند تا بهترین ارتعاش برای نوزاد یا کودک پیدا شود.',
+            },
+          },
+        },
+      ];
+
+      const translations = {
+        en: {
+          strings: {
+            title: 'Select your numerology package',
+            subtitle: 'Åse Steinsland prepares each analysis manually. Choose the package that fits your needs and we will link you to the official order page.',
+            navHome: 'Overview',
+            navName: 'Name number',
+            navSoul: 'Soul urge',
+            navPersonality: 'Personality',
+            navDestiny: 'Destiny',
+            navMaturity: 'Maturity',
+            navPersonalYear: 'Personal year',
+            instructionHeading: 'How to order',
+            instructionCopy: 'Review the packages below. When you choose one, we open the official order page on numerologensverden.no with the package highlighted. Åse or her team will confirm payment and delivery.',
+            copyright: 'Åse Karin Steinsland. All rights reserved.',
+            sourceLink: 'Visit the official order page',
+            orderButton: 'Go to order page',
+          },
+        },
+        no: {
+          strings: {
+            title: 'Velg din numerologipakke',
+            subtitle: 'Åse Steinsland utarbeider hver analyse manuelt. Velg pakken som passer deg så sender vi deg videre til den offisielle bestillingssiden.',
+            navHome: 'Oversikt',
+            navName: 'Navnetall',
+            navSoul: 'Hjertetall',
+            navPersonality: 'Personlighetstall',
+            navDestiny: 'Skjebnetall',
+            navMaturity: 'Modenhetstall',
+            navPersonalYear: 'Personlige år',
+            instructionHeading: 'Slik bestiller du',
+            instructionCopy: 'Se gjennom pakkene under. Når du velger en, åpner vi bestillingssiden på numerologensverden.no med pakken uthevet. Åse eller teamet hennes bekrefter betaling og levering.',
+            copyright: 'Åse Karin Steinsland. Alle rettigheter reservert.',
+            sourceLink: 'Gå til offisiell bestillingsside',
+            orderButton: 'Bestill hos Åse',
+          },
+        },
+        fa: {
+          strings: {
+            title: 'بسته عددشناسی خود را انتخاب کنید',
+            subtitle: 'آسه استینسلاند هر تحلیل را به‌صورت دستی آماده می‌کند. بسته مناسب را انتخاب کنید تا به صفحه رسمی سفارش هدایت شوید.',
+            navHome: 'مرور کلی',
+            navName: 'عدد نام',
+            navSoul: 'اشتیاق قلبی',
+            navPersonality: 'عدد شخصیت',
+            navDestiny: 'عدد سرنوشت',
+            navMaturity: 'عدد بلوغ',
+            navPersonalYear: 'سال شخصی',
+            instructionHeading: 'نحوه سفارش',
+            instructionCopy: 'بسته‌ها را بررسی کنید. با انتخاب هر بسته، صفحه رسمی سفارش در numerologensverden.no با همان بسته باز می‌شود. آسه یا تیم او پرداخت و تحویل را تأیید می‌کنند.',
+            copyright: 'آسه کارین استینسلاند. کلیه حقوق محفوظ است.',
+            sourceLink: 'مشاهده صفحه رسمی سفارش',
+            orderButton: 'رفتن به صفحه سفارش',
+          },
+        },
+      };
+
+      const i18n = createI18n({
+        translations,
+        defaultLang: 'en',
+        directionMap: { fa: 'rtl' },
+      });
+
+      const langButtons = document.querySelectorAll('.language-switch button[data-lang]');
+
+      function syncButtons(lang) {
+        langButtons.forEach((button) => {
+          const isActive = button.dataset.lang === lang;
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      }
+
+      function renderPackages(lang) {
+        const grid = document.getElementById('packageGrid');
+        grid.innerHTML = '';
+        packages.forEach((pkg) => {
+          const copy = pkg.copy[lang] || pkg.copy.en;
+          const card = document.createElement('div');
+          card.className = 'package-card';
+          const heading = document.createElement('h3');
+          heading.textContent = copy.title;
+          const body = document.createElement('p');
+          body.textContent = copy.body;
+          const button = document.createElement('a');
+          button.className = 'primary-button';
+          button.href = pkg.url;
+          button.target = '_blank';
+          button.rel = 'noopener';
+          button.textContent = i18n.t('orderButton');
+          card.appendChild(heading);
+          card.appendChild(body);
+          card.appendChild(button);
+          grid.appendChild(card);
+        });
+      }
+
+      langButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const lang = button.dataset.lang;
+          i18n.setLanguage(lang);
+          syncButtons(lang);
+          renderPackages(lang);
+        });
+      });
+
+      i18n.onChange((lang) => {
+        syncButtons(lang);
+        renderPackages(lang);
+      });
+
+      renderPackages('en');
+    })();
+  </script>
+</body>
+</html>

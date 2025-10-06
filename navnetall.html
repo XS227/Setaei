@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Name number calculator – Åse Steinsland</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="branding">
+        <div class="brand-mark">ÅS</div>
+        <div class="brand-copy">
+          <h1 data-i18n-key="title">Name number calculator</h1>
+          <p data-i18n-key="subtitle">Åse Steinsland’s official Pythagorean and Abjad based name calculation.</p>
+        </div>
+      </div>
+      <nav class="primary-nav">
+        <a href="navnetall.html" data-i18n-key="navName">Name number</a>
+        <a href="hjertetall.html" data-i18n-key="navSoul">Soul urge</a>
+        <a href="personlighetstall.html" data-i18n-key="navPersonality">Personality</a>
+        <a href="skjebnetall.html" data-i18n-key="navDestiny">Destiny</a>
+        <a href="modenhetstall.html" data-i18n-key="navMaturity">Maturity</a>
+        <a href="personlige-ar.html" data-i18n-key="navPersonalYear">Personal year</a>
+        <a href="index.html" data-i18n-key="navHome">Overview</a>
+      </nav>
+      <div class="language-switch" role="group" aria-label="Language selector">
+        <button type="button" data-lang="en" aria-pressed="true">English</button>
+        <button type="button" data-lang="no" aria-pressed="false">Norsk</button>
+        <button type="button" data-lang="fa" aria-pressed="false">فارسی</button>
+      </div>
+    </header>
+
+    <section class="page-section card">
+      <div class="result-summary">
+        <h2 data-i18n-key="methodHeading">How Åse reads your birth name</h2>
+        <p data-i18n-key="methodCopy">Write the full birth name exactly as recorded. We normalise diacritics, separate Norwegian letters, and switch to the Abjad method for right-to-left scripts. Master numbers 11, 22 and 33 remain unreduced.</p>
+        <div class="grid-two">
+          <a class="primary-button" href="skjebnetall.html" data-i18n-key="ctaDestiny">Learn more?</a>
+          <a class="secondary-button" href="index.html" data-i18n-key="ctaOverview">Back to overview</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section card" id="calculator">
+      <form class="form-grid" id="name-form">
+        <div>
+          <label for="nameInput" data-i18n-key="labelName">Full birth name</label>
+          <input id="nameInput" type="text" autocomplete="name" data-i18n-key="placeholderName" data-i18n-attr="placeholder">
+        </div>
+        <div>
+          <button type="submit" class="primary" data-i18n-key="btnCalculate">Calculate name number</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="page-section card" id="result" hidden>
+      <div class="result-summary">
+        <span class="badge" id="methodBadge"></span>
+        <h2 id="resultTitle"></h2>
+        <p id="resultStory"></p>
+        <p id="normalised"></p>
+        <p id="ignored"></p>
+        <p id="reduction"></p>
+      </div>
+      <div id="dna"></div>
+      <div class="table-responsive">
+        <table class="breakdown">
+          <thead>
+            <tr>
+              <th data-i18n-key="tableLetter">Character</th>
+              <th data-i18n-key="tableValue">Value</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+          <tfoot>
+            <tr>
+              <th data-i18n-key="tableTotal">Total</th>
+              <th id="tableTotalValue"></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+
+    <section class="page-section card">
+      <div class="result-summary">
+        <h2 data-i18n-key="nextHeading">Continue with the next core number</h2>
+        <p data-i18n-key="nextCopy">After the name number Åse moves to the vowels (soul urge) and consonants (personality). Keep the same spelling for consistency.</p>
+        <div class="grid-two">
+          <a class="primary-button" href="hjertetall.html" data-i18n-key="nextSoul">Soul urge calculator</a>
+          <a class="secondary-button" href="personlighetstall.html" data-i18n-key="nextPersonality">Personality calculator</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <span>© <span data-i18n-key="copyright">Åse Karin Steinsland. All rights reserved.</span></span>
+      <a href="https://www.numerologensverden.no/regn-ut-navnetall/" target="_blank" rel="noopener" data-i18n-key="sourceLink">Read Åse’s full guide</a>
+    </footer>
+  </div>
+
+  <script src="assets/i18n.js"></script>
+  <script src="assets/numerology.js"></script>
+  <script src="assets/number-stories.js"></script>
+  <script>
+    (function () {
+      const form = document.getElementById('name-form');
+      const resultSection = document.getElementById('result');
+      const tableBody = document.getElementById('tableBody');
+      const dnaContainer = document.getElementById('dna');
+      const methodBadge = document.getElementById('methodBadge');
+      const resultTitle = document.getElementById('resultTitle');
+      const resultStory = document.getElementById('resultStory');
+      const normalised = document.getElementById('normalised');
+      const ignored = document.getElementById('ignored');
+      const reduction = document.getElementById('reduction');
+      const totalCell = document.getElementById('tableTotalValue');
+      const langButtons = document.querySelectorAll('.language-switch button[data-lang]');
+
+      const translations = {
+        en: {
+          strings: {
+            title: 'Name number calculator',
+            subtitle: 'Åse Steinsland’s official Pythagorean and Abjad based name calculation.',
+            navName: 'Name number',
+            navSoul: 'Soul urge',
+            navPersonality: 'Personality',
+            navDestiny: 'Destiny',
+            navMaturity: 'Maturity',
+            navPersonalYear: 'Personal year',
+            navHome: 'Overview',
+            methodHeading: 'How Åse reads your birth name',
+            methodCopy: 'Write the full birth name exactly as recorded. We normalise diacritics, separate Norwegian letters, and switch to the Abjad method for right-to-left scripts. Master numbers 11, 22 and 33 remain unreduced.',
+            ctaDestiny: 'Learn more?',
+            ctaOverview: 'Back to overview',
+            labelName: 'Full birth name',
+            placeholderName: 'Enter the complete name given at birth',
+            btnCalculate: 'Calculate name number',
+            tableLetter: 'Character',
+            tableValue: 'Value',
+            tableTotal: 'Total',
+            normalizedLabel: 'Normalised for calculation',
+            nextHeading: 'Continue with the next core number',
+            nextCopy: 'After the name number Åse moves to the vowels (soul urge) and consonants (personality). Keep the same spelling for consistency.',
+            nextSoul: 'Soul urge calculator',
+            nextPersonality: 'Personality calculator',
+            copyright: 'Åse Karin Steinsland. All rights reserved.',
+            sourceLink: 'Read Åse’s full guide',
+            methodLatin: 'Method: Pythagorean numerology following Åse Steinsland’s table.',
+            methodRTL: 'Method: Abjad numerology translated to Åse Steinsland’s reduction.',
+            ignoredNone: 'All characters were counted in the calculation.',
+            ignoredSome: 'Ignored characters:',
+            reductionPath: 'Reduction path:',
+            reductionMaster: 'Master number – no further reduction applied.',
+            reductionSingle: 'Already a single digit.',
+          },
+        },
+        no: {
+          strings: {
+            title: 'Navnetallkalkulator',
+            subtitle: 'Åse Steinslands offisielle beregning basert på pythagorisk tallmagi og abjad.',
+            navName: 'Navnetall',
+            navSoul: 'Hjertetall',
+            navPersonality: 'Personlighetstall',
+            navDestiny: 'Skjebnetall',
+            navMaturity: 'Modenhetstall',
+            navPersonalYear: 'Personlige år',
+            navHome: 'Oversikt',
+            methodHeading: 'Slik leser Åse fødenavnet ditt',
+            methodCopy: 'Skriv hele navnet slik det står registrert. Vi normaliserer diakritiske tegn, deler norske spesialbokstaver og bytter til abjad-metoden for høyre-til-venstre-språk. Mestertall 11, 22 og 33 beholdes.',
+            ctaDestiny: 'Learn more?',
+            ctaOverview: 'Tilbake til oversikten',
+            labelName: 'Fullt fødenavn',
+            placeholderName: 'Oppgi navnet slik det står i fødselsattesten',
+            btnCalculate: 'Beregn navnetallet',
+            tableLetter: 'Tegn',
+            tableValue: 'Verdi',
+            tableTotal: 'Sum',
+            normalizedLabel: 'Normalisert for beregning',
+            nextHeading: 'Fortsett til neste kjernetall',
+            nextCopy: 'Etter navnetallet går Åse videre til vokaler (hjertetall) og konsonanter (personlighet). Bruk samme stavemåte for presisjon.',
+            nextSoul: 'Hjertetall-kalkulator',
+            nextPersonality: 'Personlighetstall-kalkulator',
+            copyright: 'Åse Karin Steinsland. Alle rettigheter reservert.',
+            sourceLink: 'Les hele veiledningen hos Åse',
+            methodLatin: 'Metode: Pythagorisk numerologi etter Åse Steinslands tabell.',
+            methodRTL: 'Metode: Abjad-verdier oversatt til Åse Steinslands reduksjon.',
+            ignoredNone: 'Alle tegn ble med i beregningen.',
+            ignoredSome: 'Ignorerte tegn:',
+            reductionPath: 'Reduksjonsrekkefølge:',
+            reductionMaster: 'Mestertall – ikke redusert videre.',
+            reductionSingle: 'Allerede ett siffer.',
+          },
+        },
+        fa: {
+          strings: {
+            title: 'ماشین‌حساب عدد نام',
+            subtitle: 'محاسبه رسمی آسه استینسلاند بر اساس روش فیثاغورثی و ابجد.',
+            navName: 'عدد نام',
+            navSoul: 'اشتیاق قلبی',
+            navPersonality: 'عدد شخصیت',
+            navDestiny: 'عدد سرنوشت',
+            navMaturity: 'عدد بلوغ',
+            navPersonalYear: 'سال شخصی',
+            navHome: 'مرور کلی',
+            methodHeading: 'آسه نام تولد شما را چگونه می‌خواند',
+            methodCopy: 'نام کامل ثبت‌شده را بنویسید. ما نشانه‌های آوایی را یکدست می‌کنیم، حروف ویژه نروژی را جدا می‌نماییم و برای متون راست‌به‌چپ به روش ابجد می‌رویم. اعداد استادی ۱۱، ۲۲ و ۳۳ کاهش نمی‌یابند.',
+            ctaDestiny: 'Learn more?',
+            ctaOverview: 'بازگشت به مرور کلی',
+            labelName: 'نام کامل هنگام تولد',
+            placeholderName: 'نام درج‌شده در گواهی تولد را وارد کنید',
+            btnCalculate: 'محاسبه عدد نام',
+            tableLetter: 'حرف',
+            tableValue: 'ارزش',
+            tableTotal: 'جمع',
+            normalizedLabel: 'نام آماده برای محاسبه',
+            nextHeading: 'ادامه با عدد هسته‌ای بعدی',
+            nextCopy: 'پس از عدد نام، آسه به سراغ واکه‌ها (اشتیاق قلبی) و صامت‌ها (شخصیت) می‌رود. برای دقت، همان نگارش را حفظ کنید.',
+            nextSoul: 'ماشین‌حساب اشتیاق قلبی',
+            nextPersonality: 'ماشین‌حساب عدد شخصیت',
+            copyright: 'آسه کارین استینسلاند. کلیه حقوق محفوظ است.',
+            sourceLink: 'راهنمای کامل آسه را بخوانید',
+            methodLatin: 'روش: عددشناسی فیثاغورثی بر پایه جدول آسه استینسلاند.',
+            methodRTL: 'روش: اعداد ابجد با کاهش ویژه آسه استینسلاند.',
+            ignoredNone: 'همه‌ی حروف در محاسبه استفاده شدند.',
+            ignoredSome: 'حروف نادیده گرفته‌شده:',
+            reductionPath: 'مسیر کاهش:',
+            reductionMaster: 'عدد استادی – کاهش بیشتر ندارد.',
+            reductionSingle: 'همین حالا یک رقم واحد است.',
+          },
+        },
+      };
+
+      const i18n = createI18n({
+        translations,
+        defaultLang: 'en',
+        directionMap: { fa: 'rtl' },
+      });
+
+      function syncButtons(lang) {
+        langButtons.forEach((button) => {
+          const isActive = button.dataset.lang === lang;
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      }
+
+      function createDNATrack(breakdown) {
+        const track = document.createElement('div');
+        track.className = 'dna-track';
+        breakdown.forEach((entry) => {
+          const node = document.createElement('div');
+          node.className = 'dna-node';
+          const valueEl = document.createElement('div');
+          valueEl.className = 'dna-value';
+          valueEl.textContent = entry.value;
+          const letterEl = document.createElement('div');
+          letterEl.className = 'dna-letter';
+          letterEl.textContent = entry.label;
+          node.appendChild(valueEl);
+          node.appendChild(letterEl);
+          track.appendChild(node);
+        });
+        return track;
+      }
+
+      function renderResult(breakdown) {
+        const stories = NumberStories.stories[i18n.lang] || NumberStories.stories.en;
+        resultSection.hidden = false;
+        tableBody.innerHTML = '';
+        dnaContainer.innerHTML = '';
+
+        breakdown.breakdown.forEach((entry) => {
+          const row = document.createElement('tr');
+          const letterCell = document.createElement('td');
+          letterCell.textContent = entry.label;
+          const valueCell = document.createElement('td');
+          valueCell.textContent = entry.value;
+          row.appendChild(letterCell);
+          row.appendChild(valueCell);
+          tableBody.appendChild(row);
+        });
+
+        totalCell.textContent = breakdown.total;
+        dnaContainer.appendChild(createDNATrack(breakdown.breakdown));
+
+        methodBadge.textContent = breakdown.script === 'rtl' ? i18n.t('methodRTL') : i18n.t('methodLatin');
+        resultTitle.textContent = `${i18n.t('navName')}: ${breakdown.number}`;
+        resultStory.textContent = stories[breakdown.number] || '';
+        normalised.textContent = `${i18n.t('normalizedLabel')}: ${breakdown.normalized}`;
+        if (breakdown.ignored.length) {
+          ignored.textContent = `${i18n.t('ignoredSome')} ${breakdown.ignored.join(', ')}`;
+        } else {
+          ignored.textContent = i18n.t('ignoredNone');
+        }
+        if (breakdown.steps.length > 1) {
+          reduction.textContent = `${i18n.t('reductionPath')} ${breakdown.steps.join(' → ')}`;
+        } else if ([11, 22, 33].includes(breakdown.number)) {
+          reduction.textContent = `${i18n.t('reductionPath')} ${i18n.t('reductionMaster')}`;
+        } else {
+          reduction.textContent = `${i18n.t('reductionPath')} ${i18n.t('reductionSingle')}`;
+        }
+      }
+
+      langButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const lang = button.dataset.lang;
+          i18n.setLanguage(lang);
+          syncButtons(lang);
+          const currentValue = document.getElementById('nameInput').value.trim();
+          if (currentValue) {
+            const breakdown = Numerology.breakdownName(currentValue);
+            renderResult(breakdown);
+          }
+        });
+      });
+
+      i18n.onChange((lang) => {
+        syncButtons(lang);
+      });
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const value = document.getElementById('nameInput').value.trim();
+        if (!value) {
+          resultSection.hidden = true;
+          return;
+        }
+
+        const autoLang = Numerology.inferLanguageFromName(value);
+        if (autoLang && autoLang !== i18n.lang) {
+          i18n.setLanguage(autoLang);
+          syncButtons(autoLang);
+        }
+
+        const breakdown = Numerology.breakdownName(value);
+        renderResult(breakdown);
+      });
+    })();
+  </script>
+</body>
+</html>

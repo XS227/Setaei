@@ -248,6 +248,11 @@ main {
   .table-scroll table {
     min-width: 420px;
   }
+.data-table.scrollable {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+  border-radius: 16px;
 }
 
 .center {

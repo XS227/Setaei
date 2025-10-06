@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Destiny number calculator – Åse Steinsland</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="branding">
+        <div class="brand-mark">ÅS</div>
+        <div class="brand-copy">
+          <h1 data-i18n-key="title">Destiny number calculator</h1>
+          <p data-i18n-key="subtitle">Reduce your birth date with Åse Steinsland’s master-number aware method.</p>
+        </div>
+      </div>
+      <nav class="primary-nav">
+        <a href="navnetall.html" data-i18n-key="navName">Name number</a>
+        <a href="hjertetall.html" data-i18n-key="navSoul">Soul urge</a>
+        <a href="personlighetstall.html" data-i18n-key="navPersonality">Personality</a>
+        <a href="skjebnetall.html" data-i18n-key="navDestiny">Destiny</a>
+        <a href="modenhetstall.html" data-i18n-key="navMaturity">Maturity</a>
+        <a href="personlige-ar.html" data-i18n-key="navPersonalYear">Personal year</a>
+        <a href="index.html" data-i18n-key="navHome">Overview</a>
+      </nav>
+      <div class="language-switch" role="group" aria-label="Language selector">
+        <button type="button" data-lang="en" aria-pressed="true">English</button>
+        <button type="button" data-lang="no" aria-pressed="false">Norsk</button>
+        <button type="button" data-lang="fa" aria-pressed="false">فارسی</button>
+      </div>
+    </header>
+
+    <section class="page-section card">
+      <div class="result-summary">
+        <h2 data-i18n-key="methodHeading">From any calendar to destiny</h2>
+        <p data-i18n-key="methodCopy">Enter your birth date and native calendar. We convert Solar Hijri and Hijri dates to Gregorian, sum year + month + day, then reduce while preserving master numbers.</p>
+        <div class="grid-two">
+          <a class="primary-button" href="modenhetstall.html" data-i18n-key="ctaNext">Learn more?</a>
+          <a class="secondary-button" href="navnetall.html" data-i18n-key="ctaBack">Back to name number</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section card" id="calculator">
+      <form class="form-grid" id="destiny-form">
+        <div>
+          <label for="birthDate" data-i18n-key="labelBirthDate">Date of birth</label>
+          <input id="birthDate" type="date">
+        </div>
+        <div>
+          <label for="calendar" data-i18n-key="labelCalendar">Original calendar</label>
+          <select id="calendar">
+            <option value="gregorian" data-i18n-key="calendarGregorian">Gregorian (Western)</option>
+            <option value="solarHijri" data-i18n-key="calendarSolarHijri">Solar Hijri (Persian)</option>
+            <option value="hijri" data-i18n-key="calendarHijri">Hijri (Islamic)</option>
+          </select>
+        </div>
+        <div>
+          <button type="submit" class="primary" data-i18n-key="btnCalculate">Calculate destiny number</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="page-section card" id="result" hidden>
+      <div class="result-summary">
+        <span class="badge" id="calendarBadge"></span>
+        <h2 id="resultTitle"></h2>
+        <p id="resultStory"></p>
+        <p id="components"></p>
+        <p id="reduction"></p>
+      </div>
+      <div id="dna"></div>
+    </section>
+
+    <section class="page-section card">
+      <div class="result-summary">
+        <h2 data-i18n-key="nextHeading">Combine with name-based numbers</h2>
+        <p data-i18n-key="nextCopy">Åse pairs the destiny number with name, soul, personality and maturity calculations to complete your core profile.</p>
+        <div class="grid-two">
+          <a class="primary-button" href="modenhetstall.html" data-i18n-key="nextMaturity">Maturity calculator</a>
+          <a class="secondary-button" href="index.html" data-i18n-key="ctaOverview">Back to overview</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <span>© <span data-i18n-key="copyright">Åse Karin Steinsland. All rights reserved.</span></span>
+      <a href="https://www.numerologensverden.no/kalkulator-skjebnetall-a/" target="_blank" rel="noopener" data-i18n-key="sourceLink">Read Åse’s full guide</a>
+    </footer>
+  </div>
+
+  <script src="assets/i18n.js"></script>
+  <script src="assets/numerology.js"></script>
+  <script src="assets/number-stories.js"></script>
+  <script>
+    (function () {
+      const form = document.getElementById('destiny-form');
+      const resultSection = document.getElementById('result');
+      const resultTitle = document.getElementById('resultTitle');
+      const resultStory = document.getElementById('resultStory');
+      const components = document.getElementById('components');
+      const reduction = document.getElementById('reduction');
+      const dnaContainer = document.getElementById('dna');
+      const calendarBadge = document.getElementById('calendarBadge');
+      const langButtons = document.querySelectorAll('.language-switch button[data-lang]');
+
+      const translations = {
+        en: {
+          strings: {
+            title: 'Destiny number calculator',
+            subtitle: 'Reduce your birth date with Åse Steinsland’s master-number aware method.',
+            navName: 'Name number',
+            navSoul: 'Soul urge',
+            navPersonality: 'Personality',
+            navDestiny: 'Destiny',
+            navMaturity: 'Maturity',
+            navPersonalYear: 'Personal year',
+            navHome: 'Overview',
+            methodHeading: 'From any calendar to destiny',
+            methodCopy: 'Enter your birth date and native calendar. We convert Solar Hijri and Hijri dates to Gregorian, sum year + month + day, then reduce while preserving master numbers.',
+            ctaNext: 'Learn more?',
+            ctaBack: 'Back to name number',
+            labelBirthDate: 'Date of birth',
+            labelCalendar: 'Original calendar',
+            calendarGregorian: 'Gregorian (Western)',
+            calendarSolarHijri: 'Solar Hijri (Persian)',
+            calendarHijri: 'Hijri (Islamic)',
+            btnCalculate: 'Calculate destiny number',
+            nextHeading: 'Combine with name-based numbers',
+            nextCopy: 'Åse pairs the destiny number with name, soul, personality and maturity calculations to complete your core profile.',
+            nextMaturity: 'Maturity calculator',
+            ctaOverview: 'Back to overview',
+            copyright: 'Åse Karin Steinsland. All rights reserved.',
+            sourceLink: 'Read Åse’s full guide',
+            calendarInfo: 'Converted to Gregorian:',
+            componentsLabel: 'Digits summed',
+            reductionPath: 'Reduction path:',
+            reductionMaster: 'Master number – no further reduction applied.',
+            reductionSingle: 'Already a single digit.',
+          },
+        },
+        no: {
+          strings: {
+            title: 'Skjebnetallkalkulator',
+            subtitle: 'Reduser fødselsdatoen med Åse Steinslands hensyn til mestertall.',
+            navName: 'Navnetall',
+            navSoul: 'Hjertetall',
+            navPersonality: 'Personlighetstall',
+            navDestiny: 'Skjebnetall',
+            navMaturity: 'Modenhetstall',
+            navPersonalYear: 'Personlige år',
+            navHome: 'Oversikt',
+            methodHeading: 'Fra alle kalendere til skjebnetall',
+            methodCopy: 'Skriv inn fødselsdato og kalender. Vi konverterer sol-hijri og hijri til gregoriansk, summerer år + måned + dag og reduserer mens mestertall bevares.',
+            ctaNext: 'Learn more?',
+            ctaBack: 'Tilbake til navnetall',
+            labelBirthDate: 'Fødselsdato',
+            labelCalendar: 'Opprinnelig kalender',
+            calendarGregorian: 'Gregoriansk (vestlig)',
+            calendarSolarHijri: 'Sol-hijri (persisk)',
+            calendarHijri: 'Hijri (islamsk)',
+            btnCalculate: 'Beregn skjebnetall',
+            nextHeading: 'Kombiner med navnebaserte tall',
+            nextCopy: 'Åse kombinerer skjebnetallet med navn-, hjerte-, personlighet- og modenhetstall for å fullføre kjernetallene.',
+            nextMaturity: 'Modenhetstall-kalkulator',
+            ctaOverview: 'Tilbake til oversikten',
+            copyright: 'Åse Karin Steinsland. Alle rettigheter reservert.',
+            sourceLink: 'Les hele veiledningen hos Åse',
+            calendarInfo: 'Konvertert til gregoriansk:',
+            componentsLabel: 'Summerte sifre',
+            reductionPath: 'Reduksjonsrekkefølge:',
+            reductionMaster: 'Mestertall – ikke redusert videre.',
+            reductionSingle: 'Allerede ett siffer.',
+          },
+        },
+        fa: {
+          strings: {
+            title: 'ماشین‌حساب عدد سرنوشت',
+            subtitle: 'تاریخ تولد خود را با در نظر گرفتن اعداد استادی به روش آسه استینسلاند کاهش دهید.',
+            navName: 'عدد نام',
+            navSoul: 'اشتیاق قلبی',
+            navPersonality: 'عدد شخصیت',
+            navDestiny: 'عدد سرنوشت',
+            navMaturity: 'عدد بلوغ',
+            navPersonalYear: 'سال شخصی',
+            navHome: 'مرور کلی',
+            methodHeading: 'از هر تقویمی به عدد سرنوشت',
+            methodCopy: 'تاریخ تولد و تقویم اصلی را وارد کنید. تاریخ‌های خورشیدی و قمری به میلادی تبدیل می‌شوند، سپس سال + ماه + روز جمع و با حفظ اعداد استادی کاهش می‌یابد.',
+            ctaNext: 'Learn more?',
+            ctaBack: 'بازگشت به عدد نام',
+            labelBirthDate: 'تاریخ تولد',
+            labelCalendar: 'تقویم اصلی',
+            calendarGregorian: 'میلادی (غربی)',
+            calendarSolarHijri: 'خورشیدی هجری (ایرانی)',
+            calendarHijri: 'قمری هجری (اسلامی)',
+            btnCalculate: 'محاسبه عدد سرنوشت',
+            nextHeading: 'ترکیب با اعداد مبتنی بر نام',
+            nextCopy: 'آسه عدد سرنوشت را با اعداد نام، قلب، شخصیت و بلوغ ترکیب می‌کند تا هسته شخصیت کامل شود.',
+            nextMaturity: 'ماشین‌حساب عدد بلوغ',
+            ctaOverview: 'بازگشت به مرور کلی',
+            copyright: 'آسه کارین استینسلاند. کلیه حقوق محفوظ است.',
+            sourceLink: 'راهنمای کامل آسه را بخوانید',
+            calendarInfo: 'تبدیل به میلادی:',
+            componentsLabel: 'ارقام جمع شده',
+            reductionPath: 'مسیر کاهش:',
+            reductionMaster: 'عدد استادی – کاهش بیشتر ندارد.',
+            reductionSingle: 'همین حالا یک رقم واحد است.',
+          },
+        },
+      };
+
+      const i18n = createI18n({
+        translations,
+        defaultLang: 'en',
+        directionMap: { fa: 'rtl' },
+      });
+
+      function syncButtons(lang) {
+        langButtons.forEach((button) => {
+          const isActive = button.dataset.lang === lang;
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      }
+
+      function createDNATrack(digits) {
+        const track = document.createElement('div');
+        track.className = 'dna-track';
+        digits.forEach((digit) => {
+          const node = document.createElement('div');
+          node.className = 'dna-node';
+          const valueEl = document.createElement('div');
+          valueEl.className = 'dna-value';
+          valueEl.textContent = digit;
+          const labelEl = document.createElement('div');
+          labelEl.className = 'dna-letter';
+          labelEl.textContent = digit;
+          node.appendChild(valueEl);
+          node.appendChild(labelEl);
+          track.appendChild(node);
+        });
+        return track;
+      }
+
+      function renderResult({ destiny, gregorian }) {
+        const stories = NumberStories.stories[i18n.lang] || NumberStories.stories.en;
+        resultSection.hidden = false;
+        dnaContainer.innerHTML = '';
+
+        dnaContainer.appendChild(createDNATrack(destiny.digits));
+
+        calendarBadge.textContent = `${i18n.t('calendarInfo')} ${gregorian.year}-${String(gregorian.month).padStart(2, '0')}-${String(gregorian.day).padStart(2, '0')}`;
+        resultTitle.textContent = `${i18n.t('navDestiny')}: ${destiny.number}`;
+        resultStory.textContent = stories[destiny.number] || '';
+        components.textContent = `${i18n.t('componentsLabel')}: ${destiny.digits.join(' + ')} = ${destiny.total}`;
+        if (destiny.steps.length > 1) {
+          reduction.textContent = `${i18n.t('reductionPath')} ${destiny.steps.join(' → ')}`;
+        } else if ([11, 22, 33].includes(destiny.number)) {
+          reduction.textContent = `${i18n.t('reductionPath')} ${i18n.t('reductionMaster')}`;
+        } else {
+          reduction.textContent = `${i18n.t('reductionPath')} ${i18n.t('reductionSingle')}`;
+        }
+      }
+
+      langButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const lang = button.dataset.lang;
+          i18n.setLanguage(lang);
+          syncButtons(lang);
+          const birthDate = document.getElementById('birthDate').value;
+          if (birthDate) {
+            handleCalculation();
+          }
+        });
+      });
+
+      i18n.onChange((lang) => {
+        syncButtons(lang);
+      });
+
+      function handleCalculation() {
+        const birthDateValue = document.getElementById('birthDate').value;
+        const calendar = document.getElementById('calendar').value;
+        if (!birthDateValue) {
+          resultSection.hidden = true;
+          return;
+        }
+
+        const [year, month, day] = birthDateValue.split('-').map((segment) => parseInt(segment, 10));
+
+        try {
+          const destiny = Numerology.destinyNumber({ calendar, year, month, day });
+          renderResult({ destiny, gregorian: destiny.calendarUsed });
+        } catch (error) {
+          resultSection.hidden = false;
+          resultTitle.textContent = error.message;
+          resultStory.textContent = '';
+          components.textContent = '';
+          reduction.textContent = '';
+          dnaContainer.innerHTML = '';
+          calendarBadge.textContent = '';
+        }
+      }
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        handleCalculation();
+      });
+    })();
+  </script>
+</body>
+</html>

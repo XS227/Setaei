@@ -33,6 +33,34 @@
           </div>
 
           <ul class="step-list">
+    <div class="hero-grid row g-4 align-items-center">
+      <div class="col-lg-6">
+        <p class="hero-eyebrow">Åse Steinsland · Numerology Studio</p>
+        <h1 class="hero-title">Personal blueprint intake</h1>
+        <p class="hero-lead">
+          Begin by sharing your preferred name. We will guide you through each detail Åse needs to craft your personalised
+          numerology analysis.
+        </p>
+        <div class="progress-card">
+          <div class="progress-meta">
+            <span class="step-label">{{ stepLabel }}</span>
+            <span class="progress-label">{{ progressLabel }}</span>
+          </div>
+          <div
+            class="progress-track"
+            role="progressbar"
+            [attr.aria-valuenow]="progressValue"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            <div class="progress-fill" [style.width.%]="progressValue"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="hero-checklist card">
+          <h2>What we will cover</h2>
+          <ol class="checklist">
             <li *ngFor="let step of steps; let idx = index" [class.active]="idx === currentStep">
               <span class="index">{{ idx + 1 }}</span>
               <div>
@@ -56,6 +84,28 @@
               <ng-container *ngSwitchCase="0">
                 <label class="field">
                   <span>Preferred name</span>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="intake container">
+    <div class="row g-4">
+      <div class="col-lg-5">
+        <form class="wizard card" [formGroup]="form" novalidate>
+          <header class="wizard-head">
+            <span class="pill">{{ stepLabel }}</span>
+            <div>
+              <h2>{{ currentStepTitle }}</h2>
+              <p class="muted">{{ steps[currentStep].description }}</p>
+            </div>
+          </header>
+
+          <div class="wizard-fields" [ngSwitch]="currentStep">
+            <ng-container *ngSwitchCase="0">
+              <label class="field">
+                <span>Preferred name</span>
                 <input
                   type="text"
                   formControlName="preferredName"
@@ -165,7 +215,6 @@
               </label>
             </ng-container>
             </div>
-
             <div class="wizard-nav">
               <button type="button" class="ghost" (click)="goBack()" *ngIf="currentStep > 0">Back</button>
               <button
@@ -186,6 +235,25 @@
 
   <section class="analysis container">
     <section class="snapshot card" #analysisPreview>
+          </div>
+
+          <div class="wizard-nav">
+            <button type="button" class="ghost" (click)="goBack()" *ngIf="currentStep > 0">Back</button>
+            <button
+              type="button"
+              class="primary"
+              (click)="currentStep === steps.length - 1 ? finish() : goNext()"
+            >
+              {{ currentStep === steps.length - 1 ? 'Generate overview' : 'Continue' }}
+            </button>
+          </div>
+        </form>
+
+        <p class="error center" *ngIf="errorMessage">{{ errorMessage }}</p>
+      </div>
+
+      <div class="col-lg-7">
+        <section class="snapshot card" #analysisPreview>
           <div class="snapshot-head">
             <div>
               <h2>Your numerology snapshot</h2>
@@ -345,6 +413,119 @@
                   </tbody>
                 </table>
               </div>
+              <h3>Personal years (9-year arc)</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Year</th>
+                    <th scope="col">Number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let entry of analysis.personalYears">
+                    <td>{{ entry.year }}</td>
+                    <td>{{ entry.number }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="result-group" *ngIf="analysis.personalMonths.length">
+              <h3>Personal months (81 combinations)</h3>
+              <table class="data-table scrollable">
+                <thead>
+                  <tr>
+                    <th scope="col">Year</th>
+                    <th scope="col" *ngFor="let column of personalMonthColumns">Month {{ column }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of analysis.personalMonths">
+                    <td>{{ row.year }}</td>
+                    <td *ngFor="let entry of row.months">{{ entry.number }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="result-group" *ngIf="analysis.essence.length">
+              <h3>Essence numbers (13-year focus)</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Year</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let entry of analysis.essence">
+                    <td>{{ entry.year }}</td>
+                    <td>{{ entry.total }}</td>
+                    <td>{{ entry.number }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="result-group" *ngIf="analysis.pinnacles.length">
+              <h3>The four pinnacle cycles</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Phase</th>
+                    <th scope="col">Years</th>
+                    <th scope="col">Number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let entry of analysis.pinnacles; let idx = index">
+                    <td>Pinnacle {{ idx + 1 }}</td>
+                    <td>{{ formatRange(entry) }}</td>
+                    <td>{{ entry.number }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="result-group" *ngIf="analysis.lifeCycles.length">
+              <h3>Three life cycles</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Cycle</th>
+                    <th scope="col">Years</th>
+                    <th scope="col">Number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let entry of analysis.lifeCycles; let idx = index">
+                    <td>Cycle {{ idx + 1 }}</td>
+                    <td>{{ formatRange(entry) }}</td>
+                    <td>{{ entry.number }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="result-group" *ngIf="analysis.challenges.length">
+              <h3>Challenge numbers</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Period</th>
+                    <th scope="col">Number</th>
+                    <th scope="col">Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let entry of analysis.challenges; let idx = index">
+                    <td>Challenge {{ idx + 1 }}</td>
+                    <td>{{ entry.number }}</td>
+                    <td>{{ formatRange(entry) }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </section>
           </ng-container>
 
@@ -354,6 +535,9 @@
             </p>
           </ng-template>
     </section>
+        </section>
+      </div>
+    </div>
   </section>
 
   <section class="actions container">

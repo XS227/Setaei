@@ -208,5 +208,9 @@ const ORDER_SEO: SeoConfig = {
 export const routes: Routes = [
   { path: '', component: HomeComponent, data: { seo: HOME_SEO } },
   { path: 'order', component: OrderComponent, data: { seo: ORDER_SEO } },
+
+export const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'order', component: OrderComponent },
   { path: '**', redirectTo: '' },
 ];

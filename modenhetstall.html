@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maturity number calculator – Åse Steinsland</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="branding">
+        <div class="brand-mark">ÅS</div>
+        <div class="brand-copy">
+          <h1 data-i18n-key="title">Maturity number calculator</h1>
+          <p data-i18n-key="subtitle">Name number + destiny number – Åse Steinsland’s formula for your lifelong bloom.</p>
+        </div>
+      </div>
+      <nav class="primary-nav">
+        <a href="navnetall.html" data-i18n-key="navName">Name number</a>
+        <a href="hjertetall.html" data-i18n-key="navSoul">Soul urge</a>
+        <a href="personlighetstall.html" data-i18n-key="navPersonality">Personality</a>
+        <a href="skjebnetall.html" data-i18n-key="navDestiny">Destiny</a>
+        <a href="modenhetstall.html" data-i18n-key="navMaturity">Maturity</a>
+        <a href="personlige-ar.html" data-i18n-key="navPersonalYear">Personal year</a>
+        <a href="index.html" data-i18n-key="navHome">Overview</a>
+      </nav>
+      <div class="language-switch" role="group" aria-label="Language selector">
+        <button type="button" data-lang="en" aria-pressed="true">English</button>
+        <button type="button" data-lang="no" aria-pressed="false">Norsk</button>
+        <button type="button" data-lang="fa" aria-pressed="false">فارسی</button>
+      </div>
+    </header>
+
+    <section class="page-section card">
+      <div class="result-summary">
+        <h2 data-i18n-key="methodHeading">Åse’s maturity equation</h2>
+        <p data-i18n-key="methodCopy">The maturity number is the sum of your name number (Formula 1) and destiny number (Formula 6). Add the digits together and reduce, preserving master numbers 11, 22 and 33. We convert all calendars to Gregorian before calculation.</p>
+        <div class="grid-two">
+          <a class="primary-button" href="personlige-ar.html" data-i18n-key="ctaNext">Learn more?</a>
+          <a class="secondary-button" href="skjebnetall.html" data-i18n-key="ctaBack">Back to destiny number</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section card" id="calculator">
+      <form class="form-grid" id="maturity-form">
+        <div>
+          <label for="nameInput" data-i18n-key="labelName">Full birth name</label>
+          <input id="nameInput" type="text" autocomplete="name" data-i18n-key="placeholderName" data-i18n-attr="placeholder">
+        </div>
+        <div>
+          <label for="birthDate" data-i18n-key="labelBirthDate">Date of birth</label>
+          <input id="birthDate" type="date">
+        </div>
+        <div>
+          <label for="calendar" data-i18n-key="labelCalendar">Original calendar</label>
+          <select id="calendar">
+            <option value="gregorian" data-i18n-key="calendarGregorian">Gregorian (Western)</option>
+            <option value="solarHijri" data-i18n-key="calendarSolarHijri">Solar Hijri (Persian)</option>
+            <option value="hijri" data-i18n-key="calendarHijri">Hijri (Islamic)</option>
+          </select>
+        </div>
+        <div>
+          <button type="submit" class="primary" data-i18n-key="btnCalculate">Calculate maturity number</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="page-section card" id="result" hidden>
+      <div class="result-summary">
+        <span class="badge" id="calendarBadge"></span>
+        <h2 id="resultTitle"></h2>
+        <p id="resultStory"></p>
+        <p id="nameSummary"></p>
+        <p id="destinySummary"></p>
+        <p id="reduction"></p>
+      </div>
+      <div class="result-block">
+        <div>
+          <h3 data-i18n-key="nameHeading">Name number breakdown</h3>
+          <div id="nameDna"></div>
+        </div>
+        <div>
+          <h3 data-i18n-key="destinyHeading">Destiny number reduction</h3>
+          <ul id="destinyList"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section card">
+      <div class="result-summary">
+        <h2 data-i18n-key="nextHeading">Track your yearly cycles</h2>
+        <p data-i18n-key="nextCopy">When the maturity number is clear, Åse studies personal years to see how the life themes unfold over time.</p>
+        <div class="grid-two">
+          <a class="primary-button" href="personlige-ar.html" data-i18n-key="nextPersonalYear">Personal year calculator</a>
+          <a class="secondary-button" href="index.html" data-i18n-key="ctaOverview">Back to overview</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <span>© <span data-i18n-key="copyright">Åse Karin Steinsland. All rights reserved.</span></span>
+      <a href="https://www.numerologensverden.no/kalkulator-skjebnetall-a/" target="_blank" rel="noopener" data-i18n-key="sourceLink">Read Åse’s full guide</a>
+    </footer>
+  </div>
+
+  <script src="assets/i18n.js"></script>
+  <script src="assets/numerology.js"></script>
+  <script src="assets/number-stories.js"></script>
+  <script>
+    (function () {
+      const form = document.getElementById('maturity-form');
+      const resultSection = document.getElementById('result');
+      const resultTitle = document.getElementById('resultTitle');
+      const resultStory = document.getElementById('resultStory');
+      const nameSummary = document.getElementById('nameSummary');
+      const destinySummary = document.getElementById('destinySummary');
+      const reduction = document.getElementById('reduction');
+      const nameDna = document.getElementById('nameDna');
+      const destinyList = document.getElementById('destinyList');
+      const calendarBadge = document.getElementById('calendarBadge');
+      const langButtons = document.querySelectorAll('.language-switch button[data-lang]');
+
+      const translations = {
+        en: {
+          strings: {
+            title: 'Maturity number calculator',
+            subtitle: 'Name number + destiny number – Åse Steinsland’s formula for your lifelong bloom.',
+            navName: 'Name number',
+            navSoul: 'Soul urge',
+            navPersonality: 'Personality',
+            navDestiny: 'Destiny',
+            navMaturity: 'Maturity',
+            navPersonalYear: 'Personal year',
+            navHome: 'Overview',
+            methodHeading: 'Åse’s maturity equation',
+            methodCopy: 'The maturity number is the sum of your name number (Formula 1) and destiny number (Formula 6). Add the digits together and reduce, preserving master numbers 11, 22 and 33. We convert all calendars to Gregorian before calculation.',
+            ctaNext: 'Learn more?',
+            ctaBack: 'Back to destiny number',
+            labelName: 'Full birth name',
+            placeholderName: 'Enter the complete name given at birth',
+            labelBirthDate: 'Date of birth',
+            labelCalendar: 'Original calendar',
+            calendarGregorian: 'Gregorian (Western)',
+            calendarSolarHijri: 'Solar Hijri (Persian)',
+            calendarHijri: 'Hijri (Islamic)',
+            btnCalculate: 'Calculate maturity number',
+            nameHeading: 'Name number breakdown',
+            destinyHeading: 'Destiny number reduction',
+            nextHeading: 'Track your yearly cycles',
+            nextCopy: 'When the maturity number is clear, Åse studies personal years to see how the life themes unfold over time.',
+            nextPersonalYear: 'Personal year calculator',
+            ctaOverview: 'Back to overview',
+            copyright: 'Åse Karin Steinsland. All rights reserved.',
+            sourceLink: 'Read Åse’s full guide',
+            calendarInfo: 'Converted to Gregorian:',
+            nameTotal: 'Name number',
+            destinyTotal: 'Destiny number',
+            combinedTotal: 'Combined sum',
+            reductionPath: 'Reduction path:',
+            reductionMaster: 'Master number – no further reduction applied.',
+            reductionSingle: 'Already a single digit.',
+          },
+        },
+        no: {
+          strings: {
+            title: 'Modenhetstallkalkulator',
+            subtitle: 'Navnetall + skjebnetall – Åse Steinslands formel for livets blomstring.',
+            navName: 'Navnetall',
+            navSoul: 'Hjertetall',
+            navPersonality: 'Personlighetstall',
+            navDestiny: 'Skjebnetall',
+            navMaturity: 'Modenhetstall',
+            navPersonalYear: 'Personlige år',
+            navHome: 'Oversikt',
+            methodHeading: 'Åses modenhetslikning',
+            methodCopy: 'Modenhetstallet er summen av navnetallet (formel 1) og skjebnetallet (formel 6). Summer sifrene og reduser, men bevar mestertall 11, 22 og 33. Alle kalendere konverteres til gregoriansk før beregning.',
+            ctaNext: 'Learn more?',
+            ctaBack: 'Tilbake til skjebnetall',
+            labelName: 'Fullt fødenavn',
+            placeholderName: 'Oppgi navnet slik det står i fødselsattesten',
+            labelBirthDate: 'Fødselsdato',
+            labelCalendar: 'Opprinnelig kalender',
+            calendarGregorian: 'Gregoriansk (vestlig)',
+            calendarSolarHijri: 'Sol-hijri (persisk)',
+            calendarHijri: 'Hijri (islamsk)',
+            btnCalculate: 'Beregn modenhetstallet',
+            nameHeading: 'Navnetallets oppbygging',
+            destinyHeading: 'Skjebnetallets reduksjon',
+            nextHeading: 'Følg dine årssykluser',
+            nextCopy: 'Når modenhetstallet er klart ser Åse på personlige år for å forstå hvordan livstemaene utvikler seg.',
+            nextPersonalYear: 'Personlige år-kalkulator',
+            ctaOverview: 'Tilbake til oversikten',
+            copyright: 'Åse Karin Steinsland. Alle rettigheter reservert.',
+            sourceLink: 'Les hele veiledningen hos Åse',
+            calendarInfo: 'Konvertert til gregoriansk:',
+            nameTotal: 'Navnetall',
+            destinyTotal: 'Skjebnetall',
+            combinedTotal: 'Summen',
+            reductionPath: 'Reduksjonsrekkefølge:',
+            reductionMaster: 'Mestertall – ikke redusert videre.',
+            reductionSingle: 'Allerede ett siffer.',
+          },
+        },
+        fa: {
+          strings: {
+            title: 'ماشین‌حساب عدد بلوغ',
+            subtitle: 'عدد نام + عدد سرنوشت – فرمول آسه استینسلاند برای شکوفایی عمر.',
+            navName: 'عدد نام',
+            navSoul: 'اشتیاق قلبی',
+            navPersonality: 'عدد شخصیت',
+            navDestiny: 'عدد سرنوشت',
+            navMaturity: 'عدد بلوغ',
+            navPersonalYear: 'سال شخصی',
+            navHome: 'مرور کلی',
+            methodHeading: 'معادله بلوغ از نگاه آسه',
+            methodCopy: 'عدد بلوغ جمع عدد نام (فرمول ۱) و عدد سرنوشت (فرمول ۶) است. ارقام را جمع کرده و کاهش دهید، اما اعداد استادی ۱۱، ۲۲ و ۳۳ را نگه دارید. همه تقویم‌ها پیش از محاسبه به میلادی تبدیل می‌شوند.',
+            ctaNext: 'Learn more?',
+            ctaBack: 'بازگشت به عدد سرنوشت',
+            labelName: 'نام کامل هنگام تولد',
+            placeholderName: 'نام درج‌شده در گواهی تولد را وارد کنید',
+            labelBirthDate: 'تاریخ تولد',
+            labelCalendar: 'تقویم اصلی',
+            calendarGregorian: 'میلادی (غربی)',
+            calendarSolarHijri: 'خورشیدی هجری (ایرانی)',
+            calendarHijri: 'قمری هجری (اسلامی)',
+            btnCalculate: 'محاسبه عدد بلوغ',
+            nameHeading: 'ساختار عدد نام',
+            destinyHeading: 'کاهش عدد سرنوشت',
+            nextHeading: 'چرخه‌های سالانه را دنبال کنید',
+            nextCopy: 'پس از روشن شدن عدد بلوغ، آسه سال‌های شخصی را بررسی می‌کند تا روند موضوعات زندگی را ببیند.',
+            nextPersonalYear: 'ماشین‌حساب سال شخصی',
+            ctaOverview: 'بازگشت به مرور کلی',
+            copyright: 'آسه کارین استینسلاند. کلیه حقوق محفوظ است.',
+            sourceLink: 'راهنمای کامل آسه را بخوانید',
+            calendarInfo: 'تبدیل به میلادی:',
+            nameTotal: 'عدد نام',
+            destinyTotal: 'عدد سرنوشت',
+            combinedTotal: 'جمع نهایی',
+            reductionPath: 'مسیر کاهش:',
+            reductionMaster: 'عدد استادی – کاهش بیشتر ندارد.',
+            reductionSingle: 'همین حالا یک رقم واحد است.',
+          },
+        },
+      };
+
+      const i18n = createI18n({
+        translations,
+        defaultLang: 'en',
+        directionMap: { fa: 'rtl' },
+      });
+
+      function syncButtons(lang) {
+        langButtons.forEach((button) => {
+          const isActive = button.dataset.lang === lang;
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      }
+
+      function createDNATrack(breakdown) {
+        const track = document.createElement('div');
+        track.className = 'dna-track';
+        breakdown.forEach((entry) => {
+          const node = document.createElement('div');
+          node.className = 'dna-node';
+          const valueEl = document.createElement('div');
+          valueEl.className = 'dna-value';
+          valueEl.textContent = entry.value;
+          const letterEl = document.createElement('div');
+          letterEl.className = 'dna-letter';
+          letterEl.textContent = entry.label;
+          node.appendChild(valueEl);
+          node.appendChild(letterEl);
+          track.appendChild(node);
+        });
+        return track;
+      }
+
+      function renderResult({ nameBreakdown, destiny, maturity, gregorian }) {
+        const stories = NumberStories.stories[i18n.lang] || NumberStories.stories.en;
+        resultSection.hidden = false;
+        nameDna.innerHTML = '';
+        destinyList.innerHTML = '';
+
+        nameDna.appendChild(createDNATrack(nameBreakdown.breakdown));
+
+        const digitsItem = document.createElement('li');
+        digitsItem.textContent = `${i18n.t('destinyTotal')}: ${destiny.number} (${destiny.digits.join(' + ')} = ${destiny.total})`;
+        destinyList.appendChild(digitsItem);
+        const stepsItem = document.createElement('li');
+        stepsItem.textContent = `${i18n.t('reductionPath')} ${destiny.steps.join(' → ')}`;
+        destinyList.appendChild(stepsItem);
+
+        calendarBadge.textContent = `${i18n.t('calendarInfo')} ${gregorian.year}-${String(gregorian.month).padStart(2, '0')}-${String(gregorian.day).padStart(2, '0')}`;
+        resultTitle.textContent = `${i18n.t('navMaturity')}: ${maturity.number}`;
+        resultStory.textContent = stories[maturity.number] || '';
+        nameSummary.textContent = `${i18n.t('nameTotal')}: ${nameBreakdown.number} (${nameBreakdown.steps.join(' → ')})`;
+        destinySummary.textContent = `${i18n.t('destinyTotal')}: ${destiny.number} (${destiny.steps.join(' → ')})`;
+        if (maturity.steps.length > 1) {
+          reduction.textContent = `${i18n.t('combinedTotal')}: ${maturity.combined} — ${i18n.t('reductionPath')} ${maturity.steps.join(' → ')}`;
+        } else if ([11, 22, 33].includes(maturity.number)) {
+          reduction.textContent = `${i18n.t('combinedTotal')}: ${maturity.combined} — ${i18n.t('reductionPath')} ${i18n.t('reductionMaster')}`;
+        } else {
+          reduction.textContent = `${i18n.t('combinedTotal')}: ${maturity.combined} — ${i18n.t('reductionPath')} ${i18n.t('reductionSingle')}`;
+        }
+      }
+
+      langButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const lang = button.dataset.lang;
+          i18n.setLanguage(lang);
+          syncButtons(lang);
+          const currentName = document.getElementById('nameInput').value.trim();
+          const birthDate = document.getElementById('birthDate').value;
+          if (currentName && birthDate) {
+            handleCalculation();
+          }
+        });
+      });
+
+      i18n.onChange((lang) => {
+        syncButtons(lang);
+      });
+
+      function handleCalculation() {
+        const nameValue = document.getElementById('nameInput').value.trim();
+        const birthDateValue = document.getElementById('birthDate').value;
+        const calendar = document.getElementById('calendar').value;
+
+        if (!nameValue || !birthDateValue) {
+          resultSection.hidden = true;
+          return;
+        }
+
+        const autoLang = Numerology.inferLanguageFromName(nameValue);
+        if (autoLang && autoLang !== i18n.lang) {
+          i18n.setLanguage(autoLang);
+          syncButtons(autoLang);
+        }
+
+        const [year, month, day] = birthDateValue.split('-').map((segment) => parseInt(segment, 10));
+
+        let destiny;
+        let gregorian;
+        try {
+          destiny = Numerology.destinyNumber({ calendar, year, month, day });
+          gregorian = destiny.calendarUsed;
+        } catch (error) {
+          resultSection.hidden = false;
+          resultTitle.textContent = error.message;
+          resultStory.textContent = '';
+          nameSummary.textContent = '';
+          destinySummary.textContent = '';
+          reduction.textContent = '';
+          nameDna.innerHTML = '';
+          destinyList.innerHTML = '';
+          calendarBadge.textContent = '';
+          return;
+        }
+
+        const nameBreakdown = Numerology.breakdownName(nameValue);
+        const maturity = Numerology.maturityNumber(nameBreakdown.number, destiny.number);
+
+        renderResult({ nameBreakdown, destiny, maturity, gregorian });
+      }
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        handleCalculation();
+      });
+    })();
+  </script>
+</body>
+</html>
