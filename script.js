@@ -51,7 +51,13 @@ if (sections.length && navLinks.length) {
         if (entry.isIntersecting) {
           const id = entry.target.getAttribute("id");
           navLinks.forEach((link) => {
-            link.classList.toggle("is-active", link.getAttribute("href") === `#${id}`);
+            const matches = link.getAttribute("href") === `#${id}`;
+            link.classList.toggle("is-active", matches);
+            if (matches) {
+              link.setAttribute("aria-current", "page");
+            } else {
+              link.removeAttribute("aria-current");
+            }
           });
         }
       });

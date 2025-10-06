@@ -37,6 +37,26 @@ body {
   overflow-x: hidden;
 }
 
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-120%);
+  background: var(--accent);
+  color: #0a0618;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  text-decoration: none;
+  z-index: 11;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.skip-link:focus {
+  transform: translateY(10%);
+  box-shadow: 0 10px 30px rgba(240, 105, 255, 0.4);
+}
+
 body::before,
 body::after {
   content: "";
@@ -85,6 +105,22 @@ main {
 
 body:hover .gradient-orb {
   transform: translate3d(0, 0, 0) scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  body:hover .gradient-orb,
+  .gradient-orb {
+    transition: none;
+  }
 }
 
 .inner {
