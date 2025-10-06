@@ -3,716 +3,344 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Name Number (Navnetall) Calculator</title>
-  <style>
-    :root {
-      color-scheme: light dark;
-      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-      --accent: #f26b21;
-      --accent-strong: #d95513;
-      --accent-soft: #ffedd5;
-      --surface: rgba(255, 255, 255, 0.94);
-      --text: #2f2a28;
-      --subtle: #6b4f3f;
-      --border: rgba(79, 59, 48, 0.18);
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: clamp(1.2rem, 2vw, 2.6rem);
-      background:
-        radial-gradient(circle at 20% 20%, rgba(255, 230, 204, 0.55), transparent 55%),
-        radial-gradient(circle at 80% 0%, rgba(255, 174, 107, 0.28), transparent 50%),
-        linear-gradient(135deg, #fff9f4 0%, #ffe9d8 52%, #fff2e3 100%);
-      color: var(--text);
-    }
-
-    main {
-      position: relative;
-      background: var(--surface);
-      border-radius: 26px;
-      box-shadow: 0 28px 58px rgba(173, 85, 28, 0.16);
-      padding: clamp(1.9rem, 3vw, 3.1rem);
-      width: min(820px, 94vw);
-      display: flex;
-      flex-direction: column;
-      gap: 1.85rem;
-      overflow: hidden;
-    }
-
-    main::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at top right, rgba(255, 255, 255, 0.9), transparent 50%),
-        radial-gradient(circle at -10% 120%, rgba(242, 107, 33, 0.18), transparent 65%);
-      mix-blend-mode: soft-light;
-      pointer-events: none;
-    }
-
-    header {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      gap: 0.9rem;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .brand-logo {
-      width: 60px;
-      height: 60px;
-      border-radius: 20px;
-      background: linear-gradient(140deg, var(--accent) 0%, #ff7b32 60%, var(--accent-strong) 100%);
-      display: grid;
-      place-items: center;
-      box-shadow: 0 12px 28px rgba(242, 107, 33, 0.28);
-    }
-
-    .brand-logo svg {
-      width: 44px;
-      height: 44px;
-    }
-
-    .brand-details h1 {
-      margin: 0;
-      font-size: clamp(2rem, 4vw, 2.65rem);
-      letter-spacing: -0.02em;
-    }
-
-    .brand-details p {
-      margin: 0.35rem 0 0;
-      color: var(--subtle);
-      line-height: 1.65;
-      font-size: 1.05rem;
-    }
-
-    header p.lede {
-      margin: 0;
-      color: var(--subtle);
-      line-height: 1.75;
-    }
-
-    form {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      gap: 0.8rem;
-    }
-
-    label {
-      font-weight: 600;
-      letter-spacing: 0.01em;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      font-size: 1.12rem;
-      padding: 0.9rem 1.05rem;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      box-sizing: border-box;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-      background: rgba(255, 255, 255, 0.92);
-    }
-
-    input[type="text"]:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 4px rgba(242, 107, 33, 0.24);
-    }
-
-    button[type="submit"],
-    .cta {
-      margin-top: 0.4rem;
-      width: 100%;
-      padding: 1rem;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 16px;
-      background: linear-gradient(135deg, var(--accent) 0%, #ff7f32 55%, var(--accent-strong) 100%);
-      color: #fff;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
-      text-decoration: none;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.45rem;
-    }
-
-    .cta.secondary {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 244, 235, 0.92));
-      color: var(--accent-strong);
-      border: 1px solid rgba(242, 107, 33, 0.32);
-    }
-
-    button[type="submit"]:hover,
-    .cta:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 16px 32px rgba(242, 107, 33, 0.26);
-    }
-
-    button[type="submit"]:active,
-    .cta:active {
-      transform: translateY(0);
-      box-shadow: none;
-    }
-
-    section.result {
-      position: relative;
-      z-index: 1;
-      display: none;
-      border-radius: 20px;
-      border: 1px solid rgba(242, 107, 33, 0.16);
-      padding: 1.75rem;
-      background: rgba(255, 247, 237, 0.85);
-      backdrop-filter: blur(6px);
-    }
-
-    section.result.active {
-      display: grid;
-      gap: 1.7rem;
-    }
-
-    .summary h2 {
-      margin: 0;
-      font-size: 1.75rem;
-    }
-
-    .summary p {
-      margin: 0.35rem 0 0;
-      line-height: 1.65;
-      color: var(--subtle);
-    }
-
-    .dna-visual {
-      display: flex;
-      gap: 1.2rem;
-      overflow-x: auto;
-      padding-bottom: 0.2rem;
-    }
-
-    .dna-visual::-webkit-scrollbar {
-      height: 8px;
-    }
-
-    .dna-visual::-webkit-scrollbar-thumb {
-      background: rgba(242, 107, 33, 0.35);
-      border-radius: 999px;
-    }
-
-    .dna-node {
-      position: relative;
-      flex: 0 0 auto;
-      min-width: 80px;
-      padding: 0.95rem 0.85rem;
-      border-radius: 16px;
-      background: linear-gradient(160deg, rgba(242, 107, 33, 0.14), rgba(255, 186, 120, 0.18));
-      border: 1px solid rgba(242, 107, 33, 0.22);
-      box-shadow: 0 15px 32px rgba(242, 107, 33, 0.15);
-      display: grid;
-      place-items: center;
-      gap: 0.45rem;
-    }
-
-    .dna-value {
-      font-size: 1.45rem;
-      font-weight: 700;
-      color: var(--accent-strong);
-    }
-
-    .dna-label {
-      font-size: 0.95rem;
-      color: var(--text);
-    }
-
-    .dna-node::before,
-    .dna-node::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 2px;
-      height: 12px;
-      background: linear-gradient(180deg, rgba(242, 107, 33, 0.16), rgba(255, 186, 120, 0.16));
-    }
-
-    .dna-node::before {
-      top: -14px;
-    }
-
-    .dna-node::after {
-      bottom: -14px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid rgba(242, 107, 33, 0.16);
-      background: rgba(255, 255, 255, 0.95);
-    }
-
-    thead {
-      background: linear-gradient(135deg, rgba(242, 107, 33, 0.14), rgba(255, 186, 120, 0.2));
-    }
-
-    th,
-    td {
-      padding: 0.8rem 1rem;
-      text-align: left;
-      font-size: 1rem;
-    }
-
-    tbody tr + tr {
-      border-top: 1px solid rgba(242, 107, 33, 0.1);
-    }
-
-    tfoot {
-      background: rgba(255, 237, 213, 0.6);
-      font-weight: 600;
-    }
-
-    .reduction-steps,
-    .narrative,
-    .ignored,
-    .method-note {
-      margin: 0;
-      line-height: 1.65;
-      color: var(--subtle);
-    }
-
-    .actions {
-      display: grid;
-      gap: 0.75rem;
-    }
-
-    .calculator-nav {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      gap: 0.8rem;
-    }
-
-    .calculator-nav h2 {
-      margin: 0;
-      font-size: 1.15rem;
-      color: var(--subtle);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .calculator-links {
-      display: grid;
-      gap: 0.6rem;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    }
-
-    .calculator-links a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.85rem 1.05rem;
-      border-radius: 14px;
-      border: 1px solid rgba(242, 107, 33, 0.2);
-      background: rgba(255, 237, 213, 0.55);
-      color: inherit;
-      font-weight: 600;
-      text-decoration: none;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    .calculator-links a span:last-child {
-      font-size: 1.35rem;
-    }
-
-    .calculator-links a:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 26px rgba(242, 107, 33, 0.16);
-    }
-
-    footer {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      font-size: 0.92rem;
-      color: var(--subtle);
-      margin-top: 0.25rem;
-    }
-
-    @media (max-width: 640px) {
-      main {
-        border-radius: 22px;
-        padding: 1.6rem;
-      }
-
-      .brand {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .brand-details p {
-        font-size: 1rem;
-      }
-
-      .dna-node {
-        min-width: 68px;
-      }
-
-      table {
-        font-size: 0.95rem;
-      }
-    }
-  </style>
+  <title>Name number calculator – Åse Steinsland</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
 </head>
 <body>
-  <main>
-    <header>
-      <div class="brand">
-        <div class="brand-logo" aria-hidden="true">
-          <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
-            <circle cx="32" cy="32" r="30" fill="rgba(255, 255, 255, 0.16)"></circle>
-            <path d="M18 44L30.5 20h3L46 44h-6.1l-2.3-5.2H26.4L24 44H18zm14.6-10.5h7L36.1 25z" fill="#fff"></path>
-          </svg>
-        </div>
-        <div class="brand-details">
-          <h1>Name Number Calculator</h1>
-          <p>Discover the vibration of any name. Latin letters follow the Pythagorean sequence
-            (A=1 … Z=8) while right-to-left scripts are translated with the Abjad method before we
-            reduce the total.</p>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="branding">
+        <div class="brand-mark">ÅS</div>
+        <div class="brand-copy">
+          <h1 data-i18n-key="title">Name number calculator</h1>
+          <p data-i18n-key="subtitle">Åse Steinsland’s official Pythagorean and Abjad based name calculation.</p>
         </div>
       </div>
-      <p class="lede">Type the name exactly as you would write it. We will normalise accents, respect Åse
-        Steinsland’s methodology and keep master numbers 11, 22 and 33 intact.</p>
+      <nav class="primary-nav">
+        <a href="navnetall.html" data-i18n-key="navName">Name number</a>
+        <a href="hjertetall.html" data-i18n-key="navSoul">Soul urge</a>
+        <a href="personlighetstall.html" data-i18n-key="navPersonality">Personality</a>
+        <a href="skjebnetall.html" data-i18n-key="navDestiny">Destiny</a>
+        <a href="modenhetstall.html" data-i18n-key="navMaturity">Maturity</a>
+        <a href="personlige-ar.html" data-i18n-key="navPersonalYear">Personal year</a>
+        <a href="index.html" data-i18n-key="navHome">Overview</a>
+      </nav>
+      <div class="language-switch" role="group" aria-label="Language selector">
+        <button type="button" data-lang="en" aria-pressed="true">English</button>
+        <button type="button" data-lang="no" aria-pressed="false">Norsk</button>
+        <button type="button" data-lang="fa" aria-pressed="false">فارسی</button>
+      </div>
     </header>
 
-    <form id="calculator" autocomplete="off">
-      <label for="nameInput">Name</label>
-      <input id="nameInput" name="name" type="text" dir="auto" placeholder="e.g. Åse Steinsland" required>
-      <button type="submit">Calculate</button>
-    </form>
-
-    <section id="result" class="result" aria-live="polite"></section>
-
-    <nav class="calculator-nav" aria-label="Numerology calculators">
-      <h2>Explore calculators</h2>
-      <div class="calculator-links">
-        <a href="skjebnetall.html"><span>Destiny number</span><span>→</span></a>
-        <a href="hjertetall.html"><span>Soul urge number</span><span>→</span></a>
-        <a href="personlighetstall.html"><span>Personality number</span><span>→</span></a>
-        <a href="modenhetstall.html"><span>Maturity number</span><span>→</span></a>
-        <a href="personlige-ar.html"><span>Personal year</span><span>→</span></a>
+    <section class="page-section card">
+      <div class="result-summary">
+        <h2 data-i18n-key="methodHeading">How Åse reads your birth name</h2>
+        <p data-i18n-key="methodCopy">Write the full birth name exactly as recorded. We normalise diacritics, separate Norwegian letters, and switch to the Abjad method for right-to-left scripts. Master numbers 11, 22 and 33 remain unreduced.</p>
+        <div class="grid-two">
+          <a class="primary-button" href="skjebnetall.html" data-i18n-key="ctaDestiny">Learn more?</a>
+          <a class="secondary-button" href="index.html" data-i18n-key="ctaOverview">Back to overview</a>
+        </div>
       </div>
-    </nav>
+    </section>
 
-    <footer>© Åse Steinsland</footer>
-  </main>
+    <section class="page-section card" id="calculator">
+      <form class="form-grid" id="name-form">
+        <div>
+          <label for="nameInput" data-i18n-key="labelName">Full birth name</label>
+          <input id="nameInput" type="text" autocomplete="name" data-i18n-key="placeholderName" data-i18n-attr="placeholder">
+        </div>
+        <div>
+          <button type="submit" class="primary" data-i18n-key="btnCalculate">Calculate name number</button>
+        </div>
+      </form>
+    </section>
 
-  <template id="resultTemplate">
-    <div class="summary">
-      <h2 data-id="resultTitle"></h2>
-      <p data-id="normalizedName"></p>
-    </div>
+    <section class="page-section card" id="result" hidden>
+      <div class="result-summary">
+        <span class="badge" id="methodBadge"></span>
+        <h2 id="resultTitle"></h2>
+        <p id="resultStory"></p>
+        <p id="normalised"></p>
+        <p id="ignored"></p>
+        <p id="reduction"></p>
+      </div>
+      <div id="dna"></div>
+      <div class="table-responsive">
+        <table class="breakdown">
+          <thead>
+            <tr>
+              <th data-i18n-key="tableLetter">Character</th>
+              <th data-i18n-key="tableValue">Value</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+          <tfoot>
+            <tr>
+              <th data-i18n-key="tableTotal">Total</th>
+              <th id="tableTotalValue"></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
 
-    <p class="method-note" data-id="method"></p>
+    <section class="page-section card">
+      <div class="result-summary">
+        <h2 data-i18n-key="nextHeading">Continue with the next core number</h2>
+        <p data-i18n-key="nextCopy">After the name number Åse moves to the vowels (soul urge) and consonants (personality). Keep the same spelling for consistency.</p>
+        <div class="grid-two">
+          <a class="primary-button" href="hjertetall.html" data-i18n-key="nextSoul">Soul urge calculator</a>
+          <a class="secondary-button" href="personlighetstall.html" data-i18n-key="nextPersonality">Personality calculator</a>
+        </div>
+      </div>
+    </section>
 
-    <div class="dna-visual" data-id="dna"></div>
+    <footer class="page-footer">
+      <span>© <span data-i18n-key="copyright">Åse Karin Steinsland. All rights reserved.</span></span>
+      <a href="https://www.numerologensverden.no/regn-ut-navnetall/" target="_blank" rel="noopener" data-i18n-key="sourceLink">Read Åse’s full guide</a>
+    </footer>
+  </div>
 
-    <div class="breakdown">
-      <table>
-        <thead>
-          <tr>
-            <th data-id="letterHeading"></th>
-            <th data-id="valueHeading"></th>
-          </tr>
-        </thead>
-        <tbody data-id="tableBody"></tbody>
-        <tfoot>
-          <tr>
-            <th data-id="totalLabel"></th>
-            <th data-id="total"></th>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-
-    <p class="reduction-steps" data-id="reductionSteps"></p>
-    <p class="narrative" data-id="narrative"></p>
-    <p class="ignored" data-id="ignored"></p>
-
-    <div class="actions">
-      <a class="cta" href="https://www.numerologensverden.no/" target="_blank" rel="noopener">Learn more?</a>
-      <a class="cta secondary" href="skjebnetall.html">Go to destiny number calculator</a>
-    </div>
-  </template>
-
+  <script src="assets/i18n.js"></script>
+  <script src="assets/numerology.js"></script>
+  <script src="assets/number-stories.js"></script>
   <script>
-    const LATIN_VALUES = new Map([
-      ["A", 1], ["B", 2], ["C", 3], ["D", 4], ["E", 5], ["F", 6], ["G", 7], ["H", 8], ["I", 9],
-      ["J", 1], ["K", 2], ["L", 3], ["M", 4], ["N", 5], ["O", 6], ["P", 7], ["Q", 8], ["R", 9],
-      ["S", 1], ["T", 2], ["U", 3], ["V", 4], ["W", 5], ["X", 6], ["Y", 7], ["Z", 8]
-    ]);
+    (function () {
+      const form = document.getElementById('name-form');
+      const resultSection = document.getElementById('result');
+      const tableBody = document.getElementById('tableBody');
+      const dnaContainer = document.getElementById('dna');
+      const methodBadge = document.getElementById('methodBadge');
+      const resultTitle = document.getElementById('resultTitle');
+      const resultStory = document.getElementById('resultStory');
+      const normalised = document.getElementById('normalised');
+      const ignored = document.getElementById('ignored');
+      const reduction = document.getElementById('reduction');
+      const totalCell = document.getElementById('tableTotalValue');
+      const langButtons = document.querySelectorAll('.language-switch button[data-lang]');
 
-    const ABJAD_VALUES = new Map([
-      ["ا", 1], ["أ", 1], ["إ", 1], ["آ", 1], ["ٱ", 1], ["ء", 1],
-      ["ب", 2], ["پ", 2],
-      ["ج", 3], ["چ", 3],
-      ["د", 4],
-      ["ه", 5], ["ة", 5], ["ۀ", 5], ["ﻩ", 5],
-      ["و", 6], ["ؤ", 6],
-      ["ز", 7], ["ژ", 7],
-      ["ح", 8],
-      ["ط", 9],
-      ["ي", 10], ["ى", 10], ["ئ", 10], ["ی", 10], ["ے", 10],
-      ["ك", 20], ["ک", 20], ["گ", 20],
-      ["ل", 30],
-      ["م", 40],
-      ["ن", 50],
-      ["س", 60],
-      ["ع", 70],
-      ["ف", 80], ["ڤ", 80],
-      ["ص", 90],
-      ["ق", 100],
-      ["ر", 200],
-      ["ش", 300],
-      ["ت", 400], ["ث", 500],
-      ["خ", 600],
-      ["ذ", 700],
-      ["ض", 800],
-      ["ظ", 900],
-      ["غ", 1000]
-    ]);
+      const translations = {
+        en: {
+          strings: {
+            title: 'Name number calculator',
+            subtitle: 'Åse Steinsland’s official Pythagorean and Abjad based name calculation.',
+            navName: 'Name number',
+            navSoul: 'Soul urge',
+            navPersonality: 'Personality',
+            navDestiny: 'Destiny',
+            navMaturity: 'Maturity',
+            navPersonalYear: 'Personal year',
+            navHome: 'Overview',
+            methodHeading: 'How Åse reads your birth name',
+            methodCopy: 'Write the full birth name exactly as recorded. We normalise diacritics, separate Norwegian letters, and switch to the Abjad method for right-to-left scripts. Master numbers 11, 22 and 33 remain unreduced.',
+            ctaDestiny: 'Learn more?',
+            ctaOverview: 'Back to overview',
+            labelName: 'Full birth name',
+            placeholderName: 'Enter the complete name given at birth',
+            btnCalculate: 'Calculate name number',
+            tableLetter: 'Character',
+            tableValue: 'Value',
+            tableTotal: 'Total',
+            normalizedLabel: 'Normalised for calculation',
+            nextHeading: 'Continue with the next core number',
+            nextCopy: 'After the name number Åse moves to the vowels (soul urge) and consonants (personality). Keep the same spelling for consistency.',
+            nextSoul: 'Soul urge calculator',
+            nextPersonality: 'Personality calculator',
+            copyright: 'Åse Karin Steinsland. All rights reserved.',
+            sourceLink: 'Read Åse’s full guide',
+            methodLatin: 'Method: Pythagorean numerology following Åse Steinsland’s table.',
+            methodRTL: 'Method: Abjad numerology translated to Åse Steinsland’s reduction.',
+            ignoredNone: 'All characters were counted in the calculation.',
+            ignoredSome: 'Ignored characters:',
+            reductionPath: 'Reduction path:',
+            reductionMaster: 'Master number – no further reduction applied.',
+            reductionSingle: 'Already a single digit.',
+          },
+        },
+        no: {
+          strings: {
+            title: 'Navnetallkalkulator',
+            subtitle: 'Åse Steinslands offisielle beregning basert på pythagorisk tallmagi og abjad.',
+            navName: 'Navnetall',
+            navSoul: 'Hjertetall',
+            navPersonality: 'Personlighetstall',
+            navDestiny: 'Skjebnetall',
+            navMaturity: 'Modenhetstall',
+            navPersonalYear: 'Personlige år',
+            navHome: 'Oversikt',
+            methodHeading: 'Slik leser Åse fødenavnet ditt',
+            methodCopy: 'Skriv hele navnet slik det står registrert. Vi normaliserer diakritiske tegn, deler norske spesialbokstaver og bytter til abjad-metoden for høyre-til-venstre-språk. Mestertall 11, 22 og 33 beholdes.',
+            ctaDestiny: 'Learn more?',
+            ctaOverview: 'Tilbake til oversikten',
+            labelName: 'Fullt fødenavn',
+            placeholderName: 'Oppgi navnet slik det står i fødselsattesten',
+            btnCalculate: 'Beregn navnetallet',
+            tableLetter: 'Tegn',
+            tableValue: 'Verdi',
+            tableTotal: 'Sum',
+            normalizedLabel: 'Normalisert for beregning',
+            nextHeading: 'Fortsett til neste kjernetall',
+            nextCopy: 'Etter navnetallet går Åse videre til vokaler (hjertetall) og konsonanter (personlighet). Bruk samme stavemåte for presisjon.',
+            nextSoul: 'Hjertetall-kalkulator',
+            nextPersonality: 'Personlighetstall-kalkulator',
+            copyright: 'Åse Karin Steinsland. Alle rettigheter reservert.',
+            sourceLink: 'Les hele veiledningen hos Åse',
+            methodLatin: 'Metode: Pythagorisk numerologi etter Åse Steinslands tabell.',
+            methodRTL: 'Metode: Abjad-verdier oversatt til Åse Steinslands reduksjon.',
+            ignoredNone: 'Alle tegn ble med i beregningen.',
+            ignoredSome: 'Ignorerte tegn:',
+            reductionPath: 'Reduksjonsrekkefølge:',
+            reductionMaster: 'Mestertall – ikke redusert videre.',
+            reductionSingle: 'Allerede ett siffer.',
+          },
+        },
+        fa: {
+          strings: {
+            title: 'ماشین‌حساب عدد نام',
+            subtitle: 'محاسبه رسمی آسه استینسلاند بر اساس روش فیثاغورثی و ابجد.',
+            navName: 'عدد نام',
+            navSoul: 'اشتیاق قلبی',
+            navPersonality: 'عدد شخصیت',
+            navDestiny: 'عدد سرنوشت',
+            navMaturity: 'عدد بلوغ',
+            navPersonalYear: 'سال شخصی',
+            navHome: 'مرور کلی',
+            methodHeading: 'آسه نام تولد شما را چگونه می‌خواند',
+            methodCopy: 'نام کامل ثبت‌شده را بنویسید. ما نشانه‌های آوایی را یکدست می‌کنیم، حروف ویژه نروژی را جدا می‌نماییم و برای متون راست‌به‌چپ به روش ابجد می‌رویم. اعداد استادی ۱۱، ۲۲ و ۳۳ کاهش نمی‌یابند.',
+            ctaDestiny: 'Learn more?',
+            ctaOverview: 'بازگشت به مرور کلی',
+            labelName: 'نام کامل هنگام تولد',
+            placeholderName: 'نام درج‌شده در گواهی تولد را وارد کنید',
+            btnCalculate: 'محاسبه عدد نام',
+            tableLetter: 'حرف',
+            tableValue: 'ارزش',
+            tableTotal: 'جمع',
+            normalizedLabel: 'نام آماده برای محاسبه',
+            nextHeading: 'ادامه با عدد هسته‌ای بعدی',
+            nextCopy: 'پس از عدد نام، آسه به سراغ واکه‌ها (اشتیاق قلبی) و صامت‌ها (شخصیت) می‌رود. برای دقت، همان نگارش را حفظ کنید.',
+            nextSoul: 'ماشین‌حساب اشتیاق قلبی',
+            nextPersonality: 'ماشین‌حساب عدد شخصیت',
+            copyright: 'آسه کارین استینسلاند. کلیه حقوق محفوظ است.',
+            sourceLink: 'راهنمای کامل آسه را بخوانید',
+            methodLatin: 'روش: عددشناسی فیثاغورثی بر پایه جدول آسه استینسلاند.',
+            methodRTL: 'روش: اعداد ابجد با کاهش ویژه آسه استینسلاند.',
+            ignoredNone: 'همه‌ی حروف در محاسبه استفاده شدند.',
+            ignoredSome: 'حروف نادیده گرفته‌شده:',
+            reductionPath: 'مسیر کاهش:',
+            reductionMaster: 'عدد استادی – کاهش بیشتر ندارد.',
+            reductionSingle: 'همین حالا یک رقم واحد است.',
+          },
+        },
+      };
 
-    const MASTER_NUMBERS = new Set([11, 22, 33]);
+      const i18n = createI18n({
+        translations,
+        defaultLang: 'en',
+        directionMap: { fa: 'rtl' },
+      });
 
-    const STRINGS = {
-      title: (value) => `Name number: ${value}`,
-      processed: (name) => `Normalised for calculation: ${name}`,
-      letterHeading: "Character",
-      valueHeading: "Value",
-      totalLabel: "Total",
-      reduction: (steps) => steps.length > 1
-        ? `Reduction path: ${steps.join(" → ")}`
-        : "Reduction path: master number — no further reduction applied.",
-      reductionSingle: "Reduction path: already a single digit.",
-      narrative: {
-        1: "Number 1 pioneers with courage, initiative and trailblazing drive.",
-        2: "Number 2 balances relationships with empathy, diplomacy and grace.",
-        3: "Number 3 radiates creative storytelling, humour and optimism.",
-        4: "Number 4 builds structure, discipline and dependable foundations.",
-        5: "Number 5 thrives on freedom, movement and adventurous change.",
-        6: "Number 6 nurtures communities through care, harmony and artistry.",
-        7: "Number 7 seeks wisdom, spiritual insight and reflective analysis.",
-        8: "Number 8 manifests ambition, stewardship and material mastery.",
-        9: "Number 9 heals with compassion, humanitarian vision and closure.",
-        11: "Master 11 channels luminous intuition and inspired guidance.",
-        22: "Master 22 builds visionary ideas into lasting realities.",
-        33: "Master 33 uplifts collectives with unconditional love and service."
-      },
-      ignored: (chars) => `Ignored characters: ${chars.join(", ")}`,
-      noneIgnored: "All characters were counted in the calculation.",
-      method: (locale) => locale === "rtl"
-        ? "Method: Abjad numerology translated to Åse Steinsland's Western reduction."
-        : "Method: Pythagorean letter values following Åse Steinsland's teaching."
-    };
+      function syncButtons(lang) {
+        langButtons.forEach((button) => {
+          const isActive = button.dataset.lang === lang;
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      }
 
-    const removeLatinDiacritics = (input) =>
-      input
-        .normalize("NFD")
-        .replace(/\p{Diacritic}/gu, "")
-        .toUpperCase();
+      function createDNATrack(breakdown) {
+        const track = document.createElement('div');
+        track.className = 'dna-track';
+        breakdown.forEach((entry) => {
+          const node = document.createElement('div');
+          node.className = 'dna-node';
+          const valueEl = document.createElement('div');
+          valueEl.className = 'dna-value';
+          valueEl.textContent = entry.value;
+          const letterEl = document.createElement('div');
+          letterEl.className = 'dna-letter';
+          letterEl.textContent = entry.label;
+          node.appendChild(valueEl);
+          node.appendChild(letterEl);
+          track.appendChild(node);
+        });
+        return track;
+      }
 
-    const normalizeLatinName = (input) =>
-      removeLatinDiacritics(input)
-        .replace(/[-']/g, " ")
-        .replace(/Æ/gi, "AE")
-        .replace(/Ø/gi, "OE")
-        .replace(/Å/gi, "AA")
-        .replace(/\s+/g, " ")
-        .trim();
+      function renderResult(breakdown) {
+        const stories = NumberStories.stories[i18n.lang] || NumberStories.stories.en;
+        resultSection.hidden = false;
+        tableBody.innerHTML = '';
+        dnaContainer.innerHTML = '';
 
-    const normalizeRTLName = (input) =>
-      input
-        .replace(/ﻻ/g, "لا")
-        .replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g, "")
-        .replace(/[\u200F\u200E]/g, "")
-        .replace(/\s+/g, " ")
-        .trim();
+        breakdown.breakdown.forEach((entry) => {
+          const row = document.createElement('tr');
+          const letterCell = document.createElement('td');
+          letterCell.textContent = entry.label;
+          const valueCell = document.createElement('td');
+          valueCell.textContent = entry.value;
+          row.appendChild(letterCell);
+          row.appendChild(valueCell);
+          tableBody.appendChild(row);
+        });
 
-    const detectScript = (input) => /[\u0600-\u06FF]/.test(input) ? "rtl" : "latin";
+        totalCell.textContent = breakdown.total;
+        dnaContainer.appendChild(createDNATrack(breakdown.breakdown));
 
-    const expandLatinLetter = (letter) => LATIN_VALUES.has(letter)
-      ? [{ label: letter, value: LATIN_VALUES.get(letter) }]
-      : [];
-
-    const expandAbjadLetter = (letter) => ABJAD_VALUES.has(letter)
-      ? [{ label: letter, value: ABJAD_VALUES.get(letter) }]
-      : [];
-
-    const calculateLetterValues = (name, script) => {
-      const breakdown = [];
-      let total = 0;
-      const ignored = new Set();
-      const expand = script === "rtl" ? expandAbjadLetter : expandLatinLetter;
-
-      for (const char of name) {
-        if (char === " ") continue;
-        const contributions = expand(char);
-        if (!contributions.length) {
-          ignored.add(char);
+        methodBadge.textContent = breakdown.script === 'rtl' ? i18n.t('methodRTL') : i18n.t('methodLatin');
+        resultTitle.textContent = `${i18n.t('navName')}: ${breakdown.number}`;
+        resultStory.textContent = stories[breakdown.number] || '';
+        normalised.textContent = `${i18n.t('normalizedLabel')}: ${breakdown.normalized}`;
+        if (breakdown.ignored.length) {
+          ignored.textContent = `${i18n.t('ignoredSome')} ${breakdown.ignored.join(', ')}`;
+        } else {
+          ignored.textContent = i18n.t('ignoredNone');
         }
-        for (const { label, value } of contributions) {
-          breakdown.push({ letter: label, value });
-          total += value;
+        if (breakdown.steps.length > 1) {
+          reduction.textContent = `${i18n.t('reductionPath')} ${breakdown.steps.join(' → ')}`;
+        } else if ([11, 22, 33].includes(breakdown.number)) {
+          reduction.textContent = `${i18n.t('reductionPath')} ${i18n.t('reductionMaster')}`;
+        } else {
+          reduction.textContent = `${i18n.t('reductionPath')} ${i18n.t('reductionSingle')}`;
         }
       }
 
-      return { breakdown, total, ignored: Array.from(ignored) };
-    };
-
-    const reduceWithSteps = (value) => {
-      if (!value) {
-        return { number: 0, steps: [0] };
-      }
-
-      const steps = [value];
-      while (value > 9 && !MASTER_NUMBERS.has(value)) {
-        value = value
-          .toString()
-          .split("")
-          .map(Number)
-          .reduce((sum, digit) => sum + digit, 0);
-        steps.push(value);
-      }
-
-      return { number: value, steps };
-    };
-
-    const createDNANodes = (container, breakdown) => {
-      container.innerHTML = "";
-      breakdown.forEach(({ letter, value }) => {
-        const node = document.createElement("div");
-        node.className = "dna-node";
-
-        const valueEl = document.createElement("div");
-        valueEl.className = "dna-value";
-        valueEl.textContent = value;
-
-        const labelEl = document.createElement("div");
-        labelEl.className = "dna-label";
-        labelEl.textContent = letter;
-
-        node.appendChild(valueEl);
-        node.appendChild(labelEl);
-        container.appendChild(node);
-      });
-    };
-
-    const renderResult = ({
-      breakdown,
-      total,
-      number,
-      steps,
-      displayName,
-      ignored,
-      script
-    }) => {
-      const resultSection = document.querySelector("#result");
-      const template = document.querySelector("#resultTemplate");
-      const clone = template.content.cloneNode(true);
-
-      clone.querySelector('[data-id="resultTitle"]').textContent = STRINGS.title(number);
-      clone.querySelector('[data-id="normalizedName"]').textContent = STRINGS.processed(displayName);
-      clone.querySelector('[data-id="method"]').textContent = STRINGS.method(script);
-
-      const dnaContainer = clone.querySelector('[data-id="dna"]');
-      createDNANodes(dnaContainer, breakdown);
-
-      clone.querySelector('[data-id="letterHeading"]').textContent = STRINGS.letterHeading;
-      clone.querySelector('[data-id="valueHeading"]').textContent = STRINGS.valueHeading;
-      clone.querySelector('[data-id="totalLabel"]').textContent = STRINGS.totalLabel;
-      clone.querySelector('[data-id="total"]').textContent = total;
-
-      const tbody = clone.querySelector('[data-id="tableBody"]');
-      breakdown.forEach(({ letter, value }) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `<td>${letter}</td><td>${value}</td>`;
-        tbody.appendChild(row);
+      langButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const lang = button.dataset.lang;
+          i18n.setLanguage(lang);
+          syncButtons(lang);
+          const currentValue = document.getElementById('nameInput').value.trim();
+          if (currentValue) {
+            const breakdown = Numerology.breakdownName(currentValue);
+            renderResult(breakdown);
+          }
+        });
       });
 
-      const stepsElement = clone.querySelector('[data-id="reductionSteps"]');
-      if (steps.length > 1 || MASTER_NUMBERS.has(number)) {
-        stepsElement.textContent = STRINGS.reduction(steps);
-      } else {
-        stepsElement.textContent = STRINGS.reductionSingle;
-      }
-
-      const narrativeElement = clone.querySelector('[data-id="narrative"]');
-      const narrative = STRINGS.narrative[number];
-      if (narrative) {
-        narrativeElement.textContent = narrative;
-      } else {
-        narrativeElement.remove();
-      }
-
-      const ignoredElement = clone.querySelector('[data-id="ignored"]');
-      if (ignored.length) {
-        ignoredElement.textContent = STRINGS.ignored(ignored);
-      } else {
-        ignoredElement.textContent = STRINGS.noneIgnored;
-      }
-
-      resultSection.innerHTML = "";
-      resultSection.appendChild(clone);
-      resultSection.classList.add("active");
-      resultSection.setAttribute("dir", "ltr");
-      resultSection.setAttribute("lang", "en");
-    };
-
-    document.querySelector("#calculator").addEventListener("submit", (event) => {
-      event.preventDefault();
-      const input = document.querySelector("#nameInput");
-      const rawName = input.value.trim();
-
-      if (!rawName) {
-        alert("Please enter a name before calculating.");
-        return;
-      }
-
-      const script = detectScript(rawName);
-      const normalized = script === "rtl"
-        ? normalizeRTLName(rawName)
-        : normalizeLatinName(rawName);
-
-      if (!normalized) {
-        alert("Please enter a valid name.");
-        return;
-      }
-
-      const { breakdown, total, ignored } = calculateLetterValues(normalized, script);
-      const { number, steps } = reduceWithSteps(total);
-
-      renderResult({
-        breakdown,
-        total,
-        number,
-        steps,
-        displayName: normalized,
-        ignored,
-        script
+      i18n.onChange((lang) => {
+        syncButtons(lang);
       });
-    });
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const value = document.getElementById('nameInput').value.trim();
+        if (!value) {
+          resultSection.hidden = true;
+          return;
+        }
+
+        const autoLang = Numerology.inferLanguageFromName(value);
+        if (autoLang && autoLang !== i18n.lang) {
+          i18n.setLanguage(autoLang);
+          syncButtons(autoLang);
+        }
+
+        const breakdown = Numerology.breakdownName(value);
+        renderResult(breakdown);
+      });
+    })();
   </script>
 </body>
 </html>

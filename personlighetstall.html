@@ -3,334 +3,344 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Personality Number (Personlighetstall) Guide</title>
-  <style>
-    :root {
-      color-scheme: light dark;
-      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-      --accent: #f26b21;
-      --accent-strong: #d95513;
-      --surface: rgba(255, 255, 255, 0.94);
-      --text: #2f2a28;
-      --subtle: #6b4f3f;
-      --border: rgba(79, 59, 48, 0.18);
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: clamp(1.2rem, 2vw, 2.6rem);
-      background:
-        radial-gradient(circle at 18% 18%, rgba(255, 230, 204, 0.55), transparent 55%),
-        radial-gradient(circle at 82% 4%, rgba(255, 174, 107, 0.28), transparent 50%),
-        linear-gradient(135deg, #fff9f4 0%, #ffe9d8 52%, #fff2e3 100%);
-      color: var(--text);
-    }
-
-    main {
-      position: relative;
-      background: var(--surface);
-      border-radius: 26px;
-      box-shadow: 0 28px 58px rgba(173, 85, 28, 0.16);
-      padding: clamp(1.9rem, 3vw, 3.1rem);
-      width: min(940px, 95vw);
-      display: flex;
-      flex-direction: column;
-      gap: 1.85rem;
-      overflow: hidden;
-    }
-
-    main::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at top right, rgba(255, 255, 255, 0.9), transparent 50%),
-        radial-gradient(circle at -10% 120%, rgba(242, 107, 33, 0.18), transparent 65%);
-      mix-blend-mode: soft-light;
-      pointer-events: none;
-    }
-
-    header {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      gap: 0.9rem;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .brand-logo {
-      width: 60px;
-      height: 60px;
-      border-radius: 20px;
-      background: linear-gradient(140deg, var(--accent) 0%, #ff7b32 60%, var(--accent-strong) 100%);
-      display: grid;
-      place-items: center;
-      box-shadow: 0 12px 28px rgba(242, 107, 33, 0.28);
-    }
-
-    .brand-logo svg {
-      width: 44px;
-      height: 44px;
-    }
-
-    .brand-details h1 {
-      margin: 0;
-      font-size: clamp(2rem, 4vw, 2.7rem);
-      letter-spacing: -0.02em;
-    }
-
-    .brand-details p {
-      margin: 0.35rem 0 0;
-      color: var(--subtle);
-      line-height: 1.65;
-      font-size: 1.05rem;
-    }
-
-    section {
-      position: relative;
-      z-index: 1;
-      border: 1px solid rgba(242, 107, 33, 0.14);
-      border-radius: 22px;
-      padding: clamp(1.4rem, 2vw, 1.9rem);
-      background: rgba(255, 247, 237, 0.85);
-      backdrop-filter: blur(6px);
-      display: grid;
-      gap: 0.75rem;
-    }
-
-    section h2 {
-      margin: 0;
-      font-size: 1.6rem;
-    }
-
-    section p {
-      margin: 0;
-      line-height: 1.75;
-      color: var(--subtle);
-    }
-
-    .step-list {
-      margin: 0;
-      padding-left: 1.1rem;
-      display: grid;
-      gap: 0.75rem;
-      color: var(--subtle);
-    }
-
-    .insight-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-    }
-
-    .insight-card {
-      border-radius: 18px;
-      border: 1px solid rgba(242, 107, 33, 0.16);
-      background: rgba(255, 255, 255, 0.92);
-      padding: 1.1rem;
-      display: grid;
-      gap: 0.45rem;
-      box-shadow: 0 18px 32px rgba(242, 107, 33, 0.12);
-    }
-
-    .insight-card h3 {
-      margin: 0;
-      font-size: 1.2rem;
-      color: var(--accent-strong);
-    }
-
-    .actions {
-      display: grid;
-      gap: 0.75rem;
-      margin-top: 0.5rem;
-    }
-
-    .cta {
-      width: 100%;
-      padding: 1rem;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 16px;
-      background: linear-gradient(135deg, var(--accent) 0%, #ff7f32 55%, var(--accent-strong) 100%);
-      color: #fff;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
-      text-decoration: none;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.45rem;
-    }
-
-    .cta.secondary {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 244, 235, 0.92));
-      color: var(--accent-strong);
-      border: 1px solid rgba(242, 107, 33, 0.32);
-    }
-
-    .cta:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 16px 32px rgba(242, 107, 33, 0.26);
-    }
-
-    .calculator-nav {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      gap: 0.8rem;
-    }
-
-    .calculator-nav h2 {
-      margin: 0;
-      font-size: 1.15rem;
-      color: var(--subtle);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .calculator-links {
-      display: grid;
-      gap: 0.6rem;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    }
-
-    .calculator-links a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.85rem 1.05rem;
-      border-radius: 14px;
-      border: 1px solid rgba(242, 107, 33, 0.2);
-      background: rgba(255, 237, 213, 0.55);
-      color: inherit;
-      font-weight: 600;
-      text-decoration: none;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    .calculator-links a span:last-child {
-      font-size: 1.35rem;
-    }
-
-    .calculator-links a:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 26px rgba(242, 107, 33, 0.16);
-    }
-
-    footer {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      font-size: 0.92rem;
-      color: var(--subtle);
-    }
-
-    @media (max-width: 720px) {
-      main {
-        border-radius: 22px;
-        padding: 1.6rem;
-      }
-
-      .brand {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      section {
-        padding: 1.25rem;
-      }
-    }
-  </style>
+  <title>Personality number calculator – Åse Steinsland</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
 </head>
 <body>
-  <main>
-    <header>
-      <div class="brand">
-        <div class="brand-logo" aria-hidden="true">
-          <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
-            <circle cx="32" cy="32" r="30" fill="rgba(255, 255, 255, 0.16)"></circle>
-            <path d="M18 44L30.5 20h3L46 44h-6.1l-2.3-5.2H26.4L24 44H18zm14.6-10.5h7L36.1 25z" fill="#fff"></path>
-          </svg>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="branding">
+        <div class="brand-mark">ÅS</div>
+        <div class="brand-copy">
+          <h1 data-i18n-key="title">Personality number calculator</h1>
+          <p data-i18n-key="subtitle">Consonants reveal your public expression – following Åse Steinsland’s method.</p>
         </div>
-        <div class="brand-details">
-          <h1>Personality Number (Personlighetstall)</h1>
-          <p>Åse Steinsland’s consonant-focused formula reveals the first impression, style and protective
-            armour a name presents to the world.</p>
-        </div>
+      </div>
+      <nav class="primary-nav">
+        <a href="navnetall.html" data-i18n-key="navName">Name number</a>
+        <a href="hjertetall.html" data-i18n-key="navSoul">Soul urge</a>
+        <a href="personlighetstall.html" data-i18n-key="navPersonality">Personality</a>
+        <a href="skjebnetall.html" data-i18n-key="navDestiny">Destiny</a>
+        <a href="modenhetstall.html" data-i18n-key="navMaturity">Maturity</a>
+        <a href="personlige-ar.html" data-i18n-key="navPersonalYear">Personal year</a>
+        <a href="index.html" data-i18n-key="navHome">Overview</a>
+      </nav>
+      <div class="language-switch" role="group" aria-label="Language selector">
+        <button type="button" data-lang="en" aria-pressed="true">English</button>
+        <button type="button" data-lang="no" aria-pressed="false">Norsk</button>
+        <button type="button" data-lang="fa" aria-pressed="false">فارسی</button>
       </div>
     </header>
 
-    <section class="overview">
-      <h2>Why the personality number matters</h2>
-      <p>The personality number shapes how others perceive you before they know your inner story. By
-        translating consonant rhythm into digits, we spotlight the traits, aesthetics and boundaries
-        that influence social encounters.</p>
-    </section>
-
-    <section class="method">
-      <h2>How we calculate Personlighetstall</h2>
-      <ol class="step-list">
-        <li>Normalise the name into Åse’s Western alphabet, honouring special Norwegian letters and
-          Abjad consonants from right-to-left scripts.</li>
-        <li>Collect consonants (including Y when it sounds like a consonant) and map them to the classic
-          1–9 scale.</li>
-        <li>Add the consonant values together, reducing the total until a single digit remains unless the
-          sum is a master number 11, 22 or 33.</li>
-        <li>Interpret the resulting frequency to understand how the world experiences the name at first
-          glance.</li>
-      </ol>
-    </section>
-
-    <section class="insights">
-      <h2>Quick narratives for each personality</h2>
-      <div class="insight-grid">
-        <div class="insight-card"><h3>1</h3><p>Confident pioneer, presenting as bold, decisive and self-directed.</p></div>
-        <div class="insight-card"><h3>2</h3><p>Graceful diplomat, appearing cooperative, considerate and gentle.</p></div>
-        <div class="insight-card"><h3>3</h3><p>Magnetic storyteller, radiating charm, wit and artistic flair.</p></div>
-        <div class="insight-card"><h3>4</h3><p>Grounded guardian, offering reliability, structure and steadiness.</p></div>
-        <div class="insight-card"><h3>5</h3><p>Adventurous change-maker, projecting freedom, spontaneity and curiosity.</p></div>
-        <div class="insight-card"><h3>6</h3><p>Warm harmoniser, giving nurturing, aesthetic and welcoming vibes.</p></div>
-        <div class="insight-card"><h3>7</h3><p>Mysterious sage, showing depth, intellect and contemplative poise.</p></div>
-        <div class="insight-card"><h3>8</h3><p>Commanding executive, signalling authority, ambition and influence.</p></div>
-        <div class="insight-card"><h3>9</h3><p>Humanitarian muse, emanating compassion, artistry and global awareness.</p></div>
-        <div class="insight-card"><h3>11</h3><p>Luminous guide, shining with visionary presence and intuitive magnetism.</p></div>
-        <div class="insight-card"><h3>22</h3><p>Master builder, presenting strategic calm and capable leadership.</p></div>
-        <div class="insight-card"><h3>33</h3><p>Radiant mentor, offering generous guidance and heartfelt inspiration.</p></div>
+    <section class="page-section card">
+      <div class="result-summary">
+        <h2 data-i18n-key="methodHeading">Åse’s consonant lens</h2>
+        <p data-i18n-key="methodCopy">Remove the vowels from your birth name. The remaining consonants reveal how others perceive your tone. Y becomes a consonant when paired with a vowel.</p>
+        <div class="grid-two">
+          <a class="primary-button" href="modenhetstall.html" data-i18n-key="ctaNext">Learn more?</a>
+          <a class="secondary-button" href="hjertetall.html" data-i18n-key="ctaBack">Back to soul urge</a>
+        </div>
       </div>
     </section>
 
-    <section class="cta-block">
-      <h2>Ready to calculate?</h2>
-      <p>Launch the Personlighetstall calculator to turn consonant architecture into Åse’s Western
-        numerology insights.</p>
-      <div class="actions">
-        <a class="cta" href="https://www.numerologensverden.no/kalkulator-personlighetstall-a/" target="_blank" rel="noopener">Launch
-          calculator</a>
-        <a class="cta secondary" href="https://www.numerologensverden.no/" target="_blank" rel="noopener">Learn more?</a>
+    <section class="page-section card" id="calculator">
+      <form class="form-grid" id="personality-form">
+        <div>
+          <label for="nameInput" data-i18n-key="labelName">Full birth name</label>
+          <input id="nameInput" type="text" autocomplete="name" data-i18n-key="placeholderName" data-i18n-attr="placeholder">
+        </div>
+        <div>
+          <button type="submit" class="primary" data-i18n-key="btnCalculate">Calculate personality number</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="page-section card" id="result" hidden>
+      <div class="result-summary">
+        <span class="badge" id="methodBadge"></span>
+        <h2 id="resultTitle"></h2>
+        <p id="resultStory"></p>
+        <p id="normalised"></p>
+        <p id="ignored"></p>
+        <p id="reduction"></p>
+      </div>
+      <div id="dna"></div>
+      <div class="table-responsive">
+        <table class="breakdown">
+          <thead>
+            <tr>
+              <th data-i18n-key="tableLetter">Consonant</th>
+              <th data-i18n-key="tableValue">Value</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+          <tfoot>
+            <tr>
+              <th data-i18n-key="tableTotal">Total</th>
+              <th id="tableTotalValue"></th>
+            </tr>
+          </tfoot>
+        </table>
       </div>
     </section>
 
-    <nav class="calculator-nav" aria-label="Numerology calculators">
-      <h2>Explore calculators</h2>
-      <div class="calculator-links">
-        <a href="navnetall.html"><span>Name number</span><span>→</span></a>
-        <a href="skjebnetall.html"><span>Destiny number</span><span>→</span></a>
-        <a href="hjertetall.html"><span>Soul urge number</span><span>→</span></a>
-        <a href="modenhetstall.html"><span>Maturity number</span><span>→</span></a>
-        <a href="personlige-ar.html"><span>Personal year</span><span>→</span></a>
+    <section class="page-section card">
+      <div class="result-summary">
+        <h2 data-i18n-key="nextHeading">Blend heart and personality</h2>
+        <p data-i18n-key="nextCopy">Combine this number with the soul urge to balance inner motive and outward impression before moving to destiny and maturity calculations.</p>
+        <div class="grid-two">
+          <a class="primary-button" href="modenhetstall.html" data-i18n-key="nextMaturity">Maturity calculator</a>
+          <a class="secondary-button" href="index.html" data-i18n-key="ctaOverview">Back to overview</a>
+        </div>
       </div>
-    </nav>
+    </section>
 
-    <footer>© Åse Steinsland</footer>
-  </main>
+    <footer class="page-footer">
+      <span>© <span data-i18n-key="copyright">Åse Karin Steinsland. All rights reserved.</span></span>
+      <a href="https://www.numerologensverden.no/regn-ut-navnetall/" target="_blank" rel="noopener" data-i18n-key="sourceLink">Read Åse’s full guide</a>
+    </footer>
+  </div>
+
+  <script src="assets/i18n.js"></script>
+  <script src="assets/numerology.js"></script>
+  <script src="assets/number-stories.js"></script>
+  <script>
+    (function () {
+      const form = document.getElementById('personality-form');
+      const resultSection = document.getElementById('result');
+      const tableBody = document.getElementById('tableBody');
+      const dnaContainer = document.getElementById('dna');
+      const methodBadge = document.getElementById('methodBadge');
+      const resultTitle = document.getElementById('resultTitle');
+      const resultStory = document.getElementById('resultStory');
+      const normalised = document.getElementById('normalised');
+      const ignored = document.getElementById('ignored');
+      const reduction = document.getElementById('reduction');
+      const totalCell = document.getElementById('tableTotalValue');
+      const langButtons = document.querySelectorAll('.language-switch button[data-lang]');
+
+      const translations = {
+        en: {
+          strings: {
+            title: 'Personality number calculator',
+            subtitle: 'Consonants reveal your public expression – following Åse Steinsland’s method.',
+            navName: 'Name number',
+            navSoul: 'Soul urge',
+            navPersonality: 'Personality',
+            navDestiny: 'Destiny',
+            navMaturity: 'Maturity',
+            navPersonalYear: 'Personal year',
+            navHome: 'Overview',
+            methodHeading: 'Åse’s consonant lens',
+            methodCopy: 'Remove the vowels from your birth name. The remaining consonants reveal how others perceive your tone. Y becomes a consonant when paired with a vowel.',
+            ctaNext: 'Learn more?',
+            ctaBack: 'Back to soul urge',
+            labelName: 'Full birth name',
+            placeholderName: 'Enter the complete name given at birth',
+            btnCalculate: 'Calculate personality number',
+            tableLetter: 'Consonant',
+            tableValue: 'Value',
+            tableTotal: 'Total',
+            normalizedLabel: 'Consonants counted for calculation',
+            nextHeading: 'Blend heart and personality',
+            nextCopy: 'Combine this number with the soul urge to balance inner motive and outward impression before moving to destiny and maturity calculations.',
+            nextMaturity: 'Maturity calculator',
+            ctaOverview: 'Back to overview',
+            copyright: 'Åse Karin Steinsland. All rights reserved.',
+            sourceLink: 'Read Åse’s full guide',
+            methodLatin: 'Method: Consonants from Åse’s Pythagorean chart.',
+            methodRTL: 'Method: Abjad consonants translated to Åse’s reduction.',
+            ignoredNone: 'All characters were counted in the calculation.',
+            ignoredSome: 'Ignored characters:',
+            reductionPath: 'Reduction path:',
+            reductionMaster: 'Master number – no further reduction applied.',
+            reductionSingle: 'Already a single digit.',
+          },
+        },
+        no: {
+          strings: {
+            title: 'Personlighetstallkalkulator',
+            subtitle: 'Konsonanter viser hvordan du oppfattes – etter Åse Steinslands metode.',
+            navName: 'Navnetall',
+            navSoul: 'Hjertetall',
+            navPersonality: 'Personlighetstall',
+            navDestiny: 'Skjebnetall',
+            navMaturity: 'Modenhetstall',
+            navPersonalYear: 'Personlige år',
+            navHome: 'Oversikt',
+            methodHeading: 'Åses konsonantblikk',
+            methodCopy: 'Fjern vokalene fra fødenavnet. Konsonantene som står igjen viser hvordan andre opplever din energi. Y blir en konsonant når den står sammen med en vokal.',
+            ctaNext: 'Learn more?',
+            ctaBack: 'Tilbake til hjertetall',
+            labelName: 'Fullt fødenavn',
+            placeholderName: 'Oppgi navnet slik det står i fødselsattesten',
+            btnCalculate: 'Beregn personlighetstallet',
+            tableLetter: 'Konsonant',
+            tableValue: 'Verdi',
+            tableTotal: 'Sum',
+            normalizedLabel: 'Konsonanter brukt i beregningen',
+            nextHeading: 'Balanser hjerte og personlighet',
+            nextCopy: 'Kombiner dette tallet med hjertetallet for å avstemme indre motivasjon og ytre uttrykk før du går videre til skjebne- og modenhetstall.',
+            nextMaturity: 'Modenhetstall-kalkulator',
+            ctaOverview: 'Tilbake til oversikten',
+            copyright: 'Åse Karin Steinsland. Alle rettigheter reservert.',
+            sourceLink: 'Les hele veiledningen hos Åse',
+            methodLatin: 'Metode: Konsonanter fra Åses pythagoriske tabell.',
+            methodRTL: 'Metode: Abjad-konsonanter oversatt til Åses reduksjon.',
+            ignoredNone: 'Alle tegn ble med i beregningen.',
+            ignoredSome: 'Ignorerte tegn:',
+            reductionPath: 'Reduksjonsrekkefølge:',
+            reductionMaster: 'Mestertall – ikke redusert videre.',
+            reductionSingle: 'Allerede ett siffer.',
+          },
+        },
+        fa: {
+          strings: {
+            title: 'ماشین‌حساب عدد شخصیت',
+            subtitle: 'صامت‌ها بیان عمومی شما را نشان می‌دهند – مطابق روش آسه استینسلاند.',
+            navName: 'عدد نام',
+            navSoul: 'اشتیاق قلبی',
+            navPersonality: 'عدد شخصیت',
+            navDestiny: 'عدد سرنوشت',
+            navMaturity: 'عدد بلوغ',
+            navPersonalYear: 'سال شخصی',
+            navHome: 'مرور کلی',
+            methodHeading: 'دیدگاه صامتی آسه',
+            methodCopy: 'واکه‌ها را از نام تولد حذف کنید. صامت‌های باقی‌مانده نشان می‌دهند دیگران چه انرژی از شما حس می‌کنند. وقتی Y کنار واکه قرار گیرد، صامت حساب می‌شود.',
+            ctaNext: 'Learn more?',
+            ctaBack: 'بازگشت به اشتیاق قلبی',
+            labelName: 'نام کامل هنگام تولد',
+            placeholderName: 'نام درج‌شده در گواهی تولد را وارد کنید',
+            btnCalculate: 'محاسبه عدد شخصیت',
+            tableLetter: 'صامت',
+            tableValue: 'ارزش',
+            tableTotal: 'جمع',
+            normalizedLabel: 'صامت‌های به‌کاررفته در محاسبه',
+            nextHeading: 'هماهنگی قلب و شخصیت',
+            nextCopy: 'این عدد را با اشتیاق قلبی ترکیب کنید تا پیش از ورود به اعداد سرنوشت و بلوغ، توازن انگیزه درونی و جلوه بیرونی را ببینید.',
+            nextMaturity: 'ماشین‌حساب عدد بلوغ',
+            ctaOverview: 'بازگشت به مرور کلی',
+            copyright: 'آسه کارین استینسلاند. کلیه حقوق محفوظ است.',
+            sourceLink: 'راهنمای کامل آسه را بخوانید',
+            methodLatin: 'روش: صامت‌ها بر اساس جدول فیثاغورثی آسه.',
+            methodRTL: 'روش: صامت‌های ابجد با کاهش ویژه آسه.',
+            ignoredNone: 'همه‌ی حروف در محاسبه استفاده شدند.',
+            ignoredSome: 'حروف نادیده گرفته‌شده:',
+            reductionPath: 'مسیر کاهش:',
+            reductionMaster: 'عدد استادی – کاهش بیشتر ندارد.',
+            reductionSingle: 'همین حالا یک رقم واحد است.',
+          },
+        },
+      };
+
+      const i18n = createI18n({
+        translations,
+        defaultLang: 'en',
+        directionMap: { fa: 'rtl' },
+      });
+
+      function syncButtons(lang) {
+        langButtons.forEach((button) => {
+          const isActive = button.dataset.lang === lang;
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      }
+
+      function createDNATrack(breakdown) {
+        const track = document.createElement('div');
+        track.className = 'dna-track';
+        breakdown.forEach((entry) => {
+          const node = document.createElement('div');
+          node.className = 'dna-node';
+          const valueEl = document.createElement('div');
+          valueEl.className = 'dna-value';
+          valueEl.textContent = entry.value;
+          const letterEl = document.createElement('div');
+          letterEl.className = 'dna-letter';
+          letterEl.textContent = entry.label;
+          node.appendChild(valueEl);
+          node.appendChild(letterEl);
+          track.appendChild(node);
+        });
+        return track;
+      }
+
+      function renderResult(breakdown) {
+        const stories = NumberStories.stories[i18n.lang] || NumberStories.stories.en;
+        resultSection.hidden = false;
+        tableBody.innerHTML = '';
+        dnaContainer.innerHTML = '';
+
+        breakdown.breakdown.forEach((entry) => {
+          const row = document.createElement('tr');
+          const letterCell = document.createElement('td');
+          letterCell.textContent = entry.label;
+          const valueCell = document.createElement('td');
+          valueCell.textContent = entry.value;
+          row.appendChild(letterCell);
+          row.appendChild(valueCell);
+          tableBody.appendChild(row);
+        });
+
+        totalCell.textContent = breakdown.total;
+        dnaContainer.appendChild(createDNATrack(breakdown.breakdown));
+
+        methodBadge.textContent = breakdown.script === 'rtl' ? i18n.t('methodRTL') : i18n.t('methodLatin');
+        resultTitle.textContent = `${i18n.t('navPersonality')}: ${breakdown.number}`;
+        resultStory.textContent = stories[breakdown.number] || '';
+        normalised.textContent = `${i18n.t('normalizedLabel')}: ${breakdown.normalized}`;
+        if (breakdown.ignored.length) {
+          ignored.textContent = `${i18n.t('ignoredSome')} ${breakdown.ignored.join(', ')}`;
+        } else {
+          ignored.textContent = i18n.t('ignoredNone');
+        }
+        if (breakdown.steps.length > 1) {
+          reduction.textContent = `${i18n.t('reductionPath')} ${breakdown.steps.join(' → ')}`;
+        } else if ([11, 22, 33].includes(breakdown.number)) {
+          reduction.textContent = `${i18n.t('reductionPath')} ${i18n.t('reductionMaster')}`;
+        } else {
+          reduction.textContent = `${i18n.t('reductionPath')} ${i18n.t('reductionSingle')}`;
+        }
+      }
+
+      langButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const lang = button.dataset.lang;
+          i18n.setLanguage(lang);
+          syncButtons(lang);
+          const currentValue = document.getElementById('nameInput').value.trim();
+          if (currentValue) {
+            const breakdown = Numerology.breakdownName(currentValue, { mode: 'consonant' });
+            renderResult(breakdown);
+          }
+        });
+      });
+
+      i18n.onChange((lang) => {
+        syncButtons(lang);
+      });
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const value = document.getElementById('nameInput').value.trim();
+        if (!value) {
+          resultSection.hidden = true;
+          return;
+        }
+
+        const autoLang = Numerology.inferLanguageFromName(value);
+        if (autoLang && autoLang !== i18n.lang) {
+          i18n.setLanguage(autoLang);
+          syncButtons(autoLang);
+        }
+
+        const breakdown = Numerology.breakdownName(value, { mode: 'consonant' });
+        renderResult(breakdown);
+      });
+    })();
+  </script>
 </body>
 </html>
