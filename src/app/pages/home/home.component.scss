@@ -12,6 +12,19 @@
   padding: clamp(2rem, 1.8rem + 1vw, 3.5rem);
 }
 
+.hero-layout {
+  --wizard-order: 2;
+  --copy-order: 1;
+}
+
+.wizard-column {
+  order: var(--wizard-order);
+}
+
+.hero-copy-column {
+  order: var(--copy-order);
+}
+
 .hero-copy {
   display: flex;
   flex-direction: column;
@@ -47,7 +60,6 @@
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
 }
 
 .progress-head {
@@ -138,12 +150,11 @@
   border-radius: 20px;
   border: 1px solid transparent;
   background: color-mix(in srgb, var(--brand-surface) 88%, rgba(58, 201, 178, 0.08));
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 .step-list li.active {
   border-color: rgba(242, 124, 54, 0.32);
-  transform: translateY(-2px);
 }
 
 .step-list .index {
@@ -298,7 +309,6 @@
   border: 1px solid var(--brand-border);
   border-radius: 20px;
   padding: 1.5rem;
-  background: var(--brand-surface);
   background: color-mix(in srgb, var(--brand-surface) 90%, var(--brand-surface-glow));
   min-height: 220px;
   position: relative;
@@ -397,7 +407,61 @@
   border-radius: 16px;
   padding: 1.25rem;
   background: var(--brand-surface);
-  box-shadow: 0 18px 32px rgba(16, 28, 51, 0.05);
+}
+
+@media (max-width: 992px) {
+  .hero-layout {
+    --wizard-order: 1;
+    --copy-order: 2;
+  }
+
+  .hero-card {
+    padding: 1.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .wizard-head {
+    flex-direction: column;
+  }
+
+  .snapshot-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-card {
+    padding: 1.5rem;
+  }
+
+  .progress-card {
+    padding: 1.25rem;
+  }
+
+  .step-list li {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .wizard {
+    padding: 1.25rem;
+    border-radius: 22px;
+  }
+
+  .wizard-nav {
+    flex-direction: column;
+  }
+
+  .result-card {
+    min-height: unset;
+    padding: 1.25rem;
+  }
+
+  .dna-node {
+    min-width: 52px;
+  }
 }
 
 .story-card h3 {

@@ -1,8 +1,8 @@
 <div class="home-screen">
   <section class="hero container">
     <div class="card hero-card">
-      <div class="row g-5 align-items-start">
-        <div class="col-lg-5 hero-copy">
+      <div class="row g-5 align-items-start hero-layout">
+        <div class="col-lg-5 hero-copy hero-copy-column">
           <p class="hero-eyebrow">Åse Steinsland · Numerology Studio</p>
           <h1 class="hero-title">Hello friend</h1>
           <p class="hero-lead">
@@ -42,7 +42,7 @@
             </li>
           </ul>
         </div>
-        <div class="col-lg-7">
+        <div class="col-lg-7 wizard-column">
           <form class="wizard" [formGroup]="form" novalidate>
             <header class="wizard-head">
               <span class="pill">Step {{ currentStep + 1 }} of {{ steps.length }}</span>

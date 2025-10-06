@@ -203,6 +203,18 @@ main {
   border-radius: 16px;
 }
 
+@media (max-width: 576px) {
+  .data-table th,
+  .data-table td {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .data-table {
+    font-size: 0.85rem;
+  }
+}
+
 .center {
   text-align: center;
 }
