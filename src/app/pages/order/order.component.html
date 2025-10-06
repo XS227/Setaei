@@ -1,0 +1,23 @@
+<div class="order-screen container">
+  <section class="card order-hero">
+    <span class="pill">Order your session</span>
+    <h1>Choose the right numerology package</h1>
+    <p class="muted">
+      Åse prepares each analysis manually. Select the package that fits your intentions and we will open the official order page
+      on numerologensverden.no.
+    </p>
+  </section>
+
+  <section class="card order-packages">
+    <div class="package-grid">
+      <article class="package-card" *ngFor="let pkg of packages">
+        <h2>{{ pkg.title }}</h2>
+        <p>{{ pkg.body }}</p>
+        <a class="primary-button" [href]="pkg.url" target="_blank" rel="noopener">Go to order page</a>
+      </article>
+    </div>
+    <p class="muted footnote">
+      You will complete payment and delivery directly with Åse’s team on the official website.
+    </p>
+  </section>
+</div>

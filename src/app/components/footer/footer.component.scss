@@ -1,0 +1,18 @@
+.site-footer {
+  padding: 3rem 0 4rem;
+  color: var(--brand-ink-muted);
+  font-size: 0.95rem;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.signature {
+  font-weight: 600;
+  color: var(--brand-accent-strong);
+}
