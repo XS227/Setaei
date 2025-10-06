@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Destiny Number (Skjebnetall) Calculator</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #f1f5f9 0%, #e0f2fe 100%);
+      color: #0f172a;
+    }
+
+    main {
+      background: rgba(255, 255, 255, 0.94);
+      border-radius: 20px;
+      box-shadow: 0 30px 60px rgba(15, 23, 42, 0.18);
+      padding: clamp(1.5rem, 3vw, 2.75rem);
+      width: min(820px, 94vw);
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 2.7rem);
+      text-align: center;
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      margin: 0.75rem 0 0;
+      text-align: center;
+      line-height: 1.65;
+      color: #475569;
+    }
+
+    form {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .field-group {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    select,
+    input[type="number"] {
+      width: 100%;
+      font-size: 1.05rem;
+      padding: 0.75rem 1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(15, 23, 42, 0.18);
+      box-sizing: border-box;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      appearance: none;
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    select:focus,
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #0ea5e9;
+      box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.22);
+    }
+
+    .calendar-note {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    .date-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.8rem;
+    }
+
+    button[type="submit"],
+    .cta {
+      margin-top: 0.4rem;
+      width: 100%;
+      padding: 0.95rem;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #0ea5e9, #6366f1);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      text-decoration: none;
+      text-align: center;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    button[type="submit"]:hover,
+    .cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 28px rgba(14, 165, 233, 0.28);
+    }
+
+    button[type="submit"]:active,
+    .cta:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    section.result {
+      display: none;
+      border-radius: 18px;
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      padding: 1.6rem;
+      background: rgba(241, 245, 249, 0.82);
+    }
+
+    section.result.active {
+      display: grid;
+      gap: 1.6rem;
+    }
+
+    .summary h2 {
+      margin: 0;
+      font-size: 1.65rem;
+    }
+
+    .summary p {
+      margin: 0.5rem 0 0;
+      line-height: 1.6;
+    }
+
+    .dna-visual {
+      display: flex;
+      gap: 1.2rem;
+      overflow-x: auto;
+      padding-bottom: 0.2rem;
+    }
+
+    .dna-node {
+      position: relative;
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      min-width: 68px;
+    }
+
+    .dna-node::before,
+    .dna-node::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      width: 3px;
+      height: 30%;
+      background: linear-gradient(180deg, rgba(14, 165, 233, 0.2), rgba(99, 102, 241, 0.5));
+      border-radius: 999px;
+      transform: translateX(-50%);
+    }
+
+    .dna-node::before {
+      top: -20px;
+    }
+
+    .dna-node::after {
+      bottom: -20px;
+    }
+
+    .dna-node:first-child::before,
+    .dna-node:last-child::after {
+      display: none;
+    }
+
+    .dna-value {
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(14, 165, 233, 0.85), rgba(79, 70, 229, 0.75));
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.2rem;
+      box-shadow: 0 8px 16px rgba(79, 70, 229, 0.35);
+    }
+
+    .dna-label {
+      font-size: 0.9rem;
+      color: #334155;
+      text-align: center;
+    }
+
+    .breakdown {
+      border-radius: 14px;
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+    }
+
+    .breakdown table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+    }
+
+    .breakdown th,
+    .breakdown td {
+      padding: 0.6rem 0.85rem;
+      text-align: start;
+    }
+
+    .breakdown thead {
+      background: rgba(14, 165, 233, 0.14);
+      font-weight: 600;
+    }
+
+    .breakdown tbody tr:nth-child(even) {
+      background: rgba(148, 163, 184, 0.16);
+    }
+
+    .steps,
+    .narrative,
+    .calendar-info,
+    .warning {
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    .links {
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: radial-gradient(circle at top, #0f172a, #020617 75%);
+        color: #e2e8f0;
+      }
+
+      main {
+        background: rgba(15, 23, 42, 0.92);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+      }
+
+      header p {
+        color: #cbd5f5;
+      }
+
+      select,
+      input[type="number"] {
+        background: rgba(15, 23, 42, 0.72);
+        border-color: rgba(148, 163, 184, 0.35);
+        color: inherit;
+      }
+
+      section.result {
+        background: rgba(15, 23, 42, 0.8);
+        border-color: rgba(148, 163, 184, 0.28);
+      }
+
+      .dna-label {
+        color: #e2e8f0;
+      }
+
+      .breakdown thead {
+        background: rgba(14, 165, 233, 0.25);
+      }
+
+      .breakdown tbody tr:nth-child(even) {
+        background: rgba(148, 163, 184, 0.18);
+      }
+
+      footer {
+        color: #94a3b8;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Destiny Number (Skjebnetall) Calculator</h1>
+      <p>
+        Reduce your birth date to uncover your life path vibration. Choose your cultural calendar –
+        we will translate it to the Gregorian system and honour master numbers 11, 22 and 33.
+      </p>
+    </header>
+
+    <form id="destinyForm" autocomplete="off">
+      <div class="field-group">
+        <label for="calendarSelect">Calendar system</label>
+        <select id="calendarSelect" name="calendar">
+          <option value="gregorian" selected>Gregorian (Western)</option>
+          <option value="solarHijri">Solar Hijri (Persian)</option>
+          <option value="hijri">Hijri (Islamic)</option>
+        </select>
+        <p class="calendar-note">Enter the date numbers from your chosen calendar. We will convert them
+          before calculating.</p>
+      </div>
+
+      <div class="date-grid">
+        <div class="field-group">
+          <label for="dayInput">Day</label>
+          <input id="dayInput" name="day" type="number" min="1" max="31" placeholder="DD" required>
+        </div>
+        <div class="field-group">
+          <label for="monthInput">Month</label>
+          <input id="monthInput" name="month" type="number" min="1" max="13" placeholder="MM" required>
+        </div>
+        <div class="field-group">
+          <label for="yearInput">Year</label>
+          <input id="yearInput" name="year" type="number" min="1" placeholder="YYYY" required>
+        </div>
+      </div>
+
+      <button type="submit">Calculate destiny number</button>
+    </form>
+
+    <section id="result" class="result" aria-live="polite"></section>
+
+    <div class="links">
+      <a class="cta" href="https://www.numerologensverden.no/kalkulator-skjebnetall-a/" target="_blank" rel="noopener">Vit mer?</a>
+      <a class="cta" href="navnetall.html">Back to name number (Navnetall) calculator</a>
+    </div>
+
+    <footer>© Åse Steinsland</footer>
+  </main>
+
+  <template id="resultTemplate">
+    <div class="summary">
+      <h2 data-id="resultTitle"></h2>
+      <p data-id="original"></p>
+      <p data-id="converted"></p>
+    </div>
+
+    <div class="dna-visual" data-id="dna"></div>
+
+    <div class="breakdown">
+      <table>
+        <thead>
+          <tr>
+            <th data-id="componentHeading"></th>
+            <th data-id="digitsHeading"></th>
+            <th data-id="sumHeading"></th>
+          </tr>
+        </thead>
+        <tbody data-id="tableBody"></tbody>
+        <tfoot>
+          <tr>
+            <th data-id="totalLabel"></th>
+            <th colspan="2" data-id="total"></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <p class="steps" data-id="steps"></p>
+    <p class="narrative" data-id="narrative"></p>
+    <p class="calendar-info" data-id="calendar"></p>
+    <p class="warning" data-id="warning"></p>
+  </template>
+
+  <script>
+    const MASTER_NUMBERS = new Set([11, 22, 33]);
+
+    const LOCALE_STRINGS = {
+      en: {
+        title: (value) => `Destiny number: ${value}`,
+        original: (date) => `You entered: ${date}`,
+        converted: (date, calendar) => calendar === "gregorian" ? "" : `Converted to Gregorian: ${date}`,
+        componentHeading: "Component",
+        digitsHeading: "Digits",
+        sumHeading: "Sum",
+        totalLabel: "Initial total",
+        steps: (chain) => chain.length > 1
+          ? `Reduction path: ${chain.join(" → ")}`
+          : "Reduction path: master number — kept in full power.",
+        stepsSingle: "Reduction path: already a single digit.",
+        narrative: {
+          1: "Life path 1 pioneers with initiative, courage and independence.",
+          2: "Life path 2 harmonises partnerships with empathy and diplomacy.",
+          3: "Life path 3 radiates creativity, storytelling and optimism.",
+          4: "Life path 4 builds stability through discipline and structure.",
+          5: "Life path 5 thrives on change, adventure and freedom.",
+          6: "Life path 6 nurtures communities with care, artistry and service.",
+          7: "Life path 7 seeks wisdom, intuition and spiritual discovery.",
+          8: "Life path 8 manifests ambition, stewardship and material mastery.",
+          9: "Life path 9 elevates humanity through compassion and vision.",
+          11: "Master 11 channels luminous intuition and inspired teaching.",
+          22: "Master 22 builds lasting legacies with practical dreams.",
+          33: "Master 33 heals collectives with unconditional love."
+        },
+        calendar: (calendar, formatted) => calendar === "gregorian"
+          ? ""
+          : `Converted from the ${formatted} calendar to keep calculations consistent.`
+      },
+      ar: {
+        title: (value) => `رقم مسار الحياة: ${value}`,
+        original: (date) => `أدخلت التاريخ: ${date}`,
+        converted: (date, calendar) => calendar === "gregorian" ? "" : `حُوِّل إلى الميلادي: ${date}`,
+        componentHeading: "الجزء",
+        digitsHeading: "الأرقام",
+        sumHeading: "المجموع",
+        totalLabel: "المجموع الأولي",
+        steps: (chain) => chain.length > 1
+          ? `مسار الاختزال: ${chain.join(" ← ")}`
+          : "مسار الاختزال: رقم ماستر بكامل طاقته.",
+        stepsSingle: "مسار الاختزال: رقم أحادي بالفعل.",
+        narrative: {
+          1: "المسار ١ يقود بالشجاعة والاستقلال.",
+          2: "المسار ٢ يصنع الوئام والدبلوماسية.",
+          3: "المسار ٣ يسطع بالإبداع والتعبير.",
+          4: "المسار ٤ يبني الانضباط والهيكل.",
+          5: "المسار ٥ يعشق الحرية والتجربة.",
+          6: "المسار ٦ يرعى العائلة والخدمة.",
+          7: "المسار ٧ يبحث عن الحكمة والروحانية.",
+          8: "المسار ٨ يجسد الإدارة والوفرة.",
+          9: "المسار ٩ يخدم الإنسانية بالرؤية.",
+          11: "الماستر ١١ ينقل الإلهام والحدس اللامع.",
+          22: "الماستر ٢٢ يبني الأحلام بواقعية.",
+          33: "الماستر ٣٣ يشفي بالمحبة غير المشروطة."
+        },
+        calendar: (calendar, formatted) => calendar === "gregorian"
+          ? ""
+          : `تم التحويل من تقويم ${formatted} لضمان الدقة.`
+      },
+      fa: {
+        title: (value) => `عدد سرنوشت: ${value}`,
+        original: (date) => `تاریخ وارد شده: ${date}`,
+        converted: (date, calendar) => calendar === "gregorian" ? "" : `تبدیل به میلادی: ${date}`,
+        componentHeading: "بخش",
+        digitsHeading: "ارقام",
+        sumHeading: "جمع",
+        totalLabel: "جمع اولیه",
+        steps: (chain) => chain.length > 1
+          ? `مسیر کاهش: ${chain.join(" ← ")}`
+          : "مسیر کاهش: عدد استاد در تمام شکوه خود.",
+        stepsSingle: "مسیر کاهش: از قبل یک عدد تک رقمی است.",
+        narrative: {
+          1: "مسیر زندگی ۱ با جسارت و استقلال آغاز می‌کند.",
+          2: "مسیر زندگی ۲ با همدلی و دیپلماسی هماهنگی می‌آفریند.",
+          3: "مسیر زندگی ۳ با خلاقیت و بیان روشن می‌درخشد.",
+          4: "مسیر زندگی ۴ با انضباط و ساختار ثبات می‌سازد.",
+          5: "مسیر زندگی ۵ عاشق آزادی، سفر و تغییر است.",
+          6: "مسیر زندگی ۶ با مراقبت و خدمت جامعه را پرورش می‌دهد.",
+          7: "مسیر زندگی ۷ جست‌وجوی حکمت و شهود درونی است.",
+          8: "مسیر زندگی ۸ جاه‌طلبی و مدیریت مادی را متجلی می‌کند.",
+          9: "مسیر زندگی ۹ با شفقت و بینش به انسانیت خدمت می‌کند.",
+          11: "عدد استاد ۱۱ شهود درخشان و الهام را منتقل می‌کند.",
+          22: "عدد استاد ۲۲ رویاهای عملی و ماندگار می‌سازد.",
+          33: "عدد استاد ۳۳ با عشق بی‌قید و شرط شفا می‌بخشد."
+        },
+        calendar: (calendar, formatted) => calendar === "gregorian"
+          ? ""
+          : `از تقویم ${formatted} به میلادی تبدیل شد تا دقت حفظ شود.`
+      }
+    };
+
+    const CALENDAR_LABELS = {
+      gregorian: {
+        name: "Gregorian",
+        native: "Gregorian",
+        locale: "en"
+      },
+      solarHijri: {
+        name: "Solar Hijri",
+        native: "هجری شمسی",
+        locale: "fa"
+      },
+      hijri: {
+        name: "Hijri",
+        native: "الهجري",
+        locale: "ar"
+      }
+    };
+
+    const COMPONENT_LABELS = {
+      en: { year: "Year", month: "Month", day: "Day" },
+      ar: { year: "السنة", month: "الشهر", day: "اليوم" },
+      fa: { year: "سال", month: "ماه", day: "روز" }
+    };
+
+    const DIGIT_LABELS = {
+      en: (index) => `Digit ${index}`,
+      ar: (index) => `الرقم ${index}`,
+      fa: (index) => `رقم ${index}`
+    };
+
+    const pad = (value, size = 2) => value.toString().padStart(size, "0");
+
+    const mod = (a, b) => ((a % b) + b) % b;
+
+    const validateGregorian = (year, month, day) => {
+      const date = new Date(Date.UTC(year, month - 1, day));
+      return date.getUTCFullYear() === year && (date.getUTCMonth() + 1) === month && date.getUTCDate() === day;
+    };
+
+    const persianToJulianDay = (year, month, day) => {
+      const epBase = year - (year >= 0 ? 474 : 473);
+      const epYear = 474 + mod(epBase, 2820);
+      const dayOfYear = month <= 7
+        ? (month - 1) * 31 + day
+        : (month - 1) * 30 + 6 + day;
+      return dayOfYear
+        + Math.floor((epYear * 682 - 110) / 2816)
+        + (epYear - 1) * 365
+        + Math.floor(epBase / 2820) * 1029983
+        + (1948320 - 1);
+    };
+
+    const hijriToJulianDay = (year, month, day) => {
+      return day
+        + Math.ceil(29.5 * (month - 1))
+        + (year - 1) * 354
+        + Math.floor((3 + 11 * year) / 30)
+        + 1948439 - 1;
+    };
+
+    const julianDayToGregorian = (jd) => {
+      const w = Math.floor(jd + 0.5);
+      const a = Math.floor((w - 1867216.25) / 36524.25);
+      const b = w + 1 + a - Math.floor(a / 4);
+      const c = b + 1524;
+      const d = Math.floor((c - 122.1) / 365.25);
+      const e = Math.floor(365.25 * d);
+      const g = Math.floor((c - e) / 30.6001);
+      const day = c - e - Math.floor(30.6001 * g);
+      const month = g < 14 ? g - 1 : g - 13;
+      const year = month > 2 ? d - 4716 : d - 4715;
+      return { year, month, day };
+    };
+
+    const convertToGregorian = (calendar, year, month, day) => {
+      if (calendar === "gregorian") {
+        if (!validateGregorian(year, month, day)) {
+          throw new Error("Invalid Gregorian date");
+        }
+        return { year, month, day };
+      }
+
+      if (calendar === "solarHijri") {
+        if (month < 1 || month > 12) {
+          throw new Error("Invalid Solar Hijri month");
+        }
+        const maxDay = month <= 6 ? 31 : month < 12 ? 30 : 30;
+        if (day < 1 || day > maxDay) {
+          throw new Error("Invalid Solar Hijri day");
+        }
+        if (month === 12 && day === 30) {
+          const yearLength = persianToJulianDay(year + 1, 1, 1) - persianToJulianDay(year, 1, 1);
+          if (yearLength !== 366) {
+            throw new Error("Solar Hijri Esfand has 29 days in this year");
+          }
+        }
+        const jd = persianToJulianDay(year, month, day);
+        const greg = julianDayToGregorian(jd);
+        if (!validateGregorian(greg.year, greg.month, greg.day)) {
+          throw new Error("Converted Gregorian date is invalid");
+        }
+        return greg;
+      }
+
+      if (calendar === "hijri") {
+        if (month < 1 || month > 12) {
+          throw new Error("Invalid Hijri month");
+        }
+        if (day < 1 || day > 30) {
+          throw new Error("Invalid Hijri day");
+        }
+        const jd = hijriToJulianDay(year, month, day);
+        const greg = julianDayToGregorian(jd);
+        if (!validateGregorian(greg.year, greg.month, greg.day)) {
+          throw new Error("Converted Gregorian date is invalid");
+        }
+        return greg;
+      }
+
+      throw new Error("Unsupported calendar");
+    };
+
+    const sumDigits = (value) => value
+      .toString()
+      .split("")
+      .map(Number)
+      .reduce((sum, digit) => sum + digit, 0);
+
+    const reduceWithSteps = (value) => {
+      const steps = [value];
+      while (value > 9 && !MASTER_NUMBERS.has(value)) {
+        value = sumDigits(value);
+        steps.push(value);
+      }
+      return steps;
+    };
+
+    const formatDate = ({ year, month, day }) => `${year}-${pad(month)}-${pad(day)}`;
+
+    const buildComponentRow = (label, digits) => ({
+      label,
+      digits: digits.join(" + "),
+      sum: digits.reduce((sum, digit) => sum + digit, 0)
+    });
+
+    const createDNANodes = (container, digits, locale) => {
+      container.innerHTML = "";
+      digits.forEach((digit, index) => {
+        const node = document.createElement("div");
+        node.className = "dna-node";
+        if (index === 0) node.classList.add("start");
+        if (index === digits.length - 1) node.classList.add("end");
+
+        const valueEl = document.createElement("div");
+        valueEl.className = "dna-value";
+        valueEl.textContent = digit;
+
+        const labelEl = document.createElement("div");
+        labelEl.className = "dna-label";
+        const labelFactory = DIGIT_LABELS[locale] || DIGIT_LABELS.en;
+        labelEl.textContent = labelFactory(index + 1);
+
+        node.appendChild(valueEl);
+        node.appendChild(labelEl);
+        container.appendChild(node);
+      });
+    };
+
+    const renderResult = (data) => {
+      const { calendar, inputDate, gregorianDate, components, total, reductionSteps, locale } = data;
+      const resultSection = document.querySelector("#result");
+      const template = document.querySelector("#resultTemplate");
+      const clone = template.content.cloneNode(true);
+      const strings = LOCALE_STRINGS[locale];
+
+      clone.querySelector('[data-id="resultTitle"]').textContent = strings.title(reductionSteps[reductionSteps.length - 1]);
+      clone.querySelector('[data-id="original"]').textContent = strings.original(inputDate);
+      const convertedText = strings.converted(gregorianDate, calendar);
+      const convertedElement = clone.querySelector('[data-id="converted"]');
+      if (convertedText) {
+        convertedElement.textContent = convertedText;
+      } else {
+        convertedElement.remove();
+      }
+
+      const digits = `${gregorianDate}`.replace(/-/g, "").split("").map(Number);
+      createDNANodes(clone.querySelector('[data-id="dna"]'), digits, locale);
+
+      clone.querySelector('[data-id="componentHeading"]').textContent = strings.componentHeading;
+      clone.querySelector('[data-id="digitsHeading"]').textContent = strings.digitsHeading;
+      clone.querySelector('[data-id="sumHeading"]').textContent = strings.sumHeading;
+      clone.querySelector('[data-id="totalLabel"]').textContent = strings.totalLabel;
+      clone.querySelector('[data-id="total"]').textContent = `${components.year.sum} + ${components.month.sum} + ${components.day.sum} = ${total}`;
+
+      const tbody = clone.querySelector('[data-id="tableBody"]');
+      [components.year, components.month, components.day].forEach((row) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${row.label}</td><td>${row.digits}</td><td>${row.sum}</td>`;
+        tbody.appendChild(tr);
+      });
+
+      const stepsElement = clone.querySelector('[data-id="steps"]');
+      if (reductionSteps.length > 1) {
+        stepsElement.textContent = strings.steps(reductionSteps);
+      } else if (MASTER_NUMBERS.has(reductionSteps[0])) {
+        stepsElement.textContent = strings.steps(reductionSteps);
+      } else {
+        stepsElement.textContent = strings.stepsSingle;
+      }
+
+      const narrative = strings.narrative[reductionSteps[reductionSteps.length - 1]];
+      const narrativeElement = clone.querySelector('[data-id="narrative"]');
+      if (narrative) {
+        narrativeElement.textContent = narrative;
+      } else {
+        narrativeElement.remove();
+      }
+
+      const calendarElement = clone.querySelector('[data-id="calendar"]');
+      const calendarMessage = strings.calendar(calendar, CALENDAR_LABELS[calendar].native || CALENDAR_LABELS[calendar].name);
+      if (calendarMessage) {
+        calendarElement.textContent = calendarMessage;
+      } else {
+        calendarElement.remove();
+      }
+
+      const warningElement = clone.querySelector('[data-id="warning"]');
+      if (calendar === "hijri" && components.day.sum === 0) {
+        warningElement.textContent = "Note: Some Hijri months have 29 days; adjust if needed.";
+      } else {
+        warningElement.remove();
+      }
+
+      resultSection.innerHTML = "";
+      resultSection.appendChild(clone);
+      resultSection.classList.add("active");
+      resultSection.setAttribute("dir", locale === "en" ? "ltr" : "rtl");
+      resultSection.setAttribute("lang", locale);
+    };
+
+    document.querySelector("#destinyForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const calendar = document.querySelector("#calendarSelect").value;
+      const day = Number.parseInt(document.querySelector("#dayInput").value, 10);
+      const month = Number.parseInt(document.querySelector("#monthInput").value, 10);
+      const year = Number.parseInt(document.querySelector("#yearInput").value, 10);
+
+      if (Number.isNaN(day) || Number.isNaN(month) || Number.isNaN(year)) {
+        alert("Please enter a full date before calculating.");
+        return;
+      }
+
+      try {
+        const gregorian = convertToGregorian(calendar, year, month, day);
+        const gregorianDate = formatDate(gregorian);
+        const inputDate = `${year}-${pad(month)}-${pad(day)}`;
+
+        const yearDigits = year.toString().split("").map(Number);
+        const monthDigits = pad(month).split("").map(Number);
+        const dayDigits = pad(day).split("").map(Number);
+
+        const componentLabels = COMPONENT_LABELS[CALENDAR_LABELS[calendar].locale];
+        const components = {
+          year: buildComponentRow(componentLabels.year, yearDigits),
+          month: buildComponentRow(componentLabels.month, monthDigits),
+          day: buildComponentRow(componentLabels.day, dayDigits)
+        };
+
+        const total = components.year.sum + components.month.sum + components.day.sum;
+        const reductionSteps = reduceWithSteps(total);
+
+        renderResult({
+          calendar,
+          inputDate,
+          gregorianDate,
+          components,
+          total,
+          reductionSteps,
+          locale: CALENDAR_LABELS[calendar].locale
+        });
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+  </script>
+</body>
+</html>
