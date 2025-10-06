@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal year calculator – Åse Steinsland</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="branding">
+        <div class="brand-mark">ÅS</div>
+        <div class="brand-copy">
+          <h1 data-i18n-key="title">Personal year calculator</h1>
+          <p data-i18n-key="subtitle">Åse Steinsland’s method for annual cycles using your birth month, day and the target year.</p>
+        </div>
+      </div>
+      <nav class="primary-nav">
+        <a href="navnetall.html" data-i18n-key="navName">Name number</a>
+        <a href="hjertetall.html" data-i18n-key="navSoul">Soul urge</a>
+        <a href="personlighetstall.html" data-i18n-key="navPersonality">Personality</a>
+        <a href="skjebnetall.html" data-i18n-key="navDestiny">Destiny</a>
+        <a href="modenhetstall.html" data-i18n-key="navMaturity">Maturity</a>
+        <a href="personlige-ar.html" data-i18n-key="navPersonalYear">Personal year</a>
+        <a href="index.html" data-i18n-key="navHome">Overview</a>
+      </nav>
+      <div class="language-switch" role="group" aria-label="Language selector">
+        <button type="button" data-lang="en" aria-pressed="true">English</button>
+        <button type="button" data-lang="no" aria-pressed="false">Norsk</button>
+        <button type="button" data-lang="fa" aria-pressed="false">فارسی</button>
+      </div>
+    </header>
+
+    <section class="page-section card">
+      <div class="result-summary">
+        <h2 data-i18n-key="methodHeading">Align the calendar</h2>
+        <p data-i18n-key="methodCopy">Select the calendar you were born under. We translate it to Gregorian, then add birth month + birth day + target year digits. Reduce to a number between 1 and 9.</p>
+        <div class="grid-two">
+          <a class="primary-button" href="bestill.html" data-i18n-key="ctaNext">Learn more?</a>
+          <a class="secondary-button" href="modenhetstall.html" data-i18n-key="ctaBack">Back to maturity number</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section card" id="calculator">
+      <form class="form-grid" id="year-form">
+        <div>
+          <label for="birthDate" data-i18n-key="labelBirthDate">Date of birth</label>
+          <input id="birthDate" type="date">
+        </div>
+        <div>
+          <label for="calendar" data-i18n-key="labelCalendar">Original calendar</label>
+          <select id="calendar">
+            <option value="gregorian" data-i18n-key="calendarGregorian">Gregorian (Western)</option>
+            <option value="solarHijri" data-i18n-key="calendarSolarHijri">Solar Hijri (Persian)</option>
+            <option value="hijri" data-i18n-key="calendarHijri">Hijri (Islamic)</option>
+          </select>
+        </div>
+        <div>
+          <label for="targetYear" data-i18n-key="labelTargetYear">Target year</label>
+          <input id="targetYear" type="number" min="1900" max="2400">
+        </div>
+        <div>
+          <button type="submit" class="primary" data-i18n-key="btnCalculate">Calculate personal year</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="page-section card" id="result" hidden>
+      <div class="result-summary">
+        <span class="badge" id="calendarBadge"></span>
+        <h2 id="resultTitle"></h2>
+        <p id="resultStory"></p>
+        <p id="components"></p>
+        <p id="reduction"></p>
+      </div>
+      <div id="dna"></div>
+    </section>
+
+    <section class="page-section card">
+      <div class="result-summary">
+        <h2 data-i18n-key="nextHeading">Plan the nine-year cycle</h2>
+        <p data-i18n-key="nextCopy">Åse recommends calculating personal years for upcoming cycles to understand the rhythm of opportunities.</p>
+        <div class="grid-two">
+          <a class="primary-button" href="bestill.html" data-i18n-key="ctaOrder">Bestill komplet analyse</a>
+          <a class="secondary-button" href="index.html" data-i18n-key="ctaOverview">Back to overview</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <span>© <span data-i18n-key="copyright">Åse Karin Steinsland. All rights reserved.</span></span>
+      <a href="https://www.numerologensverden.no/kalkulator-skjebnetall-a/" target="_blank" rel="noopener" data-i18n-key="sourceLink">Read Åse’s full guide</a>
+    </footer>
+  </div>
+
+  <script src="assets/i18n.js"></script>
+  <script src="assets/numerology.js"></script>
+  <script src="assets/number-stories.js"></script>
+  <script>
+    (function () {
+      const form = document.getElementById('year-form');
+      const resultSection = document.getElementById('result');
+      const resultTitle = document.getElementById('resultTitle');
+      const resultStory = document.getElementById('resultStory');
+      const components = document.getElementById('components');
+      const reduction = document.getElementById('reduction');
+      const dnaContainer = document.getElementById('dna');
+      const calendarBadge = document.getElementById('calendarBadge');
+      const langButtons = document.querySelectorAll('.language-switch button[data-lang]');
+      const targetYearInput = document.getElementById('targetYear');
+      targetYearInput.value = new Date().getFullYear();
+
+      const translations = {
+        en: {
+          strings: {
+            title: 'Personal year calculator',
+            subtitle: 'Åse Steinsland’s method for annual cycles using your birth month, day and the target year.',
+            navName: 'Name number',
+            navSoul: 'Soul urge',
+            navPersonality: 'Personality',
+            navDestiny: 'Destiny',
+            navMaturity: 'Maturity',
+            navPersonalYear: 'Personal year',
+            navHome: 'Overview',
+            methodHeading: 'Align the calendar',
+            methodCopy: 'Select the calendar you were born under. We translate it to Gregorian, then add birth month + birth day + target year digits. Reduce to a number between 1 and 9.',
+            ctaNext: 'Learn more?',
+            ctaBack: 'Back to maturity number',
+            labelBirthDate: 'Date of birth',
+            labelCalendar: 'Original calendar',
+            calendarGregorian: 'Gregorian (Western)',
+            calendarSolarHijri: 'Solar Hijri (Persian)',
+            calendarHijri: 'Hijri (Islamic)',
+            labelTargetYear: 'Target year',
+            btnCalculate: 'Calculate personal year',
+            nextHeading: 'Plan the nine-year cycle',
+            nextCopy: 'Åse recommends calculating personal years for upcoming cycles to understand the rhythm of opportunities.',
+            ctaOrder: 'Bestill komplet analyse',
+            ctaOverview: 'Back to overview',
+            copyright: 'Åse Karin Steinsland. All rights reserved.',
+            sourceLink: 'Read Åse’s full guide',
+            calendarInfo: 'Converted to Gregorian:',
+            componentsLabel: 'Digits summed',
+            reductionPath: 'Reduction path:',
+            reductionMaster: 'Master number – no further reduction applied.',
+            reductionSingle: 'Already a single digit.',
+          },
+        },
+        no: {
+          strings: {
+            title: 'Kalkulator for personlige år',
+            subtitle: 'Åse Steinslands metode for årssykluser med fødselsmåned, fødselsdag og målåret.',
+            navName: 'Navnetall',
+            navSoul: 'Hjertetall',
+            navPersonality: 'Personlighetstall',
+            navDestiny: 'Skjebnetall',
+            navMaturity: 'Modenhetstall',
+            navPersonalYear: 'Personlige år',
+            navHome: 'Oversikt',
+            methodHeading: 'Tilpass kalenderen',
+            methodCopy: 'Velg kalenderen du er født i. Vi oversetter til gregoriansk, summerer fødselsmåned + fødselsdag + sifrene i målåret og reduserer til ett siffer mellom 1 og 9.',
+            ctaNext: 'Learn more?',
+            ctaBack: 'Tilbake til modenhetstall',
+            labelBirthDate: 'Fødselsdato',
+            labelCalendar: 'Opprinnelig kalender',
+            calendarGregorian: 'Gregoriansk (vestlig)',
+            calendarSolarHijri: 'Sol-hijri (persisk)',
+            calendarHijri: 'Hijri (islamsk)',
+            labelTargetYear: 'Målår',
+            btnCalculate: 'Beregn personlig år',
+            nextHeading: 'Planlegg niårssyklusen',
+            nextCopy: 'Åse anbefaler å beregne kommende personlige år for å forstå mulighetenes rytme.',
+            ctaOrder: 'Bestill komplet analyse',
+            ctaOverview: 'Tilbake til oversikten',
+            copyright: 'Åse Karin Steinsland. Alle rettigheter reservert.',
+            sourceLink: 'Les hele veiledningen hos Åse',
+            calendarInfo: 'Konvertert til gregoriansk:',
+            componentsLabel: 'Summerte sifre',
+            reductionPath: 'Reduksjonsrekkefølge:',
+            reductionMaster: 'Mestertall – ikke redusert videre.',
+            reductionSingle: 'Allerede ett siffer.',
+          },
+        },
+        fa: {
+          strings: {
+            title: 'ماشین‌حساب سال شخصی',
+            subtitle: 'روش آسه استینسلاند برای چرخه‌های سالانه با استفاده از ماه و روز تولد و سال هدف.',
+            navName: 'عدد نام',
+            navSoul: 'اشتیاق قلبی',
+            navPersonality: 'عدد شخصیت',
+            navDestiny: 'عدد سرنوشت',
+            navMaturity: 'عدد بلوغ',
+            navPersonalYear: 'سال شخصی',
+            navHome: 'مرور کلی',
+            methodHeading: 'تقویم را هماهنگ کنید',
+            methodCopy: 'تقویمی را که در آن متولد شده‌اید انتخاب کنید. ما آن را به میلادی تبدیل کرده، سپس ماه تولد + روز تولد + سال هدف را جمع و به عددی بین ۱ تا ۹ کاهش می‌دهیم.',
+            ctaNext: 'Learn more?',
+            ctaBack: 'بازگشت به عدد بلوغ',
+            labelBirthDate: 'تاریخ تولد',
+            labelCalendar: 'تقویم اصلی',
+            calendarGregorian: 'میلادی (غربی)',
+            calendarSolarHijri: 'خورشیدی هجری (ایرانی)',
+            calendarHijri: 'قمری هجری (اسلامی)',
+            labelTargetYear: 'سال هدف',
+            btnCalculate: 'محاسبه سال شخصی',
+            nextHeading: 'چرخه نه‌ساله را برنامه‌ریزی کنید',
+            nextCopy: 'آسه توصیه می‌کند برای درک ریتم فرصت‌ها سال‌های شخصی آینده را محاسبه کنید.',
+            ctaOrder: 'Bestill komplet analyse',
+            ctaOverview: 'بازگشت به مرور کلی',
+            copyright: 'آسه کارین استینسلاند. کلیه حقوق محفوظ است.',
+            sourceLink: 'راهنمای کامل آسه را بخوانید',
+            calendarInfo: 'تبدیل به میلادی:',
+            componentsLabel: 'ارقام جمع شده',
+            reductionPath: 'مسیر کاهش:',
+            reductionMaster: 'عدد استادی – کاهش بیشتر ندارد.',
+            reductionSingle: 'همین حالا یک رقم واحد است.',
+          },
+        },
+      };
+
+      const i18n = createI18n({
+        translations,
+        defaultLang: 'en',
+        directionMap: { fa: 'rtl' },
+      });
+
+      function syncButtons(lang) {
+        langButtons.forEach((button) => {
+          const isActive = button.dataset.lang === lang;
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      }
+
+      function createDNATrack(digits) {
+        const track = document.createElement('div');
+        track.className = 'dna-track';
+        digits.forEach((digit) => {
+          const node = document.createElement('div');
+          node.className = 'dna-node';
+          const valueEl = document.createElement('div');
+          valueEl.className = 'dna-value';
+          valueEl.textContent = digit;
+          const labelEl = document.createElement('div');
+          labelEl.className = 'dna-letter';
+          labelEl.textContent = digit;
+          node.appendChild(valueEl);
+          node.appendChild(labelEl);
+          track.appendChild(node);
+        });
+        return track;
+      }
+
+      function renderResult({ personalYear, gregorian, targetYear }) {
+        const stories = NumberStories.stories[i18n.lang] || NumberStories.stories.en;
+        resultSection.hidden = false;
+        dnaContainer.innerHTML = '';
+
+        dnaContainer.appendChild(createDNATrack(personalYear.digits));
+
+        calendarBadge.textContent = `${i18n.t('calendarInfo')} ${gregorian.year}-${String(gregorian.month).padStart(2, '0')}-${String(gregorian.day).padStart(2, '0')}`;
+        resultTitle.textContent = `${i18n.t('navPersonalYear')}: ${personalYear.number}`;
+        resultStory.textContent = stories[personalYear.number] || '';
+        components.textContent = `${i18n.t('componentsLabel')}: ${gregorian.month} + ${gregorian.day} + ${targetYear} → ${personalYear.digits.join(' + ')} = ${personalYear.total}`;
+        if (personalYear.steps.length > 1) {
+          reduction.textContent = `${i18n.t('reductionPath')} ${personalYear.steps.join(' → ')}`;
+        } else {
+          reduction.textContent = `${i18n.t('reductionPath')} ${i18n.t('reductionSingle')}`;
+        }
+      }
+
+      langButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const lang = button.dataset.lang;
+          i18n.setLanguage(lang);
+          syncButtons(lang);
+          const birthDate = document.getElementById('birthDate').value;
+          if (birthDate) {
+            handleCalculation();
+          }
+        });
+      });
+
+      i18n.onChange((lang) => {
+        syncButtons(lang);
+      });
+
+      function handleCalculation() {
+        const birthDateValue = document.getElementById('birthDate').value;
+        const calendar = document.getElementById('calendar').value;
+        const targetYearValue = parseInt(document.getElementById('targetYear').value, 10);
+        if (!birthDateValue || !Number.isFinite(targetYearValue)) {
+          resultSection.hidden = true;
+          return;
+        }
+
+        const [year, month, day] = birthDateValue.split('-').map((segment) => parseInt(segment, 10));
+
+        try {
+          const personalYear = Numerology.personalYearNumber({ calendar, year, month, day }, targetYearValue);
+          renderResult({ personalYear, gregorian: personalYear.calendarUsed, targetYear: targetYearValue });
+        } catch (error) {
+          resultSection.hidden = false;
+          resultTitle.textContent = error.message;
+          resultStory.textContent = '';
+          components.textContent = '';
+          reduction.textContent = '';
+          dnaContainer.innerHTML = '';
+          calendarBadge.textContent = '';
+        }
+      }
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        handleCalculation();
+      });
+    })();
+  </script>
+</body>
+</html>
