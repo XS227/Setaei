@@ -190,7 +190,7 @@ export class HomeComponent {
     if (this.analysisGenerated) {
       return 'Overview ready';
     }
-    return `${this.progressValue}% complete`;
+    return `Progress: ${this.progressValue}% complete`;
   }
 
   get currentStepTitle(): string {
