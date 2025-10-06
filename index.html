@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Åse Steinsland Numerology Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+</head>
+<body>
+  <div class="app-shell" id="top">
+    <header class="hero">
+      <div class="branding">
+        <div class="brand-mark">ÅS</div>
+        <div class="brand-copy">
+          <h1 data-i18n-key="heroTitle">Åse Steinsland Numerology Studio</h1>
+          <p data-i18n-key="heroSubtitle">Explore every calculator Åse uses when preparing a complete numerology profile.</p>
+        </div>
+      </div>
+      <nav class="primary-nav">
+        <a href="navnetall.html" data-i18n-key="navName">Name number</a>
+        <a href="hjertetall.html" data-i18n-key="navSoul">Soul urge</a>
+        <a href="personlighetstall.html" data-i18n-key="navPersonality">Personality</a>
+        <a href="skjebnetall.html" data-i18n-key="navDestiny">Destiny</a>
+        <a href="modenhetstall.html" data-i18n-key="navMaturity">Maturity</a>
+        <a href="personlige-ar.html" data-i18n-key="navPersonalYear">Personal year</a>
+      </nav>
+      <div class="language-switch" role="group" aria-label="Language selector">
+        <button type="button" data-lang="en" aria-pressed="true">English</button>
+        <button type="button" data-lang="no" aria-pressed="false">Norsk</button>
+        <button type="button" data-lang="fa" aria-pressed="false">فارسی</button>
+      </div>
+    </header>
+
+    <section class="page-section card" id="overview">
+      <div class="result-summary">
+        <h2 data-i18n-key="landingHeading">Your personalised numerology overview</h2>
+        <p data-i18n-key="landingIntro">Fill in the essentials Åse requests before preparing a holistic numerology reading. We convert every calendar to Western (Gregorian) form automatically.</p>
+        <div class="grid-two">
+          <a class="primary-button" href="#form" data-i18n-key="ctaGetFull">get full analyse</a>
+          <a class="secondary-button" href="bestill.html" data-i18n-key="ctaOrder">Bestill komplet analyse</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section card" id="form">
+      <form class="form-grid" id="overview-form">
+        <div>
+          <label for="birthName" data-i18n-key="labelBirthName">Full birth name</label>
+          <input id="birthName" name="birthName" type="text" autocomplete="name" data-i18n-key="placeholderBirthName" data-i18n-attr="placeholder">
+        </div>
+        <div>
+          <label for="currentName" data-i18n-key="labelCurrentName">Current full name (if changed)</label>
+          <input id="currentName" name="currentName" type="text" autocomplete="name" data-i18n-key="placeholderCurrentName" data-i18n-attr="placeholder">
+        </div>
+        <div>
+          <label for="sex" data-i18n-key="labelSex">Sex</label>
+          <select id="sex" name="sex">
+            <option value="" data-i18n-key="sexSelect">—</option>
+            <option value="female" data-i18n-key="sexFemale">Female</option>
+            <option value="male" data-i18n-key="sexMale">Male</option>
+            <option value="other" data-i18n-key="sexOther">Other / prefer to self-describe</option>
+          </select>
+        </div>
+        <div>
+          <label for="birthDate" data-i18n-key="labelBirthDate">Date of birth</label>
+          <input id="birthDate" name="birthDate" type="date">
+        </div>
+        <div>
+          <label for="calendar" data-i18n-key="labelCalendar">Original calendar</label>
+          <select id="calendar" name="calendar">
+            <option value="gregorian" data-i18n-key="calendarGregorian">Gregorian (Western)</option>
+            <option value="solarHijri" data-i18n-key="calendarSolarHijri">Solar Hijri (Persian)</option>
+            <option value="hijri" data-i18n-key="calendarHijri">Hijri (Islamic)</option>
+          </select>
+        </div>
+        <div>
+          <label for="targetYear" data-i18n-key="labelTargetYear">Target year for personal year</label>
+          <input id="targetYear" name="targetYear" type="number" min="1900" max="2400">
+        </div>
+        <div>
+          <label for="address" data-i18n-key="labelAddress">Street address</label>
+          <input id="address" name="address" type="text" autocomplete="address-line1" data-i18n-key="placeholderAddress" data-i18n-attr="placeholder">
+        </div>
+        <div>
+          <label for="phone" data-i18n-key="labelPhone">Phone number</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" data-i18n-key="placeholderPhone" data-i18n-attr="placeholder">
+        </div>
+        <div>
+          <label for="email" data-i18n-key="labelEmail">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" data-i18n-key="placeholderEmail" data-i18n-attr="placeholder">
+        </div>
+        <div>
+          <label for="notes" data-i18n-key="labelNotes">Notes for Åse</label>
+          <textarea id="notes" name="notes" data-i18n-key="placeholderNotes" data-i18n-attr="placeholder"></textarea>
+        </div>
+        <div>
+          <button type="button" class="primary" id="previewButton" data-i18n-key="btnPreview">Preview your numbers</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="page-section card" id="preview">
+      <div class="result-summary">
+        <h2 data-i18n-key="previewHeading">Your combined numerology snapshot</h2>
+        <p data-i18n-key="previewIntro">Add your birth details above to calculate every core number Åse reviews. The preview updates instantly when you press the button.</p>
+      </div>
+      <div id="previewResults" class="result-block" aria-live="polite"></div>
+    </section>
+
+    <section class="page-section card">
+      <div class="result-summary">
+        <h2 data-i18n-key="storiesHeading">Core number stories</h2>
+        <p data-i18n-key="storiesIntro">Each number carries a specific tone. These short stories come directly from Åse’s interpretation table so you can prepare for your consultation.</p>
+      </div>
+      <div class="package-grid" id="storiesGrid"></div>
+    </section>
+
+    <section class="page-section card">
+      <div class="result-summary">
+        <h2 data-i18n-key="ctaHeading">Ready for the complete written analysis?</h2>
+        <p data-i18n-key="ctaCopy">Åse manually combines all calculator results, life cycles and transits into a tailored PDF. Choose your package to continue.</p>
+      </div>
+      <a class="primary-button" href="bestill.html" data-i18n-key="ctaOrder">Bestill komplet analyse</a>
+    </section>
+
+    <footer class="page-footer">
+      <span>© <span data-i18n-key="copyright">Åse Karin Steinsland. All rights reserved.</span></span>
+      <a href="https://www.numerologensverden.no" target="_blank" rel="noopener" data-i18n-key="siteLink">Visit numerologensverden.no</a>
+    </footer>
+  </div>
+
+  <script src="assets/i18n.js"></script>
+  <script src="assets/numerology.js"></script>
+  <script src="assets/number-stories.js"></script>
+  <script>
+    (function () {
+      const langButtons = document.querySelectorAll('.language-switch button[data-lang]');
+      const targetYearInput = document.getElementById('targetYear');
+      targetYearInput.value = new Date().getFullYear();
+
+      const translations = {
+        en: {
+          strings: {
+            heroTitle: 'Åse Steinsland Numerology Studio',
+            heroSubtitle: 'Explore every calculator Åse uses when preparing a complete numerology profile.',
+            navName: 'Name number',
+            navSoul: 'Soul urge',
+            navPersonality: 'Personality',
+            navDestiny: 'Destiny',
+            navMaturity: 'Maturity',
+            navPersonalYear: 'Personal year',
+            landingHeading: 'Your personalised numerology overview',
+            landingIntro: 'Fill in the essentials Åse requests before preparing a holistic numerology reading. We convert every calendar to Western (Gregorian) form automatically.',
+            ctaGetFull: 'get full analyse',
+            ctaOrder: 'Bestill komplet analyse',
+            labelBirthName: 'Full birth name',
+            placeholderBirthName: 'Write the complete name given at birth',
+            labelCurrentName: 'Current full name (if changed)',
+            placeholderCurrentName: 'If you use a different name today, add it here',
+            labelSex: 'Sex',
+            sexSelect: 'Select',
+            sexFemale: 'Female',
+            sexMale: 'Male',
+            sexOther: 'Other / prefer to self-describe',
+            labelBirthDate: 'Date of birth',
+            labelCalendar: 'Original calendar',
+            calendarGregorian: 'Gregorian (Western)',
+            calendarSolarHijri: 'Solar Hijri (Persian)',
+            calendarHijri: 'Hijri (Islamic)',
+            labelTargetYear: 'Target year for personal year',
+            labelAddress: 'Street address',
+            placeholderAddress: 'Where should Åse send printed material?',
+            labelPhone: 'Phone number',
+            placeholderPhone: 'Include country code if outside Norway',
+            labelEmail: 'Email',
+            placeholderEmail: 'Your best email for delivery',
+            labelNotes: 'Notes for Åse',
+            placeholderNotes: 'Share intentions, questions or context',
+            btnPreview: 'Preview your numbers',
+            previewHeading: 'Your combined numerology snapshot',
+            previewIntro: 'Add your birth details above to calculate every core number Åse reviews. The preview updates instantly when you press the button.',
+            storiesHeading: 'Core number stories',
+            storiesIntro: 'Each number carries a specific tone. These short stories come directly from Åse’s interpretation table so you can prepare for your consultation.',
+            storyPrefix: 'Number',
+            ctaHeading: 'Ready for the complete written analysis?',
+            ctaCopy: 'Åse manually combines all calculator results, life cycles and transits into a tailored PDF. Choose your package to continue.',
+            copyright: 'Åse Karin Steinsland. All rights reserved.',
+            siteLink: 'Visit numerologensverden.no',
+          },
+        },
+        no: {
+          strings: {
+            heroTitle: 'Åse Steinsland numerologisenter',
+            heroSubtitle: 'Utforsk alle kalkulatorene Åse bruker i en komplett numerologiprofil.',
+            navName: 'Navnetall',
+            navSoul: 'Hjertetall',
+            navPersonality: 'Personlighetstall',
+            navDestiny: 'Skjebnetall',
+            navMaturity: 'Modenhetstall',
+            navPersonalYear: 'Personlige år',
+            landingHeading: 'Din personlige numerologioversikt',
+            landingIntro: 'Fyll inn grunnlaget Åse trenger for å skreddersy en helhetlig tolkning. Vi oversetter alle kalendere til vestlig (gregoriansk) automatisk.',
+            ctaGetFull: 'get full analyse',
+            ctaOrder: 'Bestill komplet analyse',
+            labelBirthName: 'Fullt fødenavn',
+            placeholderBirthName: 'Skriv hele navnet slik det står i fødselsattesten',
+            labelCurrentName: 'Nåværende fullt navn (om endret)',
+            placeholderCurrentName: 'Oppgi navnet du bruker i dag',
+            labelSex: 'Kjønn',
+            sexSelect: 'Velg',
+            sexFemale: 'Kvinne',
+            sexMale: 'Mann',
+            sexOther: 'Annet / egen beskrivelse',
+            labelBirthDate: 'Fødselsdato',
+            labelCalendar: 'Opprinnelig kalender',
+            calendarGregorian: 'Gregoriansk (vestlig)',
+            calendarSolarHijri: 'Sol-hijri (persisk)',
+            calendarHijri: 'Hijri (islamsk)',
+            labelTargetYear: 'År for personlige år',
+            labelAddress: 'Gateadresse',
+            placeholderAddress: 'Hvor skal Åse sende materiale?',
+            labelPhone: 'Telefonnummer',
+            placeholderPhone: 'Ta med landskode hvis utenfor Norge',
+            labelEmail: 'E-post',
+            placeholderEmail: 'Beste e-post for levering',
+            labelNotes: 'Notater til Åse',
+            placeholderNotes: 'Del intensjoner, spørsmål eller kontekst',
+            btnPreview: 'Vis forhåndsvisning',
+            previewHeading: 'Din samlede numerologioversikt',
+            previewIntro: 'Legg inn fødselsdata over for å beregne alle kjernetall Åse vurderer. Trykk på knappen for å oppdatere.',
+            storiesHeading: 'Historiene bak tallene',
+            storiesIntro: 'Hvert tall har sin egen tone. Korttekstene kommer fra Åses tolkningstabell slik at du kan forberede deg.',
+            storyPrefix: 'Tall',
+            ctaHeading: 'Klar for den komplette analysen?',
+            ctaCopy: 'Åse kombinerer alle kalkulatorene, livssyklene og transittene til en skreddersydd rapport. Velg pakken som passer.',
+            copyright: 'Åse Karin Steinsland. Alle rettigheter reservert.',
+            siteLink: 'Besøk numerologensverden.no',
+          },
+        },
+        fa: {
+          strings: {
+            heroTitle: 'استودیوی عددشناسی آسه استینسلاند',
+            heroSubtitle: 'تمام ماشین‌حساب‌هایی را ببینید که آسه برای تهیه پرونده کامل عددشناسی به کار می‌برد.',
+            navName: 'عدد نام',
+            navSoul: 'اشتیاق قلبی',
+            navPersonality: 'عدد شخصیت',
+            navDestiny: 'عدد سرنوشت',
+            navMaturity: 'عدد بلوغ',
+            navPersonalYear: 'سال شخصی',
+            landingHeading: 'نمای کلی شخصی عددشناسی شما',
+            landingIntro: 'اطلاعاتی را که آسه پیش از تفسیر کامل نیاز دارد بنویسید. ما همه تقویم‌ها را به صورت خودکار به میلادی تبدیل می‌کنیم.',
+            ctaGetFull: 'get full analyse',
+            ctaOrder: 'Bestill komplet analyse',
+            labelBirthName: 'نام کامل هنگام تولد',
+            placeholderBirthName: 'نام ثبت‌شده در گواهی تولد را بنویسید',
+            labelCurrentName: 'نام کامل کنونی (اگر تغییر کرده است)',
+            placeholderCurrentName: 'اگر امروز نام دیگری استفاده می‌کنید اینجا وارد کنید',
+            labelSex: 'جنسیت',
+            sexSelect: 'انتخاب کنید',
+            sexFemale: 'زن',
+            sexMale: 'مرد',
+            sexOther: 'دیگر / توضیح شخصی',
+            labelBirthDate: 'تاریخ تولد',
+            labelCalendar: 'تقویم اصلی',
+            calendarGregorian: 'میلادی (غربی)',
+            calendarSolarHijri: 'خورشیدی هجری (ایرانی)',
+            calendarHijri: 'قمری هجری (اسلامی)',
+            labelTargetYear: 'سال هدف برای سال شخصی',
+            labelAddress: 'نشانی خیابان',
+            placeholderAddress: 'در صورت نیاز برای ارسال پستی بنویسید',
+            labelPhone: 'شماره تلفن',
+            placeholderPhone: 'در صورت خارج از نروژ کد کشور را اضافه کنید',
+            labelEmail: 'ایمیل',
+            placeholderEmail: 'بهترین ایمیل برای دریافت نتیجه',
+            labelNotes: 'پیام برای آسه',
+            placeholderNotes: 'انگیزه، پرسش یا توضیح خود را بنویسید',
+            btnPreview: 'نمایش نتیجه',
+            previewHeading: 'چکیده ترکیبی اعداد شما',
+            previewIntro: 'با وارد کردن داده‌های تولد، تمام اعداد اصلی که آسه بررسی می‌کند محاسبه می‌شود. با فشردن دکمه نتیجه به‌روز می‌شود.',
+            storiesHeading: 'داستان اعداد هسته‌ای',
+            storiesIntro: 'هر عدد لحن ویژه‌ای دارد. این روایت‌های کوتاه از جدول تفسیر آسه گرفته شده است تا آماده شوید.',
+            storyPrefix: 'عدد',
+            ctaHeading: 'برای تحلیل کامل آماده‌اید؟',
+            ctaCopy: 'آسه تمام نتایج ماشین‌حساب‌ها، چرخه‌ها و ترانزیت‌ها را در یک گزارش شخصی ترکیب می‌کند. بسته مناسب را انتخاب کنید.',
+            copyright: 'آسه کارین استینسلاند. کلیه حقوق محفوظ است.',
+            siteLink: 'بازدید از numerologensverden.no',
+          },
+        },
+      };
+
+      const i18n = createI18n({
+        translations,
+        defaultLang: 'en',
+        directionMap: { fa: 'rtl' },
+      });
+
+      function syncButtons(activeLang) {
+        langButtons.forEach((button) => {
+          const isActive = button.dataset.lang === activeLang;
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      }
+
+      function renderStories(lang) {
+        const grid = document.getElementById('storiesGrid');
+        grid.innerHTML = '';
+        const stories = NumberStories.stories[lang] || NumberStories.stories.en;
+        Object.entries(stories).forEach(([number, story]) => {
+          const card = document.createElement('div');
+          card.className = 'package-card';
+          const heading = document.createElement('h3');
+          heading.textContent = `${i18n.t('storyPrefix')} ${number}`;
+          const paragraph = document.createElement('p');
+          paragraph.textContent = story;
+          card.appendChild(heading);
+          card.appendChild(paragraph);
+          grid.appendChild(card);
+        });
+      }
+
+      function createDNA(breakdown) {
+        const track = document.createElement('div');
+        track.className = 'dna-track';
+        breakdown.forEach((entry) => {
+          const node = document.createElement('div');
+          node.className = 'dna-node';
+          const valueEl = document.createElement('div');
+          valueEl.className = 'dna-value';
+          valueEl.textContent = entry.value;
+          const letterEl = document.createElement('div');
+          letterEl.className = 'dna-letter';
+          letterEl.textContent = entry.label;
+          node.appendChild(valueEl);
+          node.appendChild(letterEl);
+          track.appendChild(node);
+        });
+        return track;
+      }
+
+      function renderPreview() {
+        const resultsContainer = document.getElementById('previewResults');
+        resultsContainer.innerHTML = '';
+
+        const birthName = document.getElementById('birthName').value.trim();
+        const birthDateValue = document.getElementById('birthDate').value;
+        const calendar = document.getElementById('calendar').value;
+        const targetYear = parseInt(document.getElementById('targetYear').value, 10);
+
+        if (!birthName || !birthDateValue || !Number.isFinite(targetYear)) {
+          const notice = document.createElement('p');
+          notice.className = 'notice';
+          notice.textContent = i18n.t('previewIntro');
+          resultsContainer.appendChild(notice);
+          return;
+        }
+
+        const autoLang = Numerology.inferLanguageFromName(birthName);
+        if (autoLang && autoLang !== i18n.lang) {
+          i18n.setLanguage(autoLang);
+          syncButtons(autoLang);
+        }
+
+        const [year, month, day] = birthDateValue.split('-').map((segment) => parseInt(segment, 10));
+        let destiny;
+        let personalYear;
+        try {
+          destiny = Numerology.destinyNumber({ calendar, year, month, day });
+          personalYear = Numerology.personalYearNumber({ calendar, year, month, day }, targetYear);
+        } catch (error) {
+          const warning = document.createElement('p');
+          warning.className = 'notice';
+          warning.textContent = error.message;
+          resultsContainer.appendChild(warning);
+          return;
+        }
+
+        const nameBreakdown = Numerology.breakdownName(birthName);
+        const vowelBreakdown = Numerology.breakdownName(birthName, { mode: 'vowel' });
+        const consonantBreakdown = Numerology.breakdownName(birthName, { mode: 'consonant' });
+        const maturity = Numerology.maturityNumber(nameBreakdown.number, destiny.number);
+
+        const stories = NumberStories.stories[i18n.lang] || NumberStories.stories.en;
+
+        const cards = [
+          {
+            key: 'navName',
+            number: nameBreakdown.number,
+            story: stories[nameBreakdown.number],
+            breakdown: nameBreakdown.breakdown,
+          },
+          {
+            key: 'navSoul',
+            number: vowelBreakdown.number,
+            story: stories[vowelBreakdown.number],
+            breakdown: vowelBreakdown.breakdown,
+          },
+          {
+            key: 'navPersonality',
+            number: consonantBreakdown.number,
+            story: stories[consonantBreakdown.number],
+            breakdown: consonantBreakdown.breakdown,
+          },
+          {
+            key: 'navDestiny',
+            number: destiny.number,
+            story: stories[destiny.number],
+            breakdown: destiny.digits.map((digit) => ({ label: digit, value: digit })),
+          },
+          {
+            key: 'navMaturity',
+            number: maturity.number,
+            story: stories[maturity.number],
+            breakdown: [{ label: 'Σ', value: maturity.combined }],
+          },
+          {
+            key: 'navPersonalYear',
+            number: personalYear.number,
+            story: stories[personalYear.number],
+            breakdown: personalYear.digits.map((digit) => ({ label: digit, value: digit })),
+          },
+        ];
+
+        cards.forEach((card) => {
+          const section = document.createElement('article');
+          section.className = 'result-block';
+          const summary = document.createElement('div');
+          summary.className = 'result-summary';
+          const heading = document.createElement('h3');
+          heading.textContent = `${i18n.t(card.key)}: ${card.number}`;
+          const paragraph = document.createElement('p');
+          paragraph.textContent = card.story || '';
+          summary.appendChild(heading);
+          summary.appendChild(paragraph);
+          section.appendChild(summary);
+          section.appendChild(createDNA(card.breakdown));
+          resultsContainer.appendChild(section);
+        });
+      }
+
+      langButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const lang = button.dataset.lang;
+          i18n.setLanguage(lang);
+          syncButtons(lang);
+          renderStories(lang);
+          renderPreview();
+        });
+      });
+
+      document.getElementById('previewButton').addEventListener('click', renderPreview);
+
+      i18n.onChange((lang) => {
+        syncButtons(lang);
+        renderStories(lang);
+      });
+
+      renderStories('en');
+    })();
+  </script>
+</body>
+</html>

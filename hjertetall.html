@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soul urge calculator – Åse Steinsland</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/theme.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="branding">
+        <div class="brand-mark">ÅS</div>
+        <div class="brand-copy">
+          <h1 data-i18n-key="title">Soul urge calculator</h1>
+          <p data-i18n-key="subtitle">Vowels only – Åse Steinsland’s guide to the heart’s longing in your birth name.</p>
+        </div>
+      </div>
+      <nav class="primary-nav">
+        <a href="navnetall.html" data-i18n-key="navName">Name number</a>
+        <a href="hjertetall.html" data-i18n-key="navSoul">Soul urge</a>
+        <a href="personlighetstall.html" data-i18n-key="navPersonality">Personality</a>
+        <a href="skjebnetall.html" data-i18n-key="navDestiny">Destiny</a>
+        <a href="modenhetstall.html" data-i18n-key="navMaturity">Maturity</a>
+        <a href="personlige-ar.html" data-i18n-key="navPersonalYear">Personal year</a>
+        <a href="index.html" data-i18n-key="navHome">Overview</a>
+      </nav>
+      <div class="language-switch" role="group" aria-label="Language selector">
+        <button type="button" data-lang="en" aria-pressed="true">English</button>
+        <button type="button" data-lang="no" aria-pressed="false">Norsk</button>
+        <button type="button" data-lang="fa" aria-pressed="false">فارسی</button>
+      </div>
+    </header>
+
+    <section class="page-section card">
+      <div class="result-summary">
+        <h2 data-i18n-key="methodHeading">Heart vowels according to Åse</h2>
+        <p data-i18n-key="methodCopy">Only vowels – including Å, Æ, Ø and the vowel version of Y – enter the heart calculation. We apply Åse’s Norwegian vowel rules and switch to Abjad vowel groupings for right-to-left scripts.</p>
+        <div class="grid-two">
+          <a class="primary-button" href="personlighetstall.html" data-i18n-key="ctaNext">Learn more?</a>
+          <a class="secondary-button" href="navnetall.html" data-i18n-key="ctaBack">Back to name number</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section card" id="calculator">
+      <form class="form-grid" id="soul-form">
+        <div>
+          <label for="nameInput" data-i18n-key="labelName">Full birth name</label>
+          <input id="nameInput" type="text" autocomplete="name" data-i18n-key="placeholderName" data-i18n-attr="placeholder">
+        </div>
+        <div>
+          <button type="submit" class="primary" data-i18n-key="btnCalculate">Calculate soul urge</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="page-section card" id="result" hidden>
+      <div class="result-summary">
+        <span class="badge" id="methodBadge"></span>
+        <h2 id="resultTitle"></h2>
+        <p id="resultStory"></p>
+        <p id="normalised"></p>
+        <p id="ignored"></p>
+        <p id="reduction"></p>
+      </div>
+      <div id="dna"></div>
+      <div class="table-responsive">
+        <table class="breakdown">
+          <thead>
+            <tr>
+              <th data-i18n-key="tableLetter">Vowel</th>
+              <th data-i18n-key="tableValue">Value</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+          <tfoot>
+            <tr>
+              <th data-i18n-key="tableTotal">Total</th>
+              <th id="tableTotalValue"></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+
+    <section class="page-section card">
+      <div class="result-summary">
+        <h2 data-i18n-key="nextHeading">Map the consonant expression next</h2>
+        <p data-i18n-key="nextCopy">Pair your soul urge with the personality number to understand how your inner drive is expressed outwardly.</p>
+        <div class="grid-two">
+          <a class="primary-button" href="personlighetstall.html" data-i18n-key="nextPersonality">Personality calculator</a>
+          <a class="secondary-button" href="index.html" data-i18n-key="ctaOverview">Back to overview</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <span>© <span data-i18n-key="copyright">Åse Karin Steinsland. All rights reserved.</span></span>
+      <a href="https://www.numerologensverden.no/regn-ut-navnetall/" target="_blank" rel="noopener" data-i18n-key="sourceLink">Read Åse’s full guide</a>
+    </footer>
+  </div>
+
+  <script src="assets/i18n.js"></script>
+  <script src="assets/numerology.js"></script>
+  <script src="assets/number-stories.js"></script>
+  <script>
+    (function () {
+      const form = document.getElementById('soul-form');
+      const resultSection = document.getElementById('result');
+      const tableBody = document.getElementById('tableBody');
+      const dnaContainer = document.getElementById('dna');
+      const methodBadge = document.getElementById('methodBadge');
+      const resultTitle = document.getElementById('resultTitle');
+      const resultStory = document.getElementById('resultStory');
+      const normalised = document.getElementById('normalised');
+      const ignored = document.getElementById('ignored');
+      const reduction = document.getElementById('reduction');
+      const totalCell = document.getElementById('tableTotalValue');
+      const langButtons = document.querySelectorAll('.language-switch button[data-lang]');
+
+      const translations = {
+        en: {
+          strings: {
+            title: 'Soul urge calculator',
+            subtitle: 'Vowels only – Åse Steinsland’s guide to the heart’s longing in your birth name.',
+            navName: 'Name number',
+            navSoul: 'Soul urge',
+            navPersonality: 'Personality',
+            navDestiny: 'Destiny',
+            navMaturity: 'Maturity',
+            navPersonalYear: 'Personal year',
+            navHome: 'Overview',
+            methodHeading: 'Heart vowels according to Åse',
+            methodCopy: 'Only vowels – including Å, Æ, Ø and the vowel version of Y – enter the heart calculation. We apply Åse’s Norwegian vowel rules and switch to Abjad vowel groupings for right-to-left scripts.',
+            ctaNext: 'Learn more?',
+            ctaBack: 'Back to name number',
+            labelName: 'Full birth name',
+            placeholderName: 'Enter the complete name given at birth',
+            btnCalculate: 'Calculate soul urge',
+            tableLetter: 'Vowel',
+            tableValue: 'Value',
+            tableTotal: 'Total',
+            normalizedLabel: 'Vowels counted for calculation',
+            nextHeading: 'Map the consonant expression next',
+            nextCopy: 'Pair your soul urge with the personality number to understand how your inner drive is expressed outwardly.',
+            nextPersonality: 'Personality calculator',
+            ctaOverview: 'Back to overview',
+            copyright: 'Åse Karin Steinsland. All rights reserved.',
+            sourceLink: 'Read Åse’s full guide',
+            methodLatin: 'Method: Vowels from Åse’s Pythagorean chart.',
+            methodRTL: 'Method: Abjad vowel values translated to Åse’s reduction.',
+            ignoredNone: 'All characters were counted in the calculation.',
+            ignoredSome: 'Ignored characters:',
+            reductionPath: 'Reduction path:',
+            reductionMaster: 'Master number – no further reduction applied.',
+            reductionSingle: 'Already a single digit.',
+          },
+        },
+        no: {
+          strings: {
+            title: 'Hjertetallkalkulator',
+            subtitle: 'Kun vokaler – Åse Steinslands metode for hjertets lengsel i navnet.',
+            navName: 'Navnetall',
+            navSoul: 'Hjertetall',
+            navPersonality: 'Personlighetstall',
+            navDestiny: 'Skjebnetall',
+            navMaturity: 'Modenhetstall',
+            navPersonalYear: 'Personlige år',
+            navHome: 'Oversikt',
+            methodHeading: 'Hjertets vokaler etter Åse',
+            methodCopy: 'Bare vokaler – også Å, Æ, Ø og vokalvarianten av Y – teller i hjertetallet. Vi følger Åses norske vokalregler og bytter til abjad-vokaler for språk som leses fra høyre mot venstre.',
+            ctaNext: 'Learn more?',
+            ctaBack: 'Tilbake til navnetall',
+            labelName: 'Fullt fødenavn',
+            placeholderName: 'Oppgi navnet slik det står i fødselsattesten',
+            btnCalculate: 'Beregn hjertetallet',
+            tableLetter: 'Vokal',
+            tableValue: 'Verdi',
+            tableTotal: 'Sum',
+            normalizedLabel: 'Vokaler brukt i beregningen',
+            nextHeading: 'Kartlegg konsonantuttrykket videre',
+            nextCopy: 'Kombiner hjertetallet med personlighetstallet for å se hvordan drivkraften uttrykkes.',
+            nextPersonality: 'Personlighetstall-kalkulator',
+            ctaOverview: 'Tilbake til oversikten',
+            copyright: 'Åse Karin Steinsland. Alle rettigheter reservert.',
+            sourceLink: 'Les hele veiledningen hos Åse',
+            methodLatin: 'Metode: Vokaler fra Åse Steinslands pythagoriske tabell.',
+            methodRTL: 'Metode: Abjad-vokaler oversatt til Åses reduksjon.',
+            ignoredNone: 'Alle tegn ble med i beregningen.',
+            ignoredSome: 'Ignorerte tegn:',
+            reductionPath: 'Reduksjonsrekkefølge:',
+            reductionMaster: 'Mestertall – ikke redusert videre.',
+            reductionSingle: 'Allerede ett siffer.',
+          },
+        },
+        fa: {
+          strings: {
+            title: 'ماشین‌حساب اشتیاق قلبی',
+            subtitle: 'فقط واکه‌ها – راهنمای آسه استینسلاند برای ندای قلب در نام تولد.',
+            navName: 'عدد نام',
+            navSoul: 'اشتیاق قلبی',
+            navPersonality: 'عدد شخصیت',
+            navDestiny: 'عدد سرنوشت',
+            navMaturity: 'عدد بلوغ',
+            navPersonalYear: 'سال شخصی',
+            navHome: 'مرور کلی',
+            methodHeading: 'واکه‌های قلب از نگاه آسه',
+            methodCopy: 'تنها واکه‌ها – شامل Å، Æ، Ø و شکل واکه‌ای Y – در محاسبه قلب استفاده می‌شوند. قوانین واکه‌ای نروژی آسه و نگاشت ابجد برای زبان‌های راست‌به‌چپ رعایت می‌شود.',
+            ctaNext: 'Learn more?',
+            ctaBack: 'بازگشت به عدد نام',
+            labelName: 'نام کامل هنگام تولد',
+            placeholderName: 'نام درج‌شده در گواهی تولد را وارد کنید',
+            btnCalculate: 'محاسبه اشتیاق قلبی',
+            tableLetter: 'واکه',
+            tableValue: 'ارزش',
+            tableTotal: 'جمع',
+            normalizedLabel: 'واکه‌های به‌کاررفته در محاسبه',
+            nextHeading: 'گام بعدی؛ بیان صامتی',
+            nextCopy: 'اشتیاق قلبی را با عدد شخصیت ترکیب کنید تا بدانید انگیزه درونی چگونه بروز می‌کند.',
+            nextPersonality: 'ماشین‌حساب عدد شخصیت',
+            ctaOverview: 'بازگشت به مرور کلی',
+            copyright: 'آسه کارین استینسلاند. کلیه حقوق محفوظ است.',
+            sourceLink: 'راهنمای کامل آسه را بخوانید',
+            methodLatin: 'روش: واکه‌ها بر اساس جدول فیثاغورثی آسه.',
+            methodRTL: 'روش: واکه‌های ابجد با کاهش ویژه آسه.',
+            ignoredNone: 'همه‌ی حروف در محاسبه استفاده شدند.',
+            ignoredSome: 'حروف نادیده گرفته‌شده:',
+            reductionPath: 'مسیر کاهش:',
+            reductionMaster: 'عدد استادی – کاهش بیشتر ندارد.',
+            reductionSingle: 'همین حالا یک رقم واحد است.',
+          },
+        },
+      };
+
+      const i18n = createI18n({
+        translations,
+        defaultLang: 'en',
+        directionMap: { fa: 'rtl' },
+      });
+
+      function syncButtons(lang) {
+        langButtons.forEach((button) => {
+          const isActive = button.dataset.lang === lang;
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      }
+
+      function createDNATrack(breakdown) {
+        const track = document.createElement('div');
+        track.className = 'dna-track';
+        breakdown.forEach((entry) => {
+          const node = document.createElement('div');
+          node.className = 'dna-node';
+          const valueEl = document.createElement('div');
+          valueEl.className = 'dna-value';
+          valueEl.textContent = entry.value;
+          const letterEl = document.createElement('div');
+          letterEl.className = 'dna-letter';
+          letterEl.textContent = entry.label;
+          node.appendChild(valueEl);
+          node.appendChild(letterEl);
+          track.appendChild(node);
+        });
+        return track;
+      }
+
+      function renderResult(breakdown) {
+        const stories = NumberStories.stories[i18n.lang] || NumberStories.stories.en;
+        resultSection.hidden = false;
+        tableBody.innerHTML = '';
+        dnaContainer.innerHTML = '';
+
+        breakdown.breakdown.forEach((entry) => {
+          const row = document.createElement('tr');
+          const letterCell = document.createElement('td');
+          letterCell.textContent = entry.label;
+          const valueCell = document.createElement('td');
+          valueCell.textContent = entry.value;
+          row.appendChild(letterCell);
+          row.appendChild(valueCell);
+          tableBody.appendChild(row);
+        });
+
+        totalCell.textContent = breakdown.total;
+        dnaContainer.appendChild(createDNATrack(breakdown.breakdown));
+
+        methodBadge.textContent = breakdown.script === 'rtl' ? i18n.t('methodRTL') : i18n.t('methodLatin');
+        resultTitle.textContent = `${i18n.t('navSoul')}: ${breakdown.number}`;
+        resultStory.textContent = stories[breakdown.number] || '';
+        normalised.textContent = `${i18n.t('normalizedLabel')}: ${breakdown.normalized}`;
+        if (breakdown.ignored.length) {
+          ignored.textContent = `${i18n.t('ignoredSome')} ${breakdown.ignored.join(', ')}`;
+        } else {
+          ignored.textContent = i18n.t('ignoredNone');
+        }
+        if (breakdown.steps.length > 1) {
+          reduction.textContent = `${i18n.t('reductionPath')} ${breakdown.steps.join(' → ')}`;
+        } else if ([11, 22, 33].includes(breakdown.number)) {
+          reduction.textContent = `${i18n.t('reductionPath')} ${i18n.t('reductionMaster')}`;
+        } else {
+          reduction.textContent = `${i18n.t('reductionPath')} ${i18n.t('reductionSingle')}`;
+        }
+      }
+
+      langButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const lang = button.dataset.lang;
+          i18n.setLanguage(lang);
+          syncButtons(lang);
+          const currentValue = document.getElementById('nameInput').value.trim();
+          if (currentValue) {
+            const breakdown = Numerology.breakdownName(currentValue, { mode: 'vowel' });
+            renderResult(breakdown);
+          }
+        });
+      });
+
+      i18n.onChange((lang) => {
+        syncButtons(lang);
+      });
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const value = document.getElementById('nameInput').value.trim();
+        if (!value) {
+          resultSection.hidden = true;
+          return;
+        }
+
+        const autoLang = Numerology.inferLanguageFromName(value);
+        if (autoLang && autoLang !== i18n.lang) {
+          i18n.setLanguage(autoLang);
+          syncButtons(autoLang);
+        }
+
+        const breakdown = Numerology.breakdownName(value, { mode: 'vowel' });
+        renderResult(breakdown);
+      });
+    })();
+  </script>
+</body>
+</html>
