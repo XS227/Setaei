@@ -36,6 +36,16 @@ npm run build
 
 Optimised assets are emitted to `dist/setaei`. Deploy the contents of that folder to `tall.setaei.com` (or any static host) for production.
 
+### Publish to GitHub Pages / `tall.setaei.com`
+
+The repository is configured to serve the compiled site from the `docs/` directory so GitHub Pages can host it directly on `tall.setaei.com`.
+
+```bash
+npm run build:docs
+```
+
+The command rebuilds the Angular bundle, refreshes `docs/` with the latest assets, and writes the `CNAME`/`404.html` helpers required by GitHub Pages. Commit and push the updated `docs/` folder to publish the newest theme in the browser.
+
 ## PDF rendering notes
 
 The short analysis export relies on `html2canvas` and `jspdf`. These introduce CommonJS dependencies (via `canvg`) which are acknowledged in the Angular configuration. The warnings can be safely ignored and do not affect runtime behaviour.

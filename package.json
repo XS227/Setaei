@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:docs": "node scripts/build-docs.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
