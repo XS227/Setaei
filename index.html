@@ -19,7 +19,16 @@
           <p data-i18n-key="heroSubtitle">Explore every calculator Åse uses when preparing a complete numerology profile.</p>
         </div>
       </div>
-      <nav class="primary-nav">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryNav">
+        <span class="nav-toggle-icon" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+        <span class="nav-toggle-text nav-toggle-text--closed" data-i18n-key="navToggleTextClosed">Menu</span>
+        <span class="nav-toggle-text nav-toggle-text--open" data-i18n-key="navToggleTextOpen" aria-hidden="true">Close</span>
+      </button>
+      <nav class="primary-nav" id="primaryNav" data-open="true">
         <a href="navnetall.html" data-i18n-key="navName">Name number</a>
         <a href="hjertetall.html" data-i18n-key="navSoul">Soul urge</a>
         <a href="personlighetstall.html" data-i18n-key="navPersonality">Personality</a>
@@ -133,6 +142,7 @@
   </div>
 
   <script src="assets/i18n.js"></script>
+  <script src="assets/shell.js"></script>
   <script src="assets/numerology.js"></script>
   <script src="assets/number-stories.js"></script>
   <script>
@@ -146,6 +156,10 @@
           strings: {
             heroTitle: 'Åse Steinsland Numerology Studio',
             heroSubtitle: 'Explore every calculator Åse uses when preparing a complete numerology profile.',
+            navToggleTextClosed: 'Menu',
+            navToggleTextOpen: 'Close',
+            navToggleAriaClosed: 'Open navigation menu',
+            navToggleAriaOpen: 'Close navigation menu',
             navName: 'Name number',
             navSoul: 'Soul urge',
             navPersonality: 'Personality',
@@ -195,6 +209,10 @@
           strings: {
             heroTitle: 'Åse Steinsland numerologisenter',
             heroSubtitle: 'Utforsk alle kalkulatorene Åse bruker i en komplett numerologiprofil.',
+            navToggleTextClosed: 'Meny',
+            navToggleTextOpen: 'Lukk',
+            navToggleAriaClosed: 'Åpne navigasjonsmenyen',
+            navToggleAriaOpen: 'Lukk navigasjonsmenyen',
             navName: 'Navnetall',
             navSoul: 'Hjertetall',
             navPersonality: 'Personlighetstall',
@@ -244,6 +262,10 @@
           strings: {
             heroTitle: 'استودیوی عددشناسی آسه استینسلاند',
             heroSubtitle: 'تمام ماشین‌حساب‌هایی را ببینید که آسه برای تهیه پرونده کامل عددشناسی به کار می‌برد.',
+            navToggleTextClosed: 'فهرست',
+            navToggleTextOpen: 'بستن',
+            navToggleAriaClosed: 'باز کردن فهرست ناوبری',
+            navToggleAriaOpen: 'بستن فهرست ناوبری',
             navName: 'عدد نام',
             navSoul: 'اشتیاق قلبی',
             navPersonality: 'عدد شخصیت',
@@ -296,6 +318,7 @@
         defaultLang: 'en',
         directionMap: { fa: 'rtl' },
       });
+      window.enhanceShell?.(i18n);
 
       function syncButtons(activeLang) {
         langButtons.forEach((button) => {

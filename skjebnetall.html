@@ -19,7 +19,16 @@
           <p data-i18n-key="subtitle">Reduce your birth date with Åse Steinsland’s master-number aware method.</p>
         </div>
       </div>
-      <nav class="primary-nav">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryNav">
+        <span class="nav-toggle-icon" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+        <span class="nav-toggle-text nav-toggle-text--closed" data-i18n-key="navToggleTextClosed">Menu</span>
+        <span class="nav-toggle-text nav-toggle-text--open" data-i18n-key="navToggleTextOpen" aria-hidden="true">Close</span>
+      </button>
+      <nav class="primary-nav" id="primaryNav" data-open="true">
         <a href="navnetall.html" data-i18n-key="navName">Name number</a>
         <a href="hjertetall.html" data-i18n-key="navSoul">Soul urge</a>
         <a href="personlighetstall.html" data-i18n-key="navPersonality">Personality</a>
@@ -95,6 +104,7 @@
   </div>
 
   <script src="assets/i18n.js"></script>
+  <script src="assets/shell.js"></script>
   <script src="assets/numerology.js"></script>
   <script src="assets/number-stories.js"></script>
   <script>
@@ -114,6 +124,10 @@
           strings: {
             title: 'Destiny number calculator',
             subtitle: 'Reduce your birth date with Åse Steinsland’s master-number aware method.',
+            navToggleTextClosed: 'Menu',
+            navToggleTextOpen: 'Close',
+            navToggleAriaClosed: 'Open navigation menu',
+            navToggleAriaOpen: 'Close navigation menu',
             navName: 'Name number',
             navSoul: 'Soul urge',
             navPersonality: 'Personality',
@@ -148,6 +162,10 @@
           strings: {
             title: 'Skjebnetallkalkulator',
             subtitle: 'Reduser fødselsdatoen med Åse Steinslands hensyn til mestertall.',
+            navToggleTextClosed: 'Meny',
+            navToggleTextOpen: 'Lukk',
+            navToggleAriaClosed: 'Åpne navigasjonsmenyen',
+            navToggleAriaOpen: 'Lukk navigasjonsmenyen',
             navName: 'Navnetall',
             navSoul: 'Hjertetall',
             navPersonality: 'Personlighetstall',
@@ -182,6 +200,10 @@
           strings: {
             title: 'ماشین‌حساب عدد سرنوشت',
             subtitle: 'تاریخ تولد خود را با در نظر گرفتن اعداد استادی به روش آسه استینسلاند کاهش دهید.',
+            navToggleTextClosed: 'فهرست',
+            navToggleTextOpen: 'بستن',
+            navToggleAriaClosed: 'باز کردن فهرست ناوبری',
+            navToggleAriaOpen: 'بستن فهرست ناوبری',
             navName: 'عدد نام',
             navSoul: 'اشتیاق قلبی',
             navPersonality: 'عدد شخصیت',
@@ -219,6 +241,8 @@
         defaultLang: 'en',
         directionMap: { fa: 'rtl' },
       });
+
+      window.enhanceShell?.(i18n);
 
       function syncButtons(lang) {
         langButtons.forEach((button) => {
