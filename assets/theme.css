@@ -105,6 +105,73 @@ nav.primary-nav {
   gap: 0.6rem;
 }
 
+.nav-toggle {
+  display: none;
+  align-items: center;
+  gap: 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(242, 107, 33, 0.16);
+  background: rgba(255, 248, 240, 0.92);
+  color: var(--accent-strong);
+  font-weight: 600;
+  padding: 0.5rem 1rem 0.5rem 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.nav-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(242, 107, 33, 0.2);
+}
+
+.nav-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(242, 107, 33, 0.2);
+}
+
+.nav-toggle .nav-toggle-icon {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.22rem;
+}
+
+.nav-toggle .nav-toggle-icon span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 999px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-toggle .nav-toggle-text {
+  font-size: 0.95rem;
+}
+
+.nav-toggle .nav-toggle-text--open {
+  display: none;
+}
+
+.nav-toggle.is-active .nav-toggle-text--closed {
+  display: none;
+}
+
+.nav-toggle.is-active .nav-toggle-text--open {
+  display: inline;
+}
+
+.nav-toggle.is-active .nav-toggle-icon span:nth-child(1) {
+  transform: translateY(0.24rem) rotate(45deg);
+}
+
+.nav-toggle.is-active .nav-toggle-icon span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.is-active .nav-toggle-icon span:nth-child(3) {
+  transform: translateY(-0.24rem) rotate(-45deg);
+}
+
 nav.primary-nav a {
   text-decoration: none;
   color: var(--accent-strong);
@@ -166,6 +233,19 @@ nav.primary-nav a:hover {
 .form-grid {
   display: grid;
   gap: 1.1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.form-grid > div {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.form-grid > div:last-child {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .form-grid label {
@@ -243,6 +323,11 @@ button.secondary:hover,
 a.secondary-button:hover {
   transform: translateY(-1px);
   box-shadow: 0 16px 30px rgba(242, 107, 33, 0.18);
+}
+
+.form-grid button,
+.form-grid .primary {
+  min-height: 48px;
 }
 
 .dna-track {
@@ -390,13 +475,48 @@ footer.page-footer a {
 }
 
 @media (max-width: 720px) {
+  header.hero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .branding {
+    width: 100%;
+  }
+
   nav.primary-nav {
     width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    background: rgba(255, 248, 240, 0.95);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 0.9rem;
+    box-shadow: 0 14px 32px rgba(242, 107, 33, 0.16);
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  nav.primary-nav[data-open="false"] {
+    display: none;
+  }
+
+  nav.primary-nav[data-open="true"] {
+    display: flex;
   }
 
   .language-switch {
     width: 100%;
     justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  nav.primary-nav a {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
   }
 
   .app-shell {

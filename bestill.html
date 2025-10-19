@@ -19,7 +19,16 @@
           <p data-i18n-key="subtitle">Åse Steinsland prepares each analysis manually. Choose the package that fits your needs and we will link you to the official order page.</p>
         </div>
       </div>
-      <nav class="primary-nav">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryNav">
+        <span class="nav-toggle-icon" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+        <span class="nav-toggle-text nav-toggle-text--closed" data-i18n-key="navToggleTextClosed">Menu</span>
+        <span class="nav-toggle-text nav-toggle-text--open" data-i18n-key="navToggleTextOpen" aria-hidden="true">Close</span>
+      </button>
+      <nav class="primary-nav" id="primaryNav" data-open="true">
         <a href="index.html" data-i18n-key="navHome">Overview</a>
         <a href="navnetall.html" data-i18n-key="navName">Name number</a>
         <a href="hjertetall.html" data-i18n-key="navSoul">Soul urge</a>
@@ -50,6 +59,7 @@
   </div>
 
   <script src="assets/i18n.js"></script>
+  <script src="assets/shell.js"></script>
   <script>
     (function () {
       const packages = [
@@ -132,6 +142,10 @@
           strings: {
             title: 'Select your numerology package',
             subtitle: 'Åse Steinsland prepares each analysis manually. Choose the package that fits your needs and we will link you to the official order page.',
+            navToggleTextClosed: 'Menu',
+            navToggleTextOpen: 'Close',
+            navToggleAriaClosed: 'Open navigation menu',
+            navToggleAriaOpen: 'Close navigation menu',
             navHome: 'Overview',
             navName: 'Name number',
             navSoul: 'Soul urge',
@@ -150,6 +164,10 @@
           strings: {
             title: 'Velg din numerologipakke',
             subtitle: 'Åse Steinsland utarbeider hver analyse manuelt. Velg pakken som passer deg så sender vi deg videre til den offisielle bestillingssiden.',
+            navToggleTextClosed: 'Meny',
+            navToggleTextOpen: 'Lukk',
+            navToggleAriaClosed: 'Åpne navigasjonsmenyen',
+            navToggleAriaOpen: 'Lukk navigasjonsmenyen',
             navHome: 'Oversikt',
             navName: 'Navnetall',
             navSoul: 'Hjertetall',
@@ -168,6 +186,10 @@
           strings: {
             title: 'بسته عددشناسی خود را انتخاب کنید',
             subtitle: 'آسه استینسلاند هر تحلیل را به‌صورت دستی آماده می‌کند. بسته مناسب را انتخاب کنید تا به صفحه رسمی سفارش هدایت شوید.',
+            navToggleTextClosed: 'فهرست',
+            navToggleTextOpen: 'بستن',
+            navToggleAriaClosed: 'باز کردن فهرست ناوبری',
+            navToggleAriaOpen: 'بستن فهرست ناوبری',
             navHome: 'مرور کلی',
             navName: 'عدد نام',
             navSoul: 'اشتیاق قلبی',
@@ -189,6 +211,8 @@
         defaultLang: 'en',
         directionMap: { fa: 'rtl' },
       });
+
+      window.enhanceShell?.(i18n);
 
       const langButtons = document.querySelectorAll('.language-switch button[data-lang]');
 
